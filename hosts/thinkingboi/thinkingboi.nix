@@ -8,12 +8,11 @@
   ];
 
   boot.loader = {
-    grub.enable = true;
-    grub.device = "/dev/vda";
-    grub.useOSProber = true;
+    systemd-boot.enable = true;
+    efi.canTouchEfiVariables = true;
   };
 
- 
+  boot.initrd.luks.devices."luks-55207d49-5277-43ee-9cdd-7c7f932e4303".device = "/dev/disk/by-uuid/55207d49-5277-43ee-9cdd-7c7f932e4303";
  
   networking.hostName = "ThinkingBoi";
 

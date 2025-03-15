@@ -18,4 +18,7 @@
     # For Jack Applications
     jack.enable = true;
   };
+
+  services.hardware.bolt.enable = true;
+
 }

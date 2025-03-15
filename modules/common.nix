@@ -49,7 +49,7 @@
 
   users.users.robert = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" ];
   };
 
 }
