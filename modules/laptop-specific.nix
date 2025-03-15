@@ -16,6 +16,6 @@
     alsa.support32Bit = true;
     pulse.enable = true;
     # For Jack Applications
-    #jack.enable = true;
+    jack.enable = true;
   };
 }
