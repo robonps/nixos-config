@@ -4,7 +4,7 @@
 
     imports = [
         ./applications.nix
-        ./modules/desktop/kde/kde.nix
+        ./modules/desktop/gnome/gnome.nix
     ];
 
     home.username = "robert";

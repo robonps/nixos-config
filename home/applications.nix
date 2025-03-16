@@ -2,6 +2,8 @@
   
     imports = [
         ./modules/applications/git.nix
+
+        #./modules/environments/study.nix
     ];
 
     nixpkgs.config.allowUnfree = true;

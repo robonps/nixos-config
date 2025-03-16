@@ -19,6 +19,11 @@
     ];
 
 
+    environment.systemPackages = with pkgs; [
+        gnome-tweaks
+    ];
+
+
     services.xserver = {
         enable = true;
         displayManager.gdm.enable = true;
