@@ -1,33 +1,42 @@
 {
-  description = "My NixOS + Home-Manager Config";
+    description = "My NixOS + Home-Manager Config";
 
-  inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
-  };
+    inputs = {
+        nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+        
+        home-manager.url = "github:nix-community/home-manager";
+        home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-  outputs = { nixpkgs, home-manager, ... }: let
-    system = "x86_64-linux";
-    pkgs = import nixpkgs { inherit system; };
-  
-  in {
+        plasma-manager.url = "github:nix-community/plasma-manager";
+        plasma-manager.inputs.nixpkgs.follows = "nixpkgs";
+        plasma-manager.inputs.home-manager.follows = "home-manager";
 
-    nixosConfigurations.thinkingboi = nixpkgs.lib.nixosSystem {
-      inherit system;
-      modules = [
-        ./hosts/thinkingboi/thinkingboi.nix
-        home-manager.nixosModules.home-manager
-      ];
-  
     };
 
+    outputs = { nixpkgs, home-manager, plasma-manager, ... }: let
+        system = "x86_64-linux";
+        pkgs = import nixpkgs { inherit system; };
+    
+    in {
 
-    homeConfigurations.robert = home-manager.lib.homeManagerConfiguration {
-      inherit pkgs;
-      modules = [./home/robert.nix];
+        nixosConfigurations.thinkingboi = nixpkgs.lib.nixosSystem {
+        inherit system;
+        modules = [
+            ./system/thinkingboi/thinkingboi.nix
+            home-manager.nixosModules.home-manager
+        ];
+    
+        };
+
+
+        homeConfigurations.robert = home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+        modules = [
+            plasma-manager.homeManagerModules.plasma-manager
+            ./home/robert.nix
+        ];
+        };
+
+
     };
-
-
-  };
 }

@@ -2,15 +2,14 @@
 
 {
 
-  imports = [
-    ./applications.nix
-  ];
+    imports = [
+        ./applications.nix
+        ./modules/desktop/kde/kde.nix
+    ];
 
-  home.username = "robert";
-  home.homeDirectory = "/home/robert";
+    home.username = "robert";
+    home.homeDirectory = "/home/robert";
 
 
-
-  home.stateVersion = "24.11";
-
+    home.stateVersion = "24.11";
 }

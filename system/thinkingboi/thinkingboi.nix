@@ -2,9 +2,11 @@
 
 {
   imports = [
-    ./../../modules/common.nix
-    ./../../modules/laptop-specific.nix
     ./hardware-configuration.nix
+
+    ../modules/common.nix
+    ../modules/laptop-specific.nix
+    ../modules/desktop/gnome.nix
   ];
 
   boot.loader = {
