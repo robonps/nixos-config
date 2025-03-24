@@ -30,4 +30,6 @@
         desktopManager.gnome.enable = true;
     };
 
+    services.power-profiles-daemon.enable = false;
+
 }

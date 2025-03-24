@@ -2,8 +2,7 @@
   
     imports = [
         ./modules/applications/git.nix
-
-        #./modules/environments/study.nix
+        ./modules/applications/vscode.nix
     ];
 
     nixpkgs.config.allowUnfree = true;
@@ -15,6 +14,16 @@
         vscode
         mission-center
         protonmail-bridge
+        libreoffice-fresh
+        hunspell
+        hunspellDicts.en_AU-large
+        mission-center
+        fastfetch
+
+        s-tui
+        stress
+
+        btop
     ];
 
     targets.genericLinux.enable = true;

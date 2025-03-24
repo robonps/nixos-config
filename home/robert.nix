@@ -5,6 +5,9 @@
     imports = [
         ./applications.nix
         ./modules/desktop/gnome/gnome.nix
+
+
+        ./modules/environments/study.nix
     ];
 
     home.username = "robert";
