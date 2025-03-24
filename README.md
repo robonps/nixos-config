@@ -9,3 +9,7 @@ This is my personal NixOS configuration, using **Nix Flakes** and **Home Manager
 - **Flake Setup** – Keeps everything versioned and structured.  
 
 Nothing too fancy—just a setup that works for me and evolves over time. Feel free to explore or borrow ideas.  
+
+---
+
+🔹 **Note:** There needs to be a `hardware-configuration.nix` file inside the `system/` folder under the corresponding system name that you wish to use.  
