@@ -3,10 +3,13 @@
 {
 
     imports = [
+        # Applications.
         ./applications.nix
+        
+        # Desktop Environment / Window Manager.
         ./modules/desktop/gnome/gnome.nix
 
-
+        # Environments / Addons.
         ./modules/environments/study.nix
     ];
 

@@ -11,9 +11,11 @@
         plasma-manager.inputs.nixpkgs.follows = "nixpkgs";
         plasma-manager.inputs.home-manager.follows = "home-manager";
 
+        nvf.url = "github:notashelf/nvf";
+        nvf.inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    outputs = { nixpkgs, home-manager, plasma-manager, ... }: let
+    outputs = { nixpkgs, home-manager, plasma-manager, nvf, ... }: let
         system = "x86_64-linux";
         pkgs = import nixpkgs { inherit system; };
     
@@ -33,6 +35,7 @@
         inherit pkgs;
         modules = [
             plasma-manager.homeManagerModules.plasma-manager
+            nvf.homeManagerModules.default
             ./home/robert.nix
         ];
         };

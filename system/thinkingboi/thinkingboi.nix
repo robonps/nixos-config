@@ -7,6 +7,8 @@
 
         ../modules/common.nix
         ../modules/laptop-specific.nix
+
+        # Desktop Environment
         ../modules/desktop/gnome.nix
     ];
 

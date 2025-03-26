@@ -22,6 +22,7 @@
         "org/gnome/desktop/interface" = {
             enable-hot-corners = false;
             show-battery-percentage = true;
+            monospace-font-name = "FiraCode Nerd Font 10";
         };
 
 
@@ -39,6 +40,8 @@
             command = "kgx";
             name = "Terminal";
         };
+
+
 
     };
 }

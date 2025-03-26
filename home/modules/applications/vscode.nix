@@ -3,10 +3,10 @@
     programs.vscode = {
         enable = true;
         
-        userSettings = {
-            "workbench.sideBar.location": "right",
-            "telemetry.telemetryLevel": "off"
-        }
+        profiles.default.userSettings = {
+            "workbench.sideBar.location" = "right";
+            "telemetry.telemetryLevel" = "off";
+        };
     };
 
 }

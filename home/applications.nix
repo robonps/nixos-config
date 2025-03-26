@@ -1,8 +1,7 @@
 { pkgs, ... }: {
   
     imports = [
-        ./modules/applications/git.nix
-        ./modules/applications/vscode.nix
+        ./modules/applications
     ];
 
     nixpkgs.config.allowUnfree = true;

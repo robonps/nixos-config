@@ -13,4 +13,11 @@
 
   services.hardware.bolt.enable = true;
 
+
+  # Enable Tailscale for remote connection
+  services.tailscale = {
+    enable = true;
+    useRoutingFeatures = "client";
+  };
+
 }
