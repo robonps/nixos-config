@@ -5,10 +5,7 @@
 
     users.groups.libvirtd.members = ["robert"];
 
-    virtualisation.libvirtd = { 
-        enable = true;
-        networks.default.autostart = true;
-    };
+    virtualisation.libvirtd.enable = true;
 
     virtualisation.spiceUSBRedirection.enable = true;
 }
