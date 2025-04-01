@@ -9,6 +9,7 @@
     home.packages = with pkgs; [
         librewolf-bin
         vesktop
+        signal-desktop
         protonvpn-gui
         vscode
         mission-center
