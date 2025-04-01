@@ -24,7 +24,7 @@ let
         ./modules/environments/gaming.nix
     ];
 
-{
+in {
 
     imports = if hostname == "ThinkingBoi" then
         baseModule ++ thinkingBoi
