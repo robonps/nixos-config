@@ -10,7 +10,7 @@
         ./modules/desktop/gnome/gnome.nix
 
         # Environments / Addons.
-        ./modules/environments/study.nix
+        #./modules/environments/study.nix
     ];
 
     home.username = "robert";

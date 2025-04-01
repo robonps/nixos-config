@@ -30,6 +30,15 @@
     
         };
 
+        nixosConfigurations.fastboi = nixpkgs.lib.nixosSystem {
+        inherit system;
+        modules = [
+            ./system/fastboi/fastboi.nix
+            home-manager.nixosModules.home-manager
+        ];
+    
+        };
+
 
         homeConfigurations.robert = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
