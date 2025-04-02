@@ -1,7 +1,7 @@
 { pkgs, plasma-manager, ... }: {
 
     programs.plasma = {
-        # Theming Settings
+        # Set the Breeze Dark theme for KDE Plasma
         workspace.lookAndFeel = "org.kde.breezedark.desktop";
     };
 }

@@ -1,6 +1,6 @@
 { config, pkgs, lib, ... }: {
 
-
+    # Configure throttled for power management
     environment.etc."throttled.conf".text = pkgs.lib.mkForce ''
         [GENERAL]
         # Enable or disable the script execution
@@ -94,7 +94,7 @@
         # CACHE: 
     '';
 
+    # Enable throttled and TLP for power management
     services.throttled.enable = true;
-
     services.tlp.enable = true;
 }

@@ -1,5 +1,6 @@
 { config, pkgs, ... }: {
   
+  # Configure audio services
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
@@ -7,14 +8,13 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-    # For Jack Applications
-    jack.enable = true;
+    jack.enable = true; # For Jack applications
   };
 
+  # Enable Thunderbolt support
   services.hardware.bolt.enable = true;
 
-
-  # Enable Tailscale for remote connection
+  # Enable Tailscale for remote connections
   services.tailscale = {
     enable = true;
     useRoutingFeatures = "client";

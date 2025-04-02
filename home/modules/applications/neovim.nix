@@ -1,34 +1,35 @@
 { pkgs, nvf, ... }: let
 
-    nvfTheme = "gruvbox";
+    nvfTheme = "gruvbox"; # Set the default theme for Neovim
 
 in {
     programs.nvf = {
-        enable = true;
+        enable = true; # Enable Neovim configuration
 
         settings.vim = {
-            viAlias = true;
-            vimAlias = true;
-
+            viAlias = true; # Enable `vi` alias
+            vimAlias = true; # Enable `vim` alias
 
             theme = {
-                enable = true;
-                name = nvfTheme;
-                style = "dark";
+                enable = true; # Enable theming
+                name = nvfTheme; # Set theme name
+                style = "dark"; # Use dark mode
             };
 
             languages = {
-                enableLSP = true;
-                enableTreesitter = true;
+                enableLSP = true; # Enable Language Server Protocol
+                enableTreesitter = true; # Enable Treesitter for syntax highlighting
 
-                nix.enable = true;
-                python.enable = true;
-                go.enable = true;
+                nix.enable = true; # Enable Nix support
+                python.enable = true; # Enable Python support
+                go.enable = true; # Enable Go support
             };
 
+            # Configure indentation
             options.tabstop = 4;
             options.shiftwidth = 4;
 
+            # Enable various plugins and features
             statusline.lualine.enable = true;
             filetree.neo-tree.enable = true;
             telescope.enable = true;
