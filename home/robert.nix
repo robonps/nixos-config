@@ -1,37 +1,18 @@
-{ config, pkgs, ... }:
+{ config, pkgs, plasma-manager, defaults, ... }:
 
 let
-    hostname = builtins.getEnv "HOSTNAME";
+    vars = import ./vars.nix {inherit defaults; };
+    desktopEnvironmentPath = ./modules/desktop/${vars.desktopEnvironment}/${vars.desktopEnvironment}.nix;
+in {
 
-    baseModule = [
-        # Base Modules.
-
+    imports = [
 
         # Applications.
         ./applications.nix
         
         # Desktop Environment / Window Manager.
-        ./modules/desktop/gnome/gnome.nix
+        desktopEnvironmentPath 
     ];
-
-    thinkingBoi = [
-        # Environments / Addons (Currently Based on Hostname).
-        ./modules/environments/study.nix
-    ];
-
-    fastBoi = [
-        # Environments / Addons (Currently Based on Hostname).
-        ./modules/environments/gaming.nix
-    ];
-
-in {
-
-    imports = if hostname == "ThinkingBoi" then
-        baseModule ++ thinkingBoi
-    else if hostname == "FastBoi" then
-        baseModule ++ fastBoi
-    else
-        baseModule;
 
     home.username = "robert";
     home.homeDirectory = "/home/robert";

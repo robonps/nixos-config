@@ -1,4 +1,8 @@
-{ pkgs, nvf, ... }: {
+{ pkgs, nvf, ... }: let
+
+    nvfTheme = "gruvbox";
+
+in {
     programs.nvf = {
         enable = true;
 
@@ -9,7 +13,7 @@
 
             theme = {
                 enable = true;
-                name = "gruvbox";
+                name = nvfTheme;
                 style = "dark";
             };
 
@@ -19,6 +23,7 @@
 
                 nix.enable = true;
                 python.enable = true;
+                go.enable = true;
             };
 
             options.tabstop = 4;

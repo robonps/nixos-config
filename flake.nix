@@ -13,11 +13,19 @@
 
         nvf.url = "github:notashelf/nvf";
         nvf.inputs.nixpkgs.follows = "nixpkgs";
+
+        nxm.url = "github:robonps/nxm";
+        nxm.inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    outputs = { nixpkgs, home-manager, plasma-manager, nvf, ... }: let
+    outputs = { nixpkgs, home-manager, plasma-manager, nvf, nxm, ... }: let
         system = "x86_64-linux";
         pkgs = import nixpkgs { inherit system; };
+
+        defaults = {
+            desktopEnvironment = "gnome";
+        };
+
     
     in {
 
@@ -26,6 +34,11 @@
         modules = [
             ./system/thinkingboi/thinkingboi.nix
             home-manager.nixosModules.home-manager
+            ({ config, pkgs, ... }: {
+                environment.systemPackages = [
+                    nxm.packages.${system}.default
+                ];
+            })
         ];
     
         };
@@ -41,12 +54,13 @@
 
 
         homeConfigurations.robert = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-        modules = [
-            plasma-manager.homeManagerModules.plasma-manager
-            nvf.homeManagerModules.default
-            ./home/robert.nix
-        ];
+            inherit pkgs;
+            modules = [
+                plasma-manager.homeManagerModules.plasma-manager
+                nvf.homeManagerModules.default
+                ./home/robert.nix
+            ];
+            extraSpecialArgs = { inherit defaults; };
         };
 
 

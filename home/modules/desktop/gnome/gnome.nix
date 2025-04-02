@@ -1,7 +1,15 @@
-{ pkgs, ... }: {
+{ pkgs, defaults, ... }:
+let
+
+    vars = import ../../../vars.nix { inherit defaults;};
+    default = "gruvbox-dark";
+    currentTheme = if vars.theme == "" then default else vars.theme;
+    themePath = ./themes/${currentTheme}.nix;
+
+in {
     imports = [
         ./extensions.nix
-        ./themes/adwaita.nix
+        themePath
     ];
 
 
