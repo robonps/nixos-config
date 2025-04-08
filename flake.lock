@@ -179,11 +179,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1744088812,
-        "narHash": "sha256-7guS3NKlxrMizR6mQ9kFbU9RSgDEcNRDlLjfIglfmDc=",
+        "lastModified": 1744092228,
+        "narHash": "sha256-ACxiTaBQM+XPN/u+YhSPDwirEI2ptydVS78vKLrUNpE=",
         "owner": "robonps",
         "repo": "nxm",
-        "rev": "593932f424fca2300c4dfd621df58ed010a0740a",
+        "rev": "101771081986dfd58a2d33b45cebbc6faa963d4b",
         "type": "github"
       },
       "original": {
