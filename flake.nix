@@ -54,6 +54,7 @@
                 ./system/fastboi/fastboi.nix
                 home-manager.nixosModules.home-manager
             ];
+            specialArgs = { inherit defaults; };
         };
 
         # Home Manager configuration for the "robert" user
