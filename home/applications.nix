@@ -1,9 +1,18 @@
-{ pkgs, ... }: {
+{ pkgs, defaults, lib, ... }: 
+
+let
+    vars = import ../vars.nix { inherit defaults;};
+    cleanedString = builtins.replaceStrings [ "[" "]" ] [ "" "" ] vars.enabledModules; 
+    splitResult = lib.strings.split " " cleanedString;
+    enabledModules = if builtins.length splitResult > 0 then splitResult else null;
+in {
   
     # Import application-specific modules
     imports = [
         ./modules/applications
-    ];
+    ] ++ builtins.map (mod:
+            ./modules/environments/${mod}
+        ) enabledModules;
 
     # Allow unfree packages
     nixpkgs.config.allowUnfree = true;

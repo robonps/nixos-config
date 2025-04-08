@@ -1,7 +1,7 @@
 { pkgs, plasma-manager, defaults, ... }: let
 
     # Import variables and set default theme
-    vars = import ../../../vars.nix { inherit defaults;};
+    vars = import ../../../../vars.nix { inherit defaults;};
     default = "breeze";
     currentTheme = if vars.theme == "" then default else vars.theme;
     themePath = ./themes/${currentTheme}.nix;

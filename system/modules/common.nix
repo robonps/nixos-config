@@ -1,9 +1,15 @@
-{ config, pkgs, ... }:
+{ pkgs, defaults, ... }:
 
-{
+let
+    
+    vars = import ../../vars.nix {inherit defaults; };
+    desktopEnvironmentPath = ./desktop/${vars.desktopEnvironment}.nix;
+
+in {
     # Import additional modules
     imports = [
         ./virt.nix
+        desktopEnvironmentPath
     ];
 
     # Enable experimental Nix features

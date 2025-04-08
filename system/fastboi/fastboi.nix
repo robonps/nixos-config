@@ -5,8 +5,6 @@
         ./hardware-configuration.nix
         ../modules/common.nix
 
-        # Desktop Environment
-        ../modules/desktop/gnome.nix
     ];
 
     # GRUB bootloader configuration

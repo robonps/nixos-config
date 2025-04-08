@@ -2,7 +2,7 @@
 
 let
     # Import variables and determine desktop environment path
-    vars = import ./vars.nix {inherit defaults; };
+    vars = import ../vars.nix {inherit defaults; };
     desktopEnvironmentPath = ./modules/desktop/${vars.desktopEnvironment}/${vars.desktopEnvironment}.nix;
 
 in {

@@ -44,6 +44,7 @@
                     ];
                 })
             ];
+            specialArgs = { inherit defaults; };
         };
 
         # Configuration for the "FastBoi" system

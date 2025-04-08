@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, lib, ... }:
 
 {
     imports = [
@@ -8,8 +8,6 @@
         ../modules/common.nix
         ../modules/laptop-specific.nix
 
-        # Desktop Environment
-        ../modules/desktop/gnome.nix
     ];
 
     # Configure bootloader
