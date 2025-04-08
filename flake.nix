@@ -53,6 +53,12 @@
             modules = [
                 ./system/fastboi/fastboi.nix
                 home-manager.nixosModules.home-manager
+                ({ config, pkgs, ... }: {
+                    # Include the nxm package
+                    environment.systemPackages = [
+                        nxm.packages.${system}.default
+                    ];
+                })
             ];
             specialArgs = { inherit defaults; };
         };
