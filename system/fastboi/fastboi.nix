@@ -4,18 +4,17 @@
     imports = [
         ./hardware-configuration.nix
         ../modules/common.nix
-
+        ../modules/nvidia.nix
+        ../modules/steam.nix
     ];
 
-    # GRUB bootloader configuration
-    boot.loader.grub = {
-        enable = true;
-        device = "/dev/vda";
-        useOSProber = true;
-    };
+    # Bootloader.
+    boot.loader.systemd-boot.enable = true;
+    boot.loader.efi.canTouchEfiVariables = true;
+    boot.loader.systemd-boot.configurationLimit = 5;
 
     # Enable CPU microcode updates and periodic filesystem trimming
-    hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+    hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
     services.fstrim.enable = lib.mkDefault true;
 
     # Set hostname

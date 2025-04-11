@@ -1,9 +1,10 @@
-{ pkgs, defaults, ... }:
+{ pkgs, defaults, config, ... }:
 let
 
     # Import variables and set default theme
     vars = import ../../../../vars.nix { inherit defaults;};
-    default = "gruvbox-dark";
+    #default = "gruvbox-dark";
+    default = "orchis-green-dark";
     currentTheme = if vars.theme == "" then default else vars.theme;
     themePath = ./themes/${currentTheme}.nix;
 
@@ -13,6 +14,11 @@ in {
         ./extensions.nix
         themePath
     ];
+
+    #home.file."${config.xdg.dataHome}/gtk-3.0/settings.ini".force = true;
+    #home.file."${config.xdg.dataHome}/gtk-4.0/settings.ini".force = true;
+    #home.file."${config.xdg.dataHome}/gtk-4.0/gtk.css".force = true;
+    #home.file."${config.xdg.dataHome}/.gtkrc-2.0".force = true;
 
     dconf.settings = {
         # File chooser settings

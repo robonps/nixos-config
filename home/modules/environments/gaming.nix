@@ -1,1 +1,3 @@
-# Placeholder for gaming environment configurations
+{ ... }: {
+    # Placeholder
+}

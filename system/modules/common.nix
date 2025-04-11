@@ -77,7 +77,7 @@ in {
 
     # Enable Bluetooth services
     hardware.bluetooth.enable = true;
-    services.blueman.enable = true;
+    #services.blueman.enable = true;    # Don't Need.
 
     # Configure user settings
     users.users.robert = {

@@ -7,7 +7,7 @@
         };
         
         "org/gnome/shell/extensions/user-theme" = {
-            name = "Gruvbox-Dark"; # Set the user theme to Gruvbox Dark
+            name = "Orchis-Green-Dark"; # Set the user theme to Gruvbox Dark
         };
     };
 
@@ -21,13 +21,13 @@
         };
 
         theme = {
-            name = "Gruvbox-Dark"; # Set GTK theme
-            package = pkgs.gruvbox-gtk-theme;
+            name = "Orchis-Green-Dark"; # Set GTK theme
+            package = pkgs.orchis-theme;
         };
 
         cursorTheme = {
-            name = "volantes_cursors"; # Set cursor theme
-            package = pkgs.volantes-cursors;
+            name = "graphite-dark"; # Set cursor theme
+            package = pkgs.graphite-cursors;
         };
 
         # Additional GTK configurations
@@ -44,6 +44,6 @@
         };
     };
 
-    home.sessionVariables.GTK_THEME = "Gruvbox-Dark"; # Set GTK_THEME environment variable
+    home.sessionVariables.GTK_THEME = "Orchis-Green-Dark"; # Set GTK_THEME environment variable
 
 }
