@@ -27,6 +27,7 @@ in {
         nano
         curl
         tio
+        usbutils
         home-manager
     ];
 
