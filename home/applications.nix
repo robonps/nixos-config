@@ -34,6 +34,7 @@ in {
         s-tui
         stress
         btop
+        distrobox
     ];
 
     # Enable generic Linux targets and MIME support
