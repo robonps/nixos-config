@@ -24,9 +24,18 @@
 
         randomizedDelaySec = "15m";
     };
-
-
     nix.settings.auto-optimise-store = true;
+
+
+
+    # Keyring
+    services.gnome.gnome-keyring.enable = true;
+
+    # Auto-unlock for whatever login manager you choose
+    security.pam.services.sddm.enableGnomeKeyring = true;
+    security.pam.services.gdm.enableGnomeKeyring = true;
+    
+
 
     # Select internationalisation properties.
     i18n.defaultLocale = "en_NZ.UTF-8";
@@ -79,6 +88,8 @@
     
     environment.systemPackages = with pkgs; [
         pavucontrol # The standard "Volume Mixer" GUI. Simple, works perfectly.
+
+        seahorse # Gnome Keyring App for viewing passwords.
     ];
 
 

@@ -80,7 +80,12 @@
     };
 
     home.packages = with pkgs; [
+
+        # Terminal Utils
         fastfetch
-        eza
+        eza # ls alternative that is aliased in fish
+
+        # Comms
+        vesktop
     ];
 }
