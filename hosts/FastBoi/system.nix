@@ -1,38 +1,39 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-
-{ config, pkgs, ... }:
-
 {
-    imports =
-        [ # Include the results of the hardware scan.
-        ./hardware.nix
-        ../../common/system.nix # Common system config.
-        ../../modules/hyprland/system.nix
-        ];
+  config,
+  pkgs,
+  ...
+}: {
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware.nix
+    ../../common/system.nix # Common system config.
+    ../../modules/hyprland/system.nix # Desktop
+    ../../modules/gaming/system.nix # Gaming
+  ];
 
-    boot.initrd.luks.devices."luks-274fa71a-c962-4fc2-94ed-96481fb92c17".device = "/dev/disk/by-uuid/274fa71a-c962-4fc2-94ed-96481fb92c17";
-    networking.hostName = "FastBoi"; # Define your hostname.
-    # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  boot.initrd.luks.devices."luks-274fa71a-c962-4fc2-94ed-96481fb92c17".device = "/dev/disk/by-uuid/274fa71a-c962-4fc2-94ed-96481fb92c17";
+  networking.hostName = "FastBoi"; # Define your hostname.
+  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
-    # Configure network proxy if necessary
-    # networking.proxy.default = "http://user:password@proxy:port/";
-    # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+  # Configure network proxy if necessary
+  # networking.proxy.default = "http://user:password@proxy:port/";
+  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
-    hardware.graphics = {
-        enable = true;
-        enable32Bit = true;
-    };
-    
-    services.xserver.videoDrivers = ["nvidia"];
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+  };
 
-    hardware.nvidia = {
-        modesetting.enable = true;
-        powerManagement.enable = false;
-        open = false;
-        nvidiaSettings = true;
-        package = config.boot.kernelPackages.nvidiaPackages.stable;
-    };
+  services.xserver.videoDrivers = ["nvidia"];
 
+  hardware.nvidia = {
+    modesetting.enable = true;
+    powerManagement.enable = false;
+    open = false;
+    nvidiaSettings = true;
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
+  };
 }

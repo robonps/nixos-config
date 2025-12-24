@@ -1,18 +1,46 @@
-{ pkgs, ... }:
-{
-    programs.hyprland.enable = true;
+{pkgs, ...}: {
+  programs.hyprland.enable = true;
 
-    environment.sessionVariables.NIXOS_OZONE_WL = "1";
+  services.displayManager.sddm = {
+    enable = true;
+    wayland.enable = true;
+  };
 
+  fonts.packages = with pkgs; [
+    nerd-fonts.fira-code
+    nerd-fonts.droid-sans-mono
+  ];
 
-    services.displayManager.sddm = {
-        enable = true;
-        wayland.enable = true;
-    };
+  # FILE MANAGER STUFF
 
+  # Required for file manager to see USB sticks
+  services.udisks2.enable = true;
+  services.gvfs.enable = true;
 
-    fonts.packages = with pkgs; [
-        nerd-fonts.fira-code
-        nerd-fonts.droid-sans-mono
-    ];
+  # GStreamer for file info
+  nixpkgs.overlays = [
+    (final: prev: {
+      nautilus = prev.nautilus.overrideAttrs (nprev: {
+        buildInputs =
+          nprev.buildInputs
+          ++ (with pkgs.gst_all_1; [
+            gst-plugins-good
+            gst-plugins-bad
+          ]);
+      });
+    })
+  ];
+
+  # Quick Preview
+  # Allows you to hit "Space" to preview files like on macOS
+  services.gnome.sushi.enable = true;
+
+  environment.systemPackages = with pkgs; [
+    nautilus # File manager
+
+    hyprpolkitagent # Authentication Agent
+
+    libheif # HEIC Preview
+    libheif.out # HEIC Preview
+  ];
 }
