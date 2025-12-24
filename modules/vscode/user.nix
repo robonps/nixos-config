@@ -21,6 +21,9 @@
             # Nix Ide settings
             "nix.enableLanguageServer" = true;
             "nix.serverPath" = "nil";
+
+            # Telemetry
+            "telemetry.telemetryLevel" = "off";
         };
         };
     };

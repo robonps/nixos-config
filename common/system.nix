@@ -58,6 +58,34 @@
         packages = with pkgs; [];
     };
 
+    # Enable Realtime Kit
+    # This is critical. It allows the audio process to ask the kernel for 
+    # "Realtime Priority" so your audio doesn't crackle when the CPU is busy.
+    security.rtkit.enable = true;
+
+    # Enable Pipewire
+    services.pipewire = {
+        enable = true;
+        
+        # Compatibility layer for normal apps (Firefox, Discord, Spotify)
+        pulse.enable = true;
+        
+        # Compatibility layer for low-level ALSA apps
+        alsa.enable = true;
+        alsa.support32Bit = true; # Needed for Steam games
+
+        jack.enable = true;
+    };
+    
+    environment.systemPackages = with pkgs; [
+        pavucontrol # The standard "Volume Mixer" GUI. Simple, works perfectly.
+    ];
+
+
+    # Enable Fish globally and set as default shell
+    programs.fish.enable = true;
+    users.users.robert.shell = pkgs.fish;
+
     # Allow unfree packages
     nixpkgs.config.allowUnfree = true;
 

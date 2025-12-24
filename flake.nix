@@ -11,7 +11,7 @@
   };
 
   outputs = { self, nixpkgs, home-manager, ... }@inputs: {
-    nixosConfigurations.ThinkingBoi = nixpkgs.lib.nixosSystem {
+    nixosConfigurations.FastBoi = nixpkgs.lib.nixosSystem {
       modules = [
         ./hosts/FastBoi/system.nix
 
