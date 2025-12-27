@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  config,
+  ...
+}: {
   programs.kitty = {
     enable = true;
     font.name = "JetBrainsMono Nerd Font";
@@ -15,6 +19,15 @@
       # "If the only running process is the shell (bash/zsh), close instantly.
       #  If anything else is running (vim, htop, python), WARN me."
       confirm_os_window_close = 0;
+
+      cursor_trail = 3;
+
+      scrollback_lines = 5000;
+
+      mouse_hide_wait = -3.0;
     };
+    extraConfig = ''
+      include ${config.xdg.cacheHome}/matugen/colors-kitty.conf
+    '';
   };
 }

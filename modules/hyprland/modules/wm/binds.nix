@@ -40,6 +40,11 @@
       "$mainMod, 9, workspace, 9"
       "$mainMod, 0, workspace, 10"
 
+      "$mainMod, comma, workspace, m-1"
+      "$mainMod, period, workspace, m+1"
+
+      "$mainMod, T, workspace, emptym"
+
       # Move active window to a workspace with mainMod + SHIFT + [0-9]
       "$mainMod SHIFT, 1, movetoworkspace, 1"
       "$mainMod SHIFT, 2, movetoworkspace, 2"
@@ -57,8 +62,17 @@
       "$mainMod SHIFT, S, movetoworkspace, special:magic"
 
       # Scroll through existing workspaces with mainMod + scroll
-      "$mainMod, mouse_down, workspace, e+1"
-      "$mainMod, mouse_up, workspace, e-1"
+      "$mainMod, mouse_down, workspace, m+1"
+      "$mainMod, mouse_up, workspace, m-1"
+
+      # Lock Session
+      "$mainMod, L, exec, loginctl lock-session"
+
+      # Restart waybar
+      "$mainMod, N, exec, systemctl --user restart waybar"
+
+      # Mute Control
+      ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
     ];
 
     binde = [
@@ -75,7 +89,6 @@
       # Volume Control
       ", XF86AudioRaiseVolume, exec, wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 1%+"
       ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%-"
-      ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
     ];
 
     bindm = [

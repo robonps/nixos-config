@@ -11,7 +11,7 @@
     ./hardware.nix
     ../../common/system.nix # Common system config.
     ../../modules/hyprland/system.nix # Desktop
-    ../../modules/gaming/system.nix # Gaming
+    ../../modules/system/gaming.nix # Gaming
   ];
 
   boot.initrd.luks.devices."luks-274fa71a-c962-4fc2-94ed-96481fb92c17".device = "/dev/disk/by-uuid/274fa71a-c962-4fc2-94ed-96481fb92c17";

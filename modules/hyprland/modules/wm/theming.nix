@@ -1,8 +1,24 @@
 {
   pkgs,
   lib,
+  config,
   ...
 }: {
+  wayland.windowManager.hyprland = {
+    enable = true;
+    extraConfig = ''
+      # Import the generated colors
+      source = ${config.xdg.cacheHome}/matugen/colors-hyprland.conf
+
+      general {
+        # Use the variables defined in the imported file
+        col.active_border = $active_border
+        col.inactive_border = $inactive_border
+        border_size = 2
+      }
+    '';
+  };
+
   home.pointerCursor = {
     gtk.enable = true; # Applies to GTK apps (LibreWolf, File Manager)
     x11.enable = true; # Applies to X11/Steam apps
@@ -25,8 +41,8 @@
     enable = true;
 
     theme = {
-      name = "Adwaita-dark";
-      package = pkgs.gnome-themes-extra;
+      name = "adw-gtk3-dark"; # Unifies GTK3 and GTK4 look
+      package = pkgs.adw-gtk3;
     };
 
     iconTheme = {
@@ -54,11 +70,6 @@
     "org/gnome/desktop/interface" = {
       color-scheme = "prefer-dark";
     };
-
-    # For some apps that might check this legacy path
-    "org/gnome/desktop/interface" = {
-      gtk-theme = "Adwaita-dark";
-    };
   };
 
   # FORCE QT APPS TO LOOK LIKE GTK
@@ -72,7 +83,6 @@
     style = {
       name = "adwaita-dark";
 
-      # IMPORTANT: You must install the theme package for both Qt5 and Qt6
       package = pkgs.adwaita-qt;
     };
   };

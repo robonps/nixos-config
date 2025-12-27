@@ -1,0 +1,98 @@
+{
+    "layer": "top",
+    "position": "top",
+    "margin-top": 10,
+    "margin-bottom": 0,
+    "margin-left": 10,
+    "margin-right": 10,
+    "height": 30,
+    "spacing": 0,
+    "reload_style_on_change": true,
+
+    "modules-left": ["clock", "hyprland/workspaces"],
+    "modules-center": [],
+    "modules-right": ["tray", "custom/weather", "group/system"],
+
+    "clock": {
+        "format": "{:%I:%M %p}",
+        "tooltip-format": "{:%A, %B %d, %Y}"
+    },
+
+    "hyprland/workspaces": {
+        "disable-scroll": true,
+        "all-outputs": false, 
+        "format": "{name}",
+    },
+
+    "custom/weather": {
+        "format": "{}",
+        "return-type": "json",
+        "exec": "~/.config/waybar/scripts/weather.sh",
+        "interval": 3600,
+        "signal": 8,
+        "on-click-right": "pkill -SIGRTMIN+8 waybar",
+        "on-click": "kitty --class floating --title 'Weather' -o font_size=8 -o remember_window_size=no -o initial_window_width=82c -o initial_window_height=42c -e bash -c 'tput civis; curl wttr.in; read -s -n 1'"
+    },
+
+    "tray": {
+        "icon-size": 16,
+        "spacing": 8
+    },
+
+    "group/system": {
+        "orientation": "horizontal",
+        "modules": [
+            "network",
+            "pulseaudio",
+            "backlight",
+            "battery",
+            "bluetooth"
+        ]
+    },
+
+    "network": {
+        "format-wifi": "  {signalStrength}%",
+        "format-ethernet": "󰈀 ",
+        "format-disconnected": " ",
+        "tooltip-format-wifi": "{essid} ({ipaddr})",
+        "tooltip-format-ethernet": "{ifname} ({ipaddr})",
+        "tooltip-format-disconnected": "Disconnected",
+        "on-click": "kitty --class floating -e nmtui"
+    },
+
+    "pulseaudio": {
+        "format": "{icon}",
+        "format-muted": "󰝟",
+        "format-icons": {
+            "headphone": "󰋋",
+            "default": ["", "", ""]
+        },
+        "on-click": "pavucontrol",
+        "tooltip-format": "Volume: {volume}%"
+    },
+
+    "backlight": {
+        "format": "{icon}",
+        "format-icons": ["", "", "", "", "", "", "", "", ""],
+        "tooltip-format": "Brightness: {percent}%"
+    },
+
+    "battery": {
+        "states": { "warning": 30, "critical": 15 },
+        "format": "{icon}",
+        "format-charging": "󰂄",
+        "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+        "tooltip-format": "{capacity}%"
+    },
+
+    "bluetooth": {
+        "format": "",
+        "format-disabled": "󰂲",
+        "format-off": "󰂲",
+        "format-connected": " {device_alias}",
+        "on-click": "kitty --class floating -e bluetuith",
+        "tooltip-format": "{device_enumerate}",
+        "tooltip-format-enumerate-connected": "{device_alias}",
+        "tooltip-format-enumerate-connected-battery": "{device_alias} {device_battery_percentage}"
+    }
+}

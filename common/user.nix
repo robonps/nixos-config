@@ -38,10 +38,10 @@
         "privacy.clearOnShutdown.cache" = false; # Often necessary to keep sessions alive
         "privacy.resistFingerprinting" = false;
 
-        # 1. Force Websites to Dark Mode (Overrides privacy settings)
+        # Force Websites to Dark Mode (Overrides privacy settings)
         "layout.css.prefers-color-scheme.content-override" = 0; # 0 = Dark, 1 = Light, 2 = System
 
-        # 2. Make the Browser UI Dark
+        # Make the Browser UI Dark
         "ui.systemUsesDarkTheme" = 1;
         "browser.theme.content-theme" = 0;
         "browser.in-content.dark-mode" = true;
@@ -73,13 +73,21 @@
     enable = true;
   };
 
+  xdg.userDirs = {
+    enable = true;
+    createDirectories = true;
+  };
+
   home.packages = with pkgs; [
+    # GUI Apps
+    orca-slicer
     # Comms
     vesktop
 
     # Terminal Utils
     fastfetch
     eza # ls alternative that is aliased in fish
+    killall
 
     # Other Utils
     easyeffects

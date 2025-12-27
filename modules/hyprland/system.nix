@@ -31,9 +31,16 @@
     })
   ];
 
+  # Dconf (for theming)
+  programs.dconf.enable = true;
+
   # Quick Preview
   # Allows you to hit "Space" to preview files like on macOS
   services.gnome.sushi.enable = true;
+
+  # File indexers
+  services.gnome.tinysparql.enable = true;
+  services.gnome.localsearch.enable = true;
 
   environment.systemPackages = with pkgs; [
     nautilus # File manager
@@ -42,5 +49,7 @@
 
     libheif # HEIC Preview
     libheif.out # HEIC Preview
+
+    font-awesome # Font Icons
   ];
 }

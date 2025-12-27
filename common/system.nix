@@ -13,22 +13,15 @@
   # Set your time zone.
   time.timeZone = "Pacific/Auckland";
 
-  # Automatic Cleanup
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 30d";
-
-    randomizedDelaySec = "15m";
-  };
-  nix.settings.auto-optimise-store = true;
-
   # Keyring
   services.gnome.gnome-keyring.enable = true;
+  security.polkit.enable = true;
 
   # Auto-unlock for whatever login manager you choose
   security.pam.services.sddm.enableGnomeKeyring = true;
   security.pam.services.gdm.enableGnomeKeyring = true;
+
+  services.gnome.glib-networking.enable = true;
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_NZ.UTF-8";
@@ -79,11 +72,45 @@
     jack.enable = true;
   };
 
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+    settings = {
+      General = {
+        # Shows battery charge of connected devices on supported
+        # Bluetooth adapters. Defaults to 'false'.
+        Experimental = true;
+        # When enabled other devices can connect faster to us, however
+        # the tradeoff is increased power consumption. Defaults to
+        # 'false'.
+        FastConnectable = true;
+      };
+      Policy = {
+        # Enable all controllers when they are found. This includes
+        # adapters present on start as well as adapters that are plugged
+        # in later on. Defaults to 'true'.
+        AutoEnable = true;
+      };
+    };
+  };
+
   environment.systemPackages = with pkgs; [
+    bluetuith # Bluetooth tui
+
     pavucontrol # The standard "Volume Mixer" GUI. Simple, works perfectly.
 
     seahorse # Gnome Keyring App for viewing passwords.
   ];
+
+  # Automatic Cleanup
+  nix.settings.auto-optimise-store = true;
+  # Nix Helper command
+  programs.nh = {
+    enable = true;
+    clean.enable = true;
+    clean.extraArgs = "--keep-since 4d --keep 3";
+    flake = "/home/robert/nixos-config";
+  };
 
   # Enable Fish globally and set as default shell
   programs.fish.enable = true;
