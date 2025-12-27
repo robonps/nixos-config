@@ -28,6 +28,9 @@
 
     # Reload Hyprland (Not Needed anymore)
     # hyprctl reload
+
+    # Force Pywalfox to read the new json
+    pywalfox update
   '';
 in {
   home.packages = [theme-switcher];
@@ -82,6 +85,39 @@ in {
     $error = rgb({{colors.error.default.hex_stripped}})
   '';
 
+  xdg.configFile."matugen/templates/pywal.json".text = ''
+    {
+      "wallpaper": "None",
+      "alpha": "100",
+      "special": {
+          "background": "{{colors.surface.default.hex}}",
+          "foreground": "{{colors.on_surface.default.hex}}",
+          "cursor": "{{colors.on_surface.default.hex}}"
+      },
+      "colors": {
+          "color0": "{{colors.surface.default.hex}}",
+          "color1": "{{colors.error.default.hex}}",
+          "color2": "{{colors.primary.default.hex}}",
+          "color3": "{{colors.secondary.default.hex}}",
+          "color4": "{{colors.on_primary.default.hex}}",
+          "color5": "{{colors.primary_container.default.hex}}",
+          "color6": "{{colors.secondary_container.default.hex}}",
+          "color7": "{{colors.on_surface.default.hex}}",
+          "color8": "{{colors.surface_bright.default.hex}}",
+          "color9": "{{colors.error_container.default.hex}}",
+          "color10": "{{colors.tertiary.default.hex}}",
+          "color11": "{{colors.on_secondary.default.hex}}",
+          "color12": "{{colors.on_tertiary.default.hex}}",
+          "color13": "{{colors.on_primary_container.default.hex}}",
+          "color14": "{{colors.on_secondary_container.default.hex}}",
+          "color15": "{{colors.on_surface_variant.default.hex}}"
+      }
+    }
+  '';
+
+  # Discord/Vesktop Template
+  xdg.configFile."matugen/templates/midnight-discord.css".source = ./templates/midnight-discord.css;
+
   # Configure Matugen to use these templates
   xdg.configFile."matugen/config.toml".text = ''
     [config]
@@ -102,5 +138,13 @@ in {
     [templates.hyprlock]
     input_path = "${config.xdg.configHome}/matugen/templates/hyprlock.conf"
     output_path = "${config.xdg.configHome}/hypr/hyprlock_colors.conf"
+
+    [templates.pywal]
+    input_path = "${config.xdg.configHome}/matugen/templates/pywal.json"
+    output_path = "${config.xdg.cacheHome}/wal/colors.json"
+
+    [templates.vesktop]
+    input_path = "${config.xdg.configHome}/matugen/templates/midnight-discord.css"
+    output_path = "${config.xdg.configHome}/vesktop/themes/midnight-discord.css"
   '';
 }
