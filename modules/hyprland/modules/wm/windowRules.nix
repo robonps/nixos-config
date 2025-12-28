@@ -15,6 +15,8 @@
     layerrule = [
       "blur, waybar"
       "ignorezero, waybar"
+
+      "animation slide bottom, rofi"
     ];
   };
 }

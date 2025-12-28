@@ -1,0 +1,161 @@
+/*****----- Configuration -----*****/
+configuration {
+    modi:                       "dmenu";
+    show-icons:                 true;
+    drun-display-format:        "{name}";
+    hover-select:               true;
+    me-select-entry:            "";
+    me-accept-entry:            "MousePrimary";
+}
+
+/*****----- Global Properties -----*****/
+@import "colors.rasi"
+@import "~/.config/rofi/launchers/styles/shared/fonts.rasi"
+
+/*****----- Main Window -----*****/
+window {
+    location:                    south;
+    anchor:                      south;
+    fullscreen:                  false;
+    width:                       100%;
+    height:                      260px; /* Increased slightly for the pop effect */
+    x-offset:                    0px;
+    y-offset:                    0px;
+
+    enabled:                     true;
+    margin:                      0px;
+    padding:                     0px;
+    border:                      0px solid;
+    border-radius:               0px;
+    border-color:                @border-color;
+    background-color:            @background;
+    cursor:                      "default";
+}
+
+/*****----- Main Box -----*****/
+mainbox {
+    enabled:                     true;
+    spacing:                     20px;
+    padding:                     20px;
+    background-color:            transparent;
+    orientation:                 horizontal;
+    children:                    [ "inputbar", "listview" ];
+}
+
+/*****----- Inputbar -----*****/
+inputbar {
+    enabled:                     true;
+    width:                       250px;
+    spacing:                     10px;
+    padding:                     20px;
+    border-radius:               20px;
+    background-color:            @background;
+    text-color:                  @foreground;
+    children:                    [ "prompt", "entry" ];
+    orientation:                 vertical;
+}
+
+prompt {
+    enabled:                     true;
+    padding:                     15px;
+    border-radius:               15px;
+    background-color:            @selected;
+    text-color:                  @selected-text;
+    horizontal-align:            0.5;
+}
+
+entry {
+    enabled:                     true;
+    expand:                      true;
+    padding:                     15px;
+    border-radius:               15px;
+    background-color:            transparent;
+    text-color:                  @foreground;
+    cursor:                      text;
+    placeholder:                 "Search...";
+    horizontal-align:            0.5;
+}
+
+/*****----- Listview -----*****/
+listview {
+    enabled:                     true;
+    columns:                     1;
+    lines:                       10;
+    cycle:                       true;
+    dynamic:                     true;
+    scrollbar:                   false;
+    layout:                      horizontal;
+    reverse:                     false;
+    fixed-height:                true;
+    fixed-columns:               true;
+    
+    spacing:                     15px;
+    margin:                      0px;
+    padding:                     10px 0px; /* Space for the 'pop' borders */
+    border:                      0px;
+    background-color:            transparent;
+    text-color:                  @foreground;
+    cursor:                      "default";
+}
+
+/*****----- Elements -----*****/
+element {
+    enabled:                     true;
+    orientation:                 vertical;
+    spacing:                     10px;
+    margin:                      0px;
+    padding:                     10px;
+    border:                      0px solid;
+    border-radius:               15px;
+    background-color:            transparent;
+    text-color:                  @foreground;
+    cursor:                      pointer;
+}
+
+/* --- 1. Fix Zebra Striping --- */
+/* We group all 'normal' and 'alternate' states together and force transparency */
+element normal.normal,
+element alternate.normal {
+    background-color:            transparent;
+    text-color:                  inherit;
+}
+
+/* --- 2. The "Reactive" Selection Style --- */
+element selected.normal {
+    background-color:            @selected;
+    text-color:                  @selected-text;
+    /* This border creates a 'pop' effect */
+    border:                      2px solid;
+    border-color:                @border-color;
+}
+
+/* The "Random" Button Style */
+element normal.urgent,
+element alternate.urgent {
+    background-color:            @urgent;
+    text-color:                  @background;
+    border-radius:               15px;
+}
+element selected.urgent {
+    background-color:            @active;
+    text-color:                  @selected-text;
+    border:                      2px solid;
+    border-color:                @border-color;
+}
+
+/* Icons */
+element-icon {
+    size:                        120px;
+    cursor:                      inherit;
+    background-color:            transparent;
+    text-color:                  inherit;
+    border-radius:               10px;
+}
+
+element-text {
+    vertical-align:              0.5;
+    horizontal-align:            0.5;
+    cursor:                      inherit;
+    background-color:            transparent;
+    text-color:                  inherit;
+}

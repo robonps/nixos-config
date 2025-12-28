@@ -7,6 +7,9 @@
       "$mainMod, A, exec, $browser"
       "$mainMod, E, exec, $fileManager"
 
+      "$mainMod, G, exec, wall-menu"
+      "$mainMod SHIFT, G, exec, theme-switcher ~/Pictures/Wallpapers"
+
       "$mainMod, C, killactive"
       "$mainMod, M, exit"
       "$mainMod, V, togglefloating"

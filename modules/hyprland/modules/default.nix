@@ -2,6 +2,7 @@
   imports = [
     ./wm # Hyprland
     ./waybar
+    ./rofi
 
     ./wallpaper.nix
     ./lock.nix # Hypridle and Hyprlock

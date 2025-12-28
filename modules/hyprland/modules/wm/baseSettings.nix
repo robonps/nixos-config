@@ -2,7 +2,7 @@
   wayland.windowManager.hyprland.settings = {
     "$mainMod" = "SUPER";
     "$terminal" = "kitty";
-    "$menu" = "wofi --show drun";
+    "$menu" = "rofi -show drun -config launcher";
     "$browser" = "librewolf";
     "$fileManager" = "nautilus -w";
 

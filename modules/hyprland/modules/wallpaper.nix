@@ -4,36 +4,10 @@
   ...
 }: let
   # We create a script that takes a path to an image as an argument
-  theme-switcher = pkgs.writeShellScriptBin "theme-switcher" ''
-    if [ -z "$1" ]; then
-      echo "Usage: theme-switcher <path/to/image>"
-      exit 1
-    fi
-
-    IMAGE="$1"
-
-    ${pkgs.swww}/bin/swww img "$IMAGE" \
-      --transition-type grow \
-      --transition-pos 0.8,0.2 \
-      --transition-step 90 \
-      --transition-fps 60
-
-
-    ${pkgs.matugen}/bin/matugen image "$IMAGE"
-
-    pkill -USR1 kitty || true
-
-    # Reload Waybar (Not Needed anymore)
-    # systemctl --user restart waybar
-
-    # Reload Hyprland (Not Needed anymore)
-    # hyprctl reload
-
-    # Force Pywalfox to read the new json
-    pywalfox update
-  '';
+  theme-switcher = pkgs.writeShellScriptBin "theme-switcher" (builtins.readFile ./scripts/theme-switcher.sh);
+  wall-menu = pkgs.writeShellScriptBin "wall-menu" (builtins.readFile ./scripts/wall-menu.sh);
 in {
-  home.packages = [theme-switcher];
+  home.packages = [theme-switcher wall-menu];
 
   # Define the Matugen Templates
   xdg.configFile."matugen/templates/waybar.css".text = ''
@@ -115,6 +89,37 @@ in {
     }
   '';
 
+  xdg.configFile."matugen/templates/rofi-colors.rasi".text = ''
+    * {
+      /* Matugen Template for Rofi */
+      
+      /* Background: Default surface color */
+      background:       {{colors.surface.default.hex}};
+
+      /* Background Alpha: Surface color with transparency (e.g., 80% opacity)
+        Note: You might need to adjust the hex opacity code (CC = 80%) depending on preference */
+      background-alpha: {{colors.surface.default.hex}}CC;
+
+      /* Foreground: Text on surface */
+      foreground:       {{colors.on_surface.default.hex}};
+
+      /* Selected: Primary color */
+      selected:         {{colors.primary.default.hex}};
+
+      /* Selected Text: Text on Primary color */
+      selected-text:    {{colors.on_primary.default.hex}};
+
+      /* Active: Secondary Container (often used for active elements not currently selected) */
+      active:           {{colors.secondary_container.default.hex}};
+
+      /* Urgent: Error color */
+      urgent:           {{colors.error.default.hex}};
+
+      /* Border: Outline color */
+      border-color:     {{colors.outline.default.hex}};
+    }
+  '';
+  
   # Discord/Vesktop Template
   xdg.configFile."matugen/templates/midnight-discord.css".source = ./templates/midnight-discord.css;
 
@@ -146,5 +151,9 @@ in {
     [templates.vesktop]
     input_path = "${config.xdg.configHome}/matugen/templates/midnight-discord.css"
     output_path = "${config.xdg.configHome}/vesktop/themes/midnight-discord.css"
+    
+    [templates.rofi]
+    input_path = "${config.xdg.configHome}/matugen/templates/rofi-colors.rasi"
+    output_path = "${config.home.homeDirectory}/.config/rofi/colors.rasi"
   '';
 }
