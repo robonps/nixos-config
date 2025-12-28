@@ -8,7 +8,7 @@ ROFI_THEME="$HOME/.config/rofi/wallpaper.rasi"
 # Create cache dir if not exists
 mkdir -p "$CACHE_DIR"
 
-# --- 1. Generate Cache ---
+# --- Generate Cache ---
 # We loop through wallpapers and create thumbnails if they don't exist.
 # This makes Rofi instant on subsequent runs.
 echo "Checking thumbnail cache..."
@@ -43,7 +43,7 @@ gen_list() {
 # We pipe the list into rofi running in dmenu mode
 SELECTED=$(gen_list | rofi -dmenu -i -selected-row 1 -p "Wallpapers" -config "$ROFI_THEME")
 
-# --- 4. Handle Selection ---
+# --- Handle Selection ---
 if [ ! -z "$SELECTED" ]; then
     if [[ "$SELECTED" == "  Random"* ]]; then
         # User picked Random

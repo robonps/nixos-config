@@ -88,6 +88,7 @@
     fastfetch
     eza # ls alternative that is aliased in fish
     killall
+    ffmpeg
 
     # Other Utils
     easyeffects
