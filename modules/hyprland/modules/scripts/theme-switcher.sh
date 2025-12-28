@@ -32,7 +32,7 @@ fi
 # Make sure swww, matugen, and pywalfox are in home.packages
 swww img "$IMAGE" \
   --transition-type grow \
-  --transition-pos 0.8,0.2 \
+  --transition-pos 0.5,0.0 \
   --transition-step 90 \
   --transition-fps 60
 
