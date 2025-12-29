@@ -81,6 +81,8 @@
   home.packages = with pkgs; [
     # GUI Apps
     orca-slicer
+    localsend
+    
     # Comms
     vesktop
 
