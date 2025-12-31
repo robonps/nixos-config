@@ -25,6 +25,9 @@
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
+    extraPackages = with pkgs; [
+      nvidia-vaapi-driver # Hardware video acceleration (VA-API)
+    ];
   };
 
   services.xserver.videoDrivers = ["nvidia"];
