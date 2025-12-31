@@ -47,6 +47,7 @@
       "$mainMod, period, workspace, m+1"
 
       "$mainMod, T, workspace, emptym"
+      "$mainMod, T, movetoworkspace, emptym"
 
       # Move active window to a workspace with mainMod + SHIFT + [0-9]
       "$mainMod SHIFT, 1, movetoworkspace, 1"
