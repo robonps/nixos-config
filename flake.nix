@@ -32,6 +32,7 @@
         ({ config, pkgs, ... }: {
           nixpkgs.overlays = [
             inputs.nix-vscode-extensions.overlays.default
+            (import ./overlays/orca-slicer-nvidia.nix)
           ];
         })
 
