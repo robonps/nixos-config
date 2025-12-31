@@ -82,6 +82,7 @@
     # GUI Apps
     orca-slicer
     localsend
+    protonvpn-gui
     
     # Comms
     vesktop
