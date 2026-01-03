@@ -1,4 +1,10 @@
-{pkgs, ...}: {
+{pkgs, ...}: 
+
+let 
+  
+  toggle-birghtness = pkgs.writeShellScriptBin "toggle-brightness" (builtins.readFile ./toggle-brightness.sh);
+  
+in {
   imports = [
     ../../common/user.nix
     ../../modules/hyprland/user.nix
@@ -11,7 +17,14 @@
     __GLX_VENDOR_LIBRARY_NAME = "nvidia";
   };
 
+
+  home.packages = [ toggle-birghtness ];
+
   wayland.windowManager.hyprland.settings = {
+
+    bind = [
+      "$mainMod SHIFT, Q, exec, toggle-brightness"
+    ];
     # Syntax: "NAME, RESOLUTION, POSITION, SCALE"
     monitor = [
       "DP-1, 1920x1080@60, 0x0, 1"
