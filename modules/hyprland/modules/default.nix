@@ -3,6 +3,7 @@
     ./wm # Hyprland
     ./waybar
     ./rofi
+    ./swaync
 
     ./wallpaper.nix
     ./lock.nix # Hypridle and Hyprlock

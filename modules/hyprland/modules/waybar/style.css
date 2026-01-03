@@ -72,7 +72,7 @@ window#waybar {
 }
 
 /* --- SYSTEM CONTROL GROUP --- */
-#network, #pulseaudio, #backlight, #battery, #bluetooth {
+#network, #pulseaudio, #backlight, #battery, #bluetooth, #custom-notification {
     background: transparent;
     padding: 0 6px;
     margin: 0;

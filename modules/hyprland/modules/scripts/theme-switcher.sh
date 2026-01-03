@@ -44,3 +44,8 @@ matugen image "$IMAGE"
 pkill -USR1 kitty || true
 
 pywalfox update 2>/dev/null || true
+
+swaync-client -rs
+
+# Notify the user
+notify-send "Wallpaper Changed" "New wallpaper set successfully." -i "$IMAGE"

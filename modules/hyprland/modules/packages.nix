@@ -8,5 +8,7 @@
     swww # The Wallpaper Daemon (supports animations)
     matugen # The Color Generator
     imagemagick # Thumbnail generation
+
+    libnotify # Notification library
   ];
 }

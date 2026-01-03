@@ -123,6 +123,44 @@ in {
   # Discord/Vesktop Template
   xdg.configFile."matugen/templates/midnight-discord.css".source = ./templates/midnight-discord.css;
 
+  xdg.configFile."matugen/templates/swaync.css".text = ''
+    @define-color shadow {{colors.shadow.default.hex}};
+    @define-color background {{colors.background.default.hex}};
+
+    /* Surface Colors - From Darkest to Lightest */
+    @define-color surface_dim {{colors.surface_dim.default.hex}};
+    @define-color surface_container_lowest {{colors.surface_container_lowest.default.hex}};
+    @define-color surface_container_low {{colors.surface_container_low.default.hex}};
+    @define-color surface_container {{colors.surface_container.default.hex}};
+    @define-color surface_container_high {{colors.surface_container_high.default.hex}};
+    @define-color surface_container_highest {{colors.surface_container_highest.default.hex}};
+    @define-color surface {{colors.surface.default.hex}};
+    @define-color on_surface {{colors.on_surface.default.hex}};
+    @define-color on_surface_variant {{colors.on_surface_variant.default.hex}};
+
+    /* Accents */
+    @define-color primary {{colors.primary.default.hex}};
+    @define-color on_primary {{colors.on_primary.default.hex}};
+    @define-color primary_container {{colors.primary_container.default.hex}};
+    @define-color on_primary_container {{colors.on_primary_container.default.hex}};
+
+    @define-color secondary {{colors.secondary.default.hex}};
+    @define-color on_secondary {{colors.on_secondary.default.hex}};
+    @define-color secondary_container {{colors.secondary_container.default.hex}};
+    @define-color on_secondary_container {{colors.on_secondary_container.default.hex}};
+
+    @define-color tertiary {{colors.tertiary.default.hex}};
+    @define-color on_tertiary {{colors.on_tertiary.default.hex}};
+    @define-color tertiary_container {{colors.tertiary_container.default.hex}};
+    @define-color on_tertiary_container {{colors.on_tertiary_container.default.hex}};
+
+    @define-color error {{colors.error.default.hex}};
+    @define-color on_error {{colors.on_error.default.hex}};
+
+    @define-color outline {{colors.outline.default.hex}};
+    @define-color outline_variant {{colors.outline_variant.default.hex}};
+  '';
+
   # Configure Matugen to use these templates
   xdg.configFile."matugen/config.toml".text = ''
     [config]
@@ -154,6 +192,10 @@ in {
     
     [templates.rofi]
     input_path = "${config.xdg.configHome}/matugen/templates/rofi-colors.rasi"
-    output_path = "${config.home.homeDirectory}/.config/rofi/colors.rasi"
+    output_path = "${config.xdg.cacheHome}/rofi/colors.rasi"
+
+    [templates.swaync]
+    input_path = "${config.xdg.configHome}/matugen/templates/swaync.css"
+    output_path = "${config.xdg.configHome}/swaync/colors.css"
   '';
 }

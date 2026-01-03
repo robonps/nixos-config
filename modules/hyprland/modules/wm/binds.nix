@@ -75,8 +75,10 @@
       # Restart waybar
       "$mainMod, N, exec, systemctl --user restart waybar"
 
-      # Mute Control
-      ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+      # Open SwayNC
+      "$mainMod, H, exec, swaync-client -t -sw"
+
+
     ];
 
     binde = [
