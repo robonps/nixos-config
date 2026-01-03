@@ -22,6 +22,13 @@
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
+
+  # Monitor I2C for brightness control
+  hardware.i2c.enable = true;
+  boot.kernelModules = [ "i2c-dev" ];
+  environment.systemPackages = [ pkgs.ddcutil ];
+  users.users.robert.extraGroups = [ "i2c" ];
+
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
