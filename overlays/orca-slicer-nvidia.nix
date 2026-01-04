@@ -1,8 +1,8 @@
 final: prev: {
   orca-slicer = prev.symlinkJoin {
     name = "orca-slicer-wrapped";
-    paths = [ prev.orca-slicer ];
-    buildInputs = [ prev.makeWrapper ];
+    paths = [prev.orca-slicer];
+    buildInputs = [prev.makeWrapper];
     postBuild = ''
       rm $out/bin/orca-slicer
       makeWrapper ${prev.orca-slicer}/bin/orca-slicer $out/bin/orca-slicer \

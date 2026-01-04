@@ -92,7 +92,7 @@ in {
   xdg.configFile."matugen/templates/rofi-colors.rasi".text = ''
     * {
       /* Matugen Template for Rofi */
-      
+
       /* Background: Default surface color */
       background:       {{colors.surface.default.hex}};
 
@@ -119,7 +119,7 @@ in {
       border-color:     {{colors.outline.default.hex}};
     }
   '';
-  
+
   # Discord/Vesktop Template
   xdg.configFile."matugen/templates/midnight-discord.css".source = ./templates/midnight-discord.css;
 
@@ -189,7 +189,7 @@ in {
     [templates.vesktop]
     input_path = "${config.xdg.configHome}/matugen/templates/midnight-discord.css"
     output_path = "${config.xdg.configHome}/vesktop/themes/midnight-discord.css"
-    
+
     [templates.rofi]
     input_path = "${config.xdg.configHome}/matugen/templates/rofi-colors.rasi"
     output_path = "${config.xdg.cacheHome}/rofi/colors.rasi"

@@ -1,4 +1,4 @@
-{pkgs,...}:{
+{pkgs, ...}: {
   programs.vscode.profiles.default = {
     extensions = with pkgs.vscode-marketplace; [
       # Publisher.ExtensionName

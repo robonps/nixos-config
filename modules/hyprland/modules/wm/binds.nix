@@ -77,8 +77,6 @@
 
       # Open SwayNC
       "$mainMod, H, exec, swaync-client -t -sw"
-
-
     ];
 
     binde = [

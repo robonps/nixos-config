@@ -14,7 +14,6 @@
     ../../modules/system/gaming.nix # Gaming
   ];
 
-  boot.initrd.luks.devices."luks-274fa71a-c962-4fc2-94ed-96481fb92c17".device = "/dev/disk/by-uuid/274fa71a-c962-4fc2-94ed-96481fb92c17";
   networking.hostName = "FastBoi"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -22,12 +21,11 @@
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
-
   # Monitor I2C for brightness control
   hardware.i2c.enable = true;
-  boot.kernelModules = [ "i2c-dev" ];
-  environment.systemPackages = [ pkgs.ddcutil ];
-  users.users.robert.extraGroups = [ "i2c" ];
+  boot.kernelModules = ["i2c-dev"];
+  environment.systemPackages = [pkgs.ddcutil];
+  users.users.robert.extraGroups = ["i2c"];
 
   hardware.graphics = {
     enable = true;
