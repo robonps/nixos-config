@@ -47,5 +47,29 @@
         }
       ];
     };
+    nixosConfigurations.ThinkingBoi = nixpkgs.lib.nixosSystem {
+
+      specialArgs = { inherit inputs; };
+
+      modules = [
+        ./hosts/ThinkingBoi/system.nix
+
+        ({ config, pkgs, ... }: {
+          nixpkgs.overlays = [
+            inputs.nix-vscode-extensions.overlays.default
+          ];
+        })
+
+        home-manager.nixosModules.home-manager
+        {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+
+          home-manager.users.robert = ./hosts/ThinkingBoi/user.nix;
+
+          home-manager.extraSpecialArgs = { inherit inputs; };
+        }
+      ];
+    };
   };
 }
