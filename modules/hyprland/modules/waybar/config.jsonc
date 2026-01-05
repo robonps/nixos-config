@@ -75,16 +75,16 @@
     "network": {
         "format-wifi": "  {signalStrength}%",
         "format-ethernet": "󰈀  {ifname}",
-        "format-disconnected": " ",
-        "tooltip-format-wifi": "{essid} ({ipaddr})",
+        "format-disconnected": "",
+        "tooltip-format-wifi": "{essid} ({ipaddr})\n {bandwidthUpBytes}\t {bandwidthDownBytes}",
         "tooltip-format-ethernet": "{ifname} ({ipaddr})\n {bandwidthUpBytes}\t {bandwidthDownBytes}",
         "tooltip-format-disconnected": "Disconnected",
         "on-click": "kitty --class floating -e nmtui"
     },
 
     "pulseaudio": {
-        "format": "{icon} {volume}%",
-        "format-muted": "",
+        "format": "{icon}  {volume}%",
+        "format-muted": "  {volume}%",
         "format-icons": {
             "headphone": "󰋋",
             "default": ["", "", ""]
@@ -102,7 +102,6 @@
     "battery": {
         "states": { "warning": 30, "critical": 15 },
         "format": "{icon} {capacity}%",
-        "format-alt": "{icon} {timeTo}",
         "weighted-average": true,
         "format-charging": "󰂄",
         "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
