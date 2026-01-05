@@ -1,15 +1,42 @@
 #!/usr/bin/env bash
 
-# Fetch the simple data for the BAR (Icon + Temp)
-# We strictly define the format here to ensure we can parse it easily
-bar_data=$(curl -s "wttr.in/?format=%C|%t")
+# Function to fetch weather
+get_weather() {
+    # Set a timeout so it doesn't hang forever
+    bar_data=$(curl -s --max-time 15 "wttr.in/?format=%C|%t")
+}
 
-# Fetch the complex data for the TOOLTIP (ASCII Art)
-# ?0 = Weather only (no forecast days)
-# T  = No colors (prevents weird symbols in the tooltip)
-tooltip_data=$(curl -s "wttr.in/?0T")
+# --- RETRY LOGIC ---
+# Try up to 2 times
+MAX_RETRIES=2
+count=0
+success=false
 
-# Parse the simple bar data
+while [ $count -lt $MAX_RETRIES ]; do
+    get_weather
+    
+    # Validation: Check if response contains the "|" separator we asked for
+    # If valid, fetch tooltip and break the loop
+    if [[ "$bar_data" == *"|"* ]]; then
+        # Fetch tooltip only if the main data succeeded
+        tooltip_data=$(curl -s --max-time 15 "wttr.in/?0T")
+        success=true
+        break
+    fi
+    
+    # If failed, wait 1 second and try again
+    count=$((count + 1))
+    sleep 1
+done
+
+# --- FAIL SAFE ---
+# If still no success after retries, output "Unavailable" JSON and exit
+if [ "$success" = false ]; then
+    echo "{\"text\": \" N/A\", \"tooltip\": \"Weather service unavailable (Connection timed out)\"}"
+    exit 0
+fi
+
+# --- PARSING (Original Logic) ---
 condition=$(echo "$bar_data" | cut -d'|' -f1)
 temp=$(echo "$bar_data" | cut -d'|' -f2)
 temp_clean=$(echo "$temp" | sed 's/+//')
@@ -55,9 +82,6 @@ case "$condition" in
 esac
 
 # ESCAPE THE TOOLTIP FOR JSON
-# 1. Escape backslashes first
-# 2. Escape double quotes
-# 3. Replace actual newlines with literal '\n' string
 tooltip_escaped=$(echo "$tooltip_data" | sed 's/\\/\\\\/g' | sed 's/"/\\"/g' | sed ':a;N;$!ba;s/\n/\\n/g')
 
 # Output valid JSON
