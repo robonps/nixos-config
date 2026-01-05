@@ -19,6 +19,9 @@
 
       "animation slide bottom, rofi"
 
+      "blur, logout_dialog"
+      "animation fade, logout_dialog"
+
       # SwayNC Rules
       "blur, swaync-control-center"
       "blur, swaync-notification-window"

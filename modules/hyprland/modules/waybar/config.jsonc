@@ -15,7 +15,9 @@
 
     "clock": {
         "format": "{:%I:%M %p}",
-        "tooltip-format": "{:%A, %B %d, %Y}"
+        "tooltip-format": "{:%A, %B %d, %Y}",
+        "on-click": "wlogout -b 5",
+        "on-click-right": "kitty --class floating -e bash -c 'tput civis; fastfetch; read -s -n 1'"
     },
 
     "hyprland/workspaces": {

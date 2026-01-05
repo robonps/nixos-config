@@ -77,6 +77,9 @@
 
       # Open SwayNC
       "$mainMod, H, exec, swaync-client -t -sw"
+
+      # Power Off menu
+      ", XF86PowerOff, exec, wlogout -b 5"
     ];
 
     binde = [

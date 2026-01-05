@@ -1,0 +1,86 @@
+@import "colors.css";
+
+* {
+    background-image: none;
+    font-family: "JetBrainsMono Nerd Font";
+    font-size: 16pt; 
+}
+
+window {
+    /* 1. Less Fade, More See-Through */
+    background-color: rgba(0, 0, 0, 0.3); 
+}
+
+grid {
+    background-color: transparent;
+    margin: 200px 100px;
+}
+
+button {
+    /* Transparent by default */
+    background-color: alpha(@surface, 0.2);
+    color: @foreground;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 20%;
+    
+    border: none;
+
+    padding: 0;
+    min-width: 200px;
+    min-height: 200px;
+    
+    box-shadow: none;
+    outline-style: none;
+    
+    /* 3. Slower Transition (0.8s) */
+    transition: all 0.6s cubic-bezier(0.1, 1.1, 0.1, 1);
+}
+
+/* Focus Effect (Keyboard) - No blue ring, just match hover */
+button:focus {
+    background-color: @primary;
+    color: @on-primary;
+    box-shadow: 0 0 20px 5px alpha(@primary, 0.3);
+    outline-style: none; /* Crucial: kills the default blue border */
+    margin: 10px;
+
+    background-size: 50%;
+}
+
+
+#shutdown {
+    background-image: image(url("./icons/power.png"));
+}
+#shutdown:hover {
+  background-image: image(url("./icons/power-hover.png"));
+}
+
+#logout {
+    background-image: image(url("./icons/logout.png"));
+
+}
+#logout:hover {
+  background-image: image(url("./icons/logout-hover.png"));
+}
+
+#reboot {
+    background-image: image(url("./icons/restart.png"));
+}
+#reboot:hover {
+  background-image: image(url("./icons/restart-hover.png"));
+}
+
+#lock {
+    background-image: image(url("./icons/lock.png"));
+}
+#lock:hover {
+  background-image: image(url("./icons/lock-hover.png"));
+}
+
+#sleep {
+    background-image: image(url("./icons/hibernate.png"));
+}
+#sleep:hover {
+  background-image: image(url("./icons/hibernate-hover.png"));
+}

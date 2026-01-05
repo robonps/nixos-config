@@ -161,6 +161,13 @@ in {
     @define-color outline_variant {{colors.outline_variant.default.hex}};
   '';
 
+  xdg.configFile."matugen/templates/wlogout.css".text = ''
+    @define-color foreground {{colors.on_surface.default.hex}};
+    @define-color surface {{colors.surface.default.hex}};
+    @define-color primary {{colors.primary.default.hex}};
+    @define-color on-primary {{colors.on_primary.default.hex}};
+  '';
+
   # Configure Matugen to use these templates
   xdg.configFile."matugen/config.toml".text = ''
     [config]
@@ -197,5 +204,9 @@ in {
     [templates.swaync]
     input_path = "${config.xdg.configHome}/matugen/templates/swaync.css"
     output_path = "${config.xdg.configHome}/swaync/colors.css"
+
+    [templates.wlogout]
+    input_path = "${config.xdg.configHome}/matugen/templates/wlogout.css"
+    output_path = "${config.xdg.configHome}/wlogout/colors.css"
   '';
 }

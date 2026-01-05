@@ -4,6 +4,7 @@
     ./waybar
     ./rofi
     ./swaync
+    ./wlogout
 
     ./wallpaper.nix
     ./lock.nix # Hypridle and Hyprlock
