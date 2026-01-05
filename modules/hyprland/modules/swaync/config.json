@@ -69,7 +69,7 @@
           "label": "󰖩",
           "type": "toggle",
           "command": "sh -c 'nmcli radio wifi | grep -q enabled && nmcli radio wifi off || nmcli radio wifi on'",
-          "update-command": "sh -c 'nmcli radio wifi | grep -q enabled && echo false || echo true'"
+          "update-command": "sh -c 'nmcli radio wifi | grep -q enabled && echo true || echo false'"
         },
         {
           "label": "󰂯",

@@ -4,6 +4,11 @@
     ../../modules/hyprland/user.nix
   ];
 
+
+  home.packages = [ pkgs.brightnessctl ];
+
+
+
   wayland.windowManager.hyprland.settings = {
     # Syntax: "NAME, RESOLUTION, POSITION, SCALE"
     monitor = [
@@ -17,10 +22,14 @@
     };
 
     gestures = {
-
       gesture = [
         "3, horizontal, workspace"
       ];
     };
+
+    binde = [
+      ", XF86MonBrightnessUp, exec, brightnessctl set +10%"
+      ", XF86MonBrightnessDown, exec, brightnessctl set 10%-"
+    ];
   };
 }
