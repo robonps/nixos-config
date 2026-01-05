@@ -74,14 +74,26 @@ window#waybar {
 /* --- SYSTEM CONTROL GROUP --- */
 #network, #pulseaudio, #backlight, #battery, #bluetooth, #custom-notification {
     background: transparent;
-    padding: 0 6px;
+    padding: 0 10px;
     margin: 0;
     box-shadow: none;
     
     /* Ensure icons are evenly spaced */
     min-width: 24px;
+
+    /*border-right: 1px solid rgba(255, 255, 255, 0.15); */
 }
 
 /* --- STATUS COLORS --- */
 #battery.charging { color: #a6e3a1; }
 #battery.critical:not(.charging) { color: @error; }
+
+tooltip {
+    background: @glass_background;
+    border: 1px solid @primary;
+    border-radius: 12px;
+}
+
+tooltip label {
+    color: @foreground;
+}

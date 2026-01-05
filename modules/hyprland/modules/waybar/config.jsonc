@@ -74,45 +74,48 @@
 
     "network": {
         "format-wifi": "  {signalStrength}%",
-        "format-ethernet": "󰈀 ",
+        "format-ethernet": "󰈀  {ifname}",
         "format-disconnected": " ",
         "tooltip-format-wifi": "{essid} ({ipaddr})",
-        "tooltip-format-ethernet": "{ifname} ({ipaddr})",
+        "tooltip-format-ethernet": "{ifname} ({ipaddr})\n {bandwidthUpBytes}\t {bandwidthDownBytes}",
         "tooltip-format-disconnected": "Disconnected",
         "on-click": "kitty --class floating -e nmtui"
     },
 
     "pulseaudio": {
-        "format": "{icon}",
-        "format-muted": "󰝟",
+        "format": "{icon} {volume}%",
+        "format-muted": "",
         "format-icons": {
             "headphone": "󰋋",
             "default": ["", "", ""]
         },
         "on-click": "pavucontrol",
-        "tooltip-format": "Volume: {volume}%"
+        "tooltip-format": "{desc} ({volume}%)"
     },
 
     "backlight": {
-        "format": "{icon}",
+        "format": "{icon} {percent}%",
         "format-icons": ["", "", "", "", "", "", "", "", ""],
         "tooltip-format": "Brightness: {percent}%"
     },
 
     "battery": {
         "states": { "warning": 30, "critical": 15 },
-        "format": "{icon}",
+        "format": "{icon} {capacity}%",
+        "format-alt": "{icon} {timeTo}",
+        "weighted-average": true,
         "format-charging": "󰂄",
         "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
-        "tooltip-format": "{capacity}%"
+        "tooltip-format": "{timeTo}\nHealth: {health}%\nPower: {power}W"
     },
 
     "bluetooth": {
         "format": "",
-        "format-disabled": "󰂲",
-        "format-off": "󰂲",
+        "format-disabled": "", // Hide when Bluetooth is off
+        "format-off": "",
         "format-connected": " {device_alias}",
         "on-click": "kitty --class floating -e bluetuith",
+        "on-click-right": "sh -c 'bluetoothctl show | grep Powered | grep -q yes && bluetoothctl power off || bluetoothctl power on'",
         "tooltip-format": "{device_enumerate}",
         "tooltip-format-enumerate-connected": "{device_alias}",
         "tooltip-format-enumerate-connected-battery": "{device_alias} {device_battery_percentage}"

@@ -15,6 +15,7 @@
     layerrule = [
       "blur, waybar"
       "ignorezero, waybar"
+      "blurpopups, waybar"
 
       "animation slide bottom, rofi"
 
