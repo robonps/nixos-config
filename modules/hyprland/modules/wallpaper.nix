@@ -192,7 +192,7 @@ in {
 
     [templates.rofi]
     input_path = "${config.xdg.configHome}/matugen/templates/rofi-colors.rasi"
-    output_path = "${config.xdg.cacheHome}/rofi/colors.rasi"
+    output_path = "${config.xdg.configHome}/rofi/colors.rasi"
 
     [templates.swaync]
     input_path = "${config.xdg.configHome}/matugen/templates/swaync.css"

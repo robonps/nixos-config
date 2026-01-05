@@ -10,7 +10,10 @@ configuration {
 
 /*****----- Global Properties -----*****/
 @import "colors.rasi"
-@import "~/.config/rofi/launchers/styles/shared/fonts.rasi"
+
+* {
+    font: "JetBrainsMono Nerd Font 12";
+}
 
 /*****----- Main Window -----*****/
 window {
