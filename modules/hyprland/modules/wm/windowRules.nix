@@ -8,6 +8,9 @@
 
       # Allow Floating setting menus
       "float on, size 800 600, center on, match:class ^(floating)$"
+
+      # Fix Steam
+      "tile on, match:class ^(steam)$, match:initial_title ^(Steam)$, match:float 1"
     ];
 
     layerrule = [
