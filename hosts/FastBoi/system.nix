@@ -11,7 +11,7 @@
     ./hardware.nix
     ../../common/system.nix # Common system config.
     ../../modules/hyprland/system.nix # Desktop
-    ../../modules/system/gaming.nix # Gaming
+    ../../modules/gaming/system.nix # Gaming
   ];
 
   networking.hostName = "FastBoi"; # Define your hostname.

@@ -4,6 +4,7 @@ in {
   imports = [
     ../../common/user.nix
     ../../modules/hyprland/user.nix
+    ../../modules/gaming/user.nix
   ];
 
   home.sessionVariables = {
