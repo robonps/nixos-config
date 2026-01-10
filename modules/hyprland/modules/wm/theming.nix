@@ -27,14 +27,16 @@
     size = 24; # Standard size (try 32 if you want it bigger)
   };
 
+  home.packages = with pkgs; [
+    adwaita-qt
+    adwaita-qt6 
+  ];
+
   home.sessionVariables = {
     # Force Hyprland to use the correct cursor
     XCURSOR_THEME = "volantes_cursors";
     XCURSOR_SIZE = "24";
 
-    # Tell Qt apps to follow the GTK theme explicitly
-    QT_QPA_PLATFORMTHEME = lib.mkForce "gtk3";
-    QT_QPA_PLATFORM = "wayland;xcb";
   };
 
   gtk = {
@@ -76,14 +78,6 @@
   qt = {
     enable = true;
 
-    # This tells Qt to use the "GTK" platform theme, which reads your GTK settings.
-    platformTheme.name = "gtk";
-
-    # We also force the specific style to "adwaita-dark"
-    style = {
-      name = "adwaita-dark";
-
-      package = pkgs.adwaita-qt;
-    };
+    platformTheme.name = "adwaita-dark";
   };
 }
