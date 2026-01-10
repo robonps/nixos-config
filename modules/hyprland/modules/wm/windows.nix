@@ -8,7 +8,9 @@
     "col.inactive_border" = "rgba(595959aa)";
 
     layout = "dwindle";
-    preserve_split = true;
+    dwindle = {
+      preserve_split = true;
+    };
     decoration = {
       rounding = 10;
 

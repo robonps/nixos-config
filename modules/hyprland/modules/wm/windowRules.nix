@@ -1,34 +1,24 @@
 {...}: {
   wayland.windowManager.hyprland.settings = {
     windowrulev2 = [
-      "suppressevent maximize, class:.*"
+      "suppress_event maximize, match:class .*"
 
       # Allow some windows to float
-      "float,class:^(org.gnome.NautilusPreviewer)$"
+      "float on, match:class ^(org.gnome.NautilusPreviewer)$"
 
       # Allow Floating setting menus
-      "float, class:^(floating)$"
-      "size 800 600, class:^(floating)$"
-      "center, class:^(floating)$"
+      "float on, size 800 600, center on, match:class ^(floating)$"
     ];
 
     layerrule = [
-      "blur, waybar"
-      "ignorezero, waybar"
-      "blurpopups, waybar"
+      "blur on, ignore_alpha 0, blur_popups on, match:namespace waybar"
 
-      "animation slide bottom, rofi"
+      "animation slide bottom, match:namespace rofi"
 
-      "blur, logout_dialog"
-      "animation fade, logout_dialog"
+      "blur on, animation fade, match:namespace logout_dialog"
 
-      # SwayNC Rules
-      "blur, swaync-control-center"
-      "blur, swaync-notification-window"
-      "ignorezero, swaync-control-center"
-      "ignorezero, swaync-notification-window"
-      "ignorealpha 0.5, swaync-control-center"
-      "ignorealpha 0.5, swaync-notification-window"
+      "blur on, ignore_alpha 0.5, match:namespace swaync-control-center"
+      "blur on, ignore_alpha 0.5, match:namespace swaync-notification-window"
     ];
   };
 }
