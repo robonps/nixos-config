@@ -5,7 +5,9 @@
   ];
 
 
-  home.packages = [ pkgs.brightnessctl ];
+  home.packages = with pkgs; [
+    brightnessctl
+    ];
 
 
 

@@ -98,22 +98,22 @@
       };
 
       listener = [
-        # 2.5min: Dim screen
+        # 2min: Dim screen
         {
-          timeout = 150;
+          timeout = 120;
           on-timeout = "brightnessctl -s set 10";
           on-resume = "brightnessctl -r";
         }
 
-        # 5min: Lock screen
+        # 3min: Lock screen
         {
-          timeout = 300;
+          timeout = 180;
           on-timeout = "loginctl lock-session";
         }
 
-        # 5.5min: Screen off (DPMS)
+        # 5min: Screen off (DPMS)
         {
-          timeout = 330;
+          timeout = 300;
           on-timeout = "hyprctl dispatch dpms off";
           on-resume = "hyprctl dispatch dpms on";
         }
