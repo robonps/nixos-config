@@ -1,6 +1,6 @@
 {...}: {
   wayland.windowManager.hyprland.settings = {
-    windowrulev2 = [
+    windowrule = [
       "suppress_event maximize, match:class .*"
 
       # Allow some windows to float
