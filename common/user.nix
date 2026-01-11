@@ -117,6 +117,7 @@
     orca-slicer
     localsend
     protonvpn-gui
+    onlyoffice-desktopeditors
 
     # Comms
     vesktop
