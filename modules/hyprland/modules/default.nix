@@ -9,6 +9,7 @@
     ./wallpaper.nix
     ./lock.nix # Hypridle and Hyprlock
     ./packages.nix
+    ./screenshot.nix
     ./misc.nix
 
     ./firefox.nix

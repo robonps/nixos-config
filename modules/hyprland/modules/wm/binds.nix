@@ -80,6 +80,10 @@
 
       # Power Off menu
       ", XF86PowerOff, exec, wlogout -b 5"
+
+      # Screenshot
+      ", Print, exec, grim -g \"$(slurp)\" - | satty --filename -"
+      "$mainMod, Z, exec, grim -g \"$(slurp)\" - | satty --filename -"
     ];
 
     binde = [
