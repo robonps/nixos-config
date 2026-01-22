@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, inputs, ... }: {
   home.packages = with pkgs; [
     (prismlauncher.override {
       additionalLibs = [
@@ -9,5 +9,7 @@
         xorg.libXi        
       ];
     })
+
+    inputs.hytale-launcher.packages.${pkgs.system}.default
   ];
 }

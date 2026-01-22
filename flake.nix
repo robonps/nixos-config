@@ -13,6 +13,12 @@
       url = "github:nix-community/nix-vscode-extensions";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+
+    hytale-launcher = {
+      url = "github:TNAZEP/HytaleLauncherFlake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -20,6 +26,7 @@
     nixpkgs,
     home-manager,
     nix-vscode-extensions,
+    hytale-launcher,
     ...
   } @ inputs: {
     nixosConfigurations.FastBoi = nixpkgs.lib.nixosSystem {
