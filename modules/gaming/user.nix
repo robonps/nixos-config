@@ -11,5 +11,8 @@
     })
 
     inputs.hytale-launcher.packages.${pkgs.stdenv.hostPlatform.system}.default
+
+
+    osu-lazer-bin
   ];
 }
