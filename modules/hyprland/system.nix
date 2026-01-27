@@ -17,6 +17,9 @@
   services.udisks2.enable = true;
   services.gvfs.enable = true;
 
+  services.gnome.gnome-keyring.enable = true;
+  environment.pathsToLink = [ "/share/thumbnailers" ];
+
   # GStreamer for file info
   nixpkgs.overlays = [
     (final: prev: {
@@ -51,5 +54,7 @@
     libheif.out # HEIC Preview
 
     font-awesome # Font Icons
+
+    ffmpegthumbnailer # Video Thumbnails
   ];
 }
