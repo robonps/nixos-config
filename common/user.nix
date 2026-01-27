@@ -1,6 +1,7 @@
 {pkgs, ...}: {
   imports = [
     ../modules/vscode.nix
+    ../modules/containers/user.nix # Podman container engine
   ];
   home.username = "robert";
   home.homeDirectory = "/home/robert";
@@ -118,6 +119,8 @@
     localsend
     protonvpn-gui
     onlyoffice-desktopeditors
+    mission-center
+    celluloid # Video Player
 
     # Comms
     vesktop
@@ -127,6 +130,7 @@
     eza # ls alternative that is aliased in fish
     killall
     ffmpeg
+    yt-dlp # YouTube downloader
 
     # Other Utils
     easyeffects

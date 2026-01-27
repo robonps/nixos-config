@@ -1,4 +1,10 @@
 {pkgs, ...}: {
+
+  imports = [
+    ../modules/containers/system.nix # Podman container engine
+  ];
+
+
   fonts.packages = with pkgs; [
     nerd-fonts.jetbrains-mono
     corefonts
