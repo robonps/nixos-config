@@ -121,6 +121,7 @@
     onlyoffice-desktopeditors
     mission-center
     celluloid # Video Player
+    loupe # Image Viewer
 
     # Comms
     vesktop
