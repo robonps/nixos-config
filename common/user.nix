@@ -104,6 +104,8 @@
     };
   };
 
+  services.syncthing.enable = true;
+
   services.easyeffects = {
     enable = true;
   };
@@ -132,6 +134,7 @@
     killall
     ffmpeg
     yt-dlp # YouTube downloader
+    gemini-cli
 
     # Other Utils
     easyeffects

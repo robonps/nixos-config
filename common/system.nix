@@ -62,6 +62,8 @@
     packages = with pkgs; [];
   };
 
+  services.syncthing.openDefaultPorts = true;
+
   # Enable Realtime Kit
   # This is critical. It allows the audio process to ask the kernel for
   # "Realtime Priority" so your audio doesn't crackle when the CPU is busy.
