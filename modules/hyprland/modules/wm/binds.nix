@@ -31,6 +31,7 @@
 
       # Fullscreen
       "$mainMod, f, fullscreen, 1"
+      "$mainMod SHIFT, f, fullscreen, 0"
 
       "$mainMod, 1, workspace, 1"
       "$mainMod, 2, workspace, 2"
