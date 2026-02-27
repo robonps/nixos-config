@@ -2,6 +2,7 @@
   imports = [
     ../modules/vscode.nix
     ../modules/containers/user.nix # Podman container engine
+    ../modules/auth/user.nix       # Yubikey support
   ];
   home.username = "robert";
   home.homeDirectory = "/home/robert";

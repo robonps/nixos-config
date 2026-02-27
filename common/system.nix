@@ -3,6 +3,7 @@
   imports = [
     ../modules/containers/system.nix # Podman container engine
     ../modules/vm/system.nix        # Virtualization with libvirt
+    ../modules/auth/system.nix      # Yubikey support
   ];
 
 
@@ -58,7 +59,7 @@
   users.users.robert = {
     isNormalUser = true;
     description = "Robert";
-    extraGroups = ["networkmanager" "wheel"];
+    extraGroups = ["networkmanager" "wheel" "dialout"];
     packages = with pkgs; [];
   };
 
