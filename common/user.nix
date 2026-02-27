@@ -61,12 +61,14 @@
         "{446900e4-71c2-419f-a6a7-df9c091e268b}" = {
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/bitwarden-password-manager/latest.xpi";
           installation_mode = "force_installed";
+          incognito = "spanning";
         };
 
         # Dark Reader
         "addon@darkreader.org" = {
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/darkreader/latest.xpi";
           installation_mode = "force_installed";
+          incognito = "spanning";
         };
 
         # SponsorBlock
@@ -85,6 +87,13 @@
         "{88ebde3a-4581-4c6b-8019-2a05a9e3e938}" = {
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/hide-youtube-shorts/latest.xpi";
           installation_mode = "force_installed";
+        };
+
+        # ProtonVPN Browser Extension
+        "vpn@proton.ch" = {
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/proton-vpn-firefox-extension/latest.xpi";
+          installation_mode = "force_installed";
+          incognito = "spanning";
         };
       };
     };
