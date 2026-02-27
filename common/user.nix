@@ -33,12 +33,15 @@
         "sidebar.verticalTabs" = true;
 
         # Privacy
+        "privacy.sanitize.sanitizeOnShutdown" = true;
+        # You MUST explicitly turn these off, or LibreWolf's defaults will wipe them
         "privacy.clearOnShutdown.history" = false;
-        "privacy.clearOnShutdown.cookies" = false;
-        "network.cookie.lifetimePolicy" = 0;
-        "privacy.sanitize.sanitizeOnShutdown" = false;
-        "privacy.clearOnShutdown.cache" = false; # Often necessary to keep sessions alive
-        "privacy.resistFingerprinting" = false;
+        "privacy.clearOnShutdown.cache" = false;
+        "privacy.clearOnShutdown.downloads" = false;
+        "privacy.clearOnShutdown.formData" = false;
+        "privacy.clearOnShutdown.offlineApps" = false;
+        "privacy.clearOnShutdown.sessions" = false;
+        "privacy.clearOnShutdown.siteSettings" = false;
 
         # Force Websites to Dark Mode (Overrides privacy settings)
         "layout.css.prefers-color-scheme.content-override" = 0; # 0 = Dark, 1 = Light, 2 = System
