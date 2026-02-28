@@ -4,7 +4,8 @@
       "suppress_event maximize, match:class .*"
 
       # Allow some windows to float
-      "float on, match:class ^(org.gnome.NautilusPreviewer)$"
+      "float on, center on, match:class ^(org.gnome.NautilusPreviewer)$"
+      "float on, center on, match:class ^(com.gabm.satty)$"
 
       # Allow Floating setting menus
       "float on, size 800 600, center on, match:class ^(floating)$"
