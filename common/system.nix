@@ -30,6 +30,7 @@
   # Auto-unlock for whatever login manager you choose
   security.pam.services.sddm.enableGnomeKeyring = true;
   security.pam.services.gdm.enableGnomeKeyring = true;
+  security.pam.services.login.enableGnomeKeyring = true;
 
   services.gnome.glib-networking.enable = true;
 
