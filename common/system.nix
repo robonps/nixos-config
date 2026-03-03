@@ -115,6 +115,9 @@
     seahorse # Gnome Keyring App for viewing passwords.
   ];
 
+  # Enable fwupd for firmware updates
+  services.fwupd.enable = true;
+
   # Automatic Cleanup
   nix.settings.auto-optimise-store = true;
   # Nix Helper command
