@@ -39,7 +39,7 @@ swww img "$IMAGE" \
 # We resize it down and up to blur it faster, then crop it to a square-ish ratio if needed.
 magick "$IMAGE" -resize 50% -blur 0x15 -resize 200% -brightness-contrast -5x0 "$ROFI_IMG"
 
-matugen image "$IMAGE"
+matugen image "$IMAGE" --source-color-index 0
 
 pkill -USR1 kitty || true
 
