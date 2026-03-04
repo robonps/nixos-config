@@ -3,9 +3,10 @@
     enable = true;
 
     profiles.default = {
-      extensions = with pkgs.vscode-extensions; [
+      extensions = with pkgs; [
         # Nix Syntax
-        jnoortheen.nix-ide
+        vscode-extensions.jnoortheen.nix-ide
+        vscode-extensions.ms-vscode.live-server
       ];
 
       userSettings = {
