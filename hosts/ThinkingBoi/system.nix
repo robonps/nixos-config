@@ -21,6 +21,7 @@
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
 
+  services.hardware.bolt.enable = true; # Thunderbolt support
 
   services.tlp = {
     enable = true;
