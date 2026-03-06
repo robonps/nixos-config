@@ -2,7 +2,7 @@
 
   imports = [
     ../modules/containers/system.nix # Podman container engine
-    ../modules/vm/system.nix        # Virtualization with libvirt
+    #../modules/vm/system.nix        # Virtualization with libvirt
     ../modules/auth/system.nix      # Yubikey support
   ];
 
