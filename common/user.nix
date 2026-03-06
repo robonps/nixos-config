@@ -1,6 +1,6 @@
 {pkgs, ...}: {
   imports = [
-    ../modules/vscode.nix
+    ../modules/vscode.nix      # Visual Studio Code
     ../modules/containers/user.nix # Podman container engine
     ../modules/auth/user.nix       # Yubikey support
   ];
