@@ -148,6 +148,7 @@
     ffmpeg
     yt-dlp # YouTube downloader
     gemini-cli
+    sqlite # SQLite CLI
 
     # Other Utils
     easyeffects
