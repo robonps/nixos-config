@@ -7,6 +7,7 @@
         # Nix Syntax
         vscode-extensions.jnoortheen.nix-ide
         vscode-extensions.ms-vscode.live-server
+        vscode-extensions.ms-azuretools.vscode-containers
       ];
 
       userSettings = {
