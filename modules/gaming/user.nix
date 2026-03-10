@@ -14,5 +14,7 @@
 
 
     osu-lazer-bin
+
+    heroic
   ];
 }
