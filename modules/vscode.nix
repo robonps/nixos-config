@@ -5,9 +5,11 @@
     profiles.default = {
       extensions = with pkgs; [
         # Nix Syntax
-        vscode-extensions.jnoortheen.nix-ide
+        
         vscode-extensions.ms-vscode.live-server
         vscode-extensions.ms-azuretools.vscode-containers
+
+        vscode-marketplace.jnoortheen.nix-ide
       ];
 
       userSettings = {

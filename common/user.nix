@@ -137,6 +137,8 @@
     mission-center
     celluloid # Video Player
     loupe # Image Viewer
+    tor-browser
+    strawberry
 
     # Comms
     vesktop
@@ -149,6 +151,14 @@
     yt-dlp # YouTube downloader
     gemini-cli
     sqlite # SQLite CLI
+    dnsutils
+    wget
+
+    wine
+    winetricks
+    
+    cabextract
+    unzip
 
     # Other Utils
     easyeffects

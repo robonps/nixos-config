@@ -15,6 +15,7 @@
 
     osu-lazer-bin
 
-    heroic
+    heroic # For Epic Games
+    lutris # For GOG and other games
   ];
 }
