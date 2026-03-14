@@ -17,5 +17,7 @@
 
     heroic # For Epic Games
     lutris # For GOG and other games
+
+    opentrack # Head tracking software for flight simulators
   ];
 }
