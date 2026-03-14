@@ -11,6 +11,10 @@
     nerd-fonts.jetbrains-mono
     corefonts
     vista-fonts
+
+    noto-fonts
+    noto-fonts-cjk-sans
+    dejavu_fonts
   ];
 
   # Bootloader.
@@ -127,6 +131,9 @@
     clean.extraArgs = "--keep-since 4d --keep 3";
     flake = "/home/robert/nixos-config";
   };
+
+  # Envfs Support
+  services.envfs.enable = true;
 
   # Enable Fish globally and set as default shell
   programs.fish.enable = true;

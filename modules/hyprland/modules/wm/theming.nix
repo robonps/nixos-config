@@ -29,7 +29,9 @@
 
   home.packages = with pkgs; [
     adwaita-qt
-    adwaita-qt6 
+    adwaita-qt6
+
+    adwaita-icon-theme 
   ];
 
   home.sessionVariables = {
