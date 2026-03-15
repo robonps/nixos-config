@@ -154,12 +154,6 @@
     dnsutils
     wget
 
-    wine
-    winetricks
-    
-    cabextract
-    unzip
-
     # Other Utils
     easyeffects
   ];

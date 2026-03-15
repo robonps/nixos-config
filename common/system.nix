@@ -117,6 +117,14 @@
     pavucontrol # The standard "Volume Mixer" GUI. Simple, works perfectly.
 
     seahorse # Gnome Keyring App for viewing passwords.
+
+
+
+    # support both 32-bit and 64-bit applications
+    wineWow64Packages.stable
+
+    # winetricks (all versions)
+    winetricks
   ];
 
   # Enable fwupd for firmware updates
