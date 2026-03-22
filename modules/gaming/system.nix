@@ -1,4 +1,9 @@
 {pkgs, ...}: {
+
+  imports = [
+    ./vr-test.nix
+  ];
+
   programs.steam = {
     enable = true;
 
