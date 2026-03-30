@@ -14,20 +14,18 @@
       "$mainMod, M, exit"
       "$mainMod, V, togglefloating"
       "$mainMod, P, pseudo" # dwindle
-      "$mainMod, J, togglesplit" # dwindle
 
       # Move focus with mainMod + arrow keys
-      "$mainMod, left, movefocus, l"
-      "$mainMod, right, movefocus, r"
-      "$mainMod, up, movefocus, u"
-      "$mainMod, down, movefocus, d"
+      "$mainMod, H, movefocus, l"
+      "$mainMod, L, movefocus, r"
+      "$mainMod, K, movefocus, u"
+      "$mainMod, J, movefocus, d"
 
       # Move Windows with mainMod + ctrl + arrow keys
-      "$mainMod Control_L, left, movewindow, l"
-      "$mainMod Control_L, right, movewindow, r"
-      "$mainMod Control_L, up, movewindow, u"
-      "$mainMod Control_L, down, movewindow, d"
-      "$mainMod Control_L, left, movewindow, l"
+      "$mainMod Control_L, H, movewindow, l"
+      "$mainMod Control_L, L, movewindow, r"
+      "$mainMod Control_L, K, movewindow, u"
+      "$mainMod Control_L, J, movewindow, d"
 
       # Fullscreen
       "$mainMod, f, fullscreen, 1"
@@ -89,10 +87,10 @@
 
     binde = [
       # Resizing Windows
-      "$mainMod SHIFT, left, resizeactive, -10 0"
-      "$mainMod SHIFT, right, resizeactive, 10 0"
-      "$mainMod SHIFT, up, resizeactive, 0 -10"
-      "$mainMod SHIFT, down, resizeactive, 0 10"
+      "$mainMod SHIFT, H, resizeactive, -10 0"
+      "$mainMod SHIFT, L, resizeactive, 10 0"
+      "$mainMod SHIFT, K, resizeactive, 0 -10"
+      "$mainMod SHIFT, J, resizeactive, 0 10"
 
       # Brightness Control
       ", XF86MonBrightnessUp, exec, brightnessctl set +5%"
@@ -115,6 +113,10 @@
       ", XF86AudioPlay, exec, playerctl play-pause"
       ", XF86AudioNext, exec, playerctl next"
       ", XF86AudioPrev, exec, playerctl previous"
+    ];
+
+    bindd = [
+      "$mainMod, O, $d toggle split, layoutmsg, togglesplit"
     ];
   };
 }
