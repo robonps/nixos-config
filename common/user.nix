@@ -139,6 +139,8 @@
     loupe # Image Viewer
     tor-browser
     strawberry
+    protonmail-bridge-gui
+    thunderbird
 
     # Comms
     vesktop
