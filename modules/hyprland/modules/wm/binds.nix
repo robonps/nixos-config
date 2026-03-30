@@ -69,13 +69,13 @@
       "$mainMod, mouse_up, workspace, m-1"
 
       # Lock Session
-      "$mainMod, L, exec, loginctl lock-session"
+      "$mainMod, I, exec, loginctl lock-session"
 
       # Restart waybar
       "$mainMod, N, exec, systemctl --user restart waybar"
 
       # Open SwayNC
-      "$mainMod, H, exec, swaync-client -t -sw"
+      "$mainMod, U, exec, swaync-client -t -sw"
 
       # Power Off menu
       ", XF86PowerOff, exec, wlogout -b 5"
