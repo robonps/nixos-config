@@ -127,6 +127,19 @@
     winetricks
   ];
 
+  # Enable Flatpak support
+  services.flatpak.enable = true;
+  services.flatpak.packages =[
+    "com.stremio.Stremio"
+  ];
+  services.flatpak.uninstallUnmanaged = true;
+  environment.sessionVariables = {
+    XDG_DATA_DIRS = [
+        "$HOME/.local/share/flatpak/exports/share"
+        "/var/lib/flatpak/exports/share"
+    ];
+  };
+
   # Enable fwupd for firmware updates
   services.fwupd.enable = true;
 

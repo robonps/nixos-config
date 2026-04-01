@@ -19,6 +19,8 @@
       url = "github:TNAZEP/HytaleLauncherFlake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
   };
 
   outputs = {
@@ -27,6 +29,7 @@
     home-manager,
     nix-vscode-extensions,
     hytale-launcher,
+    nix-flatpak,
     ...
   } @ inputs: {
     nixosConfigurations.FastBoi = nixpkgs.lib.nixosSystem {
@@ -35,6 +38,7 @@
 
       modules = [
         ./hosts/FastBoi/system.nix
+        nix-flatpak.nixosModules.nix-flatpak
 
         ({ config, pkgs, ... }: {
           nixpkgs.overlays = [
@@ -59,6 +63,7 @@
       specialArgs = { inherit inputs; };
 
       modules = [
+        nix-flatpak.nixosModules.nix-flatpak
         ./hosts/ThinkingBoi/system.nix
 
         ({ config, pkgs, ... }: {
