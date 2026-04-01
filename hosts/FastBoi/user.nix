@@ -22,15 +22,15 @@ in {
     ];
     # Syntax: "NAME, RESOLUTION, POSITION, SCALE"
     monitor = [
-      "DP-1, 1920x1080@60, 0x0, 1"
-      "HDMI-A-1, 1920x1080@60, 1920x0, 1"
+      "HDMI-A-2, 1920x1080@60, 0x0, 1"
+      "DP-1, 1920x1080@60, 1920x0, 1"
       "DP-2, 1920x1080@60, 3840x0, 1"
     ];
 
     # Bind workspaces 1-3 to specific screens so they don't jump around
     workspace = [
-      "1, monitor:DP-1"
-      "2, monitor:HDMI-A-1"
+      "1, monitor:HDMI-A-2"
+      "2, monitor:DP-1"
       "3, monitor:DP-2"
     ];
   };
