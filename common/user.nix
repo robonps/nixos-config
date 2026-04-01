@@ -141,6 +141,7 @@
     strawberry
     protonmail-bridge-gui
     thunderbird
+    sqlitebrowser # SQLite GUI
 
     # Comms
     vesktop
