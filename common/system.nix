@@ -162,6 +162,11 @@
     ATTRS{name}=="DualSense Wireless Controller Touchpad", ENV{LIBINPUT_IGNORE_DEVICE}="1"
   '';
 
+  programs.localsend = {
+    enable = true;
+    openFirewall = true;
+  };
+
   # Envfs Support
   services.envfs.enable = true;
 

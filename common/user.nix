@@ -131,7 +131,6 @@
   home.packages = with pkgs; [
     # GUI Apps
     orca-slicer
-    localsend
     protonvpn-gui
     onlyoffice-desktopeditors
     mission-center
