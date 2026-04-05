@@ -153,15 +153,6 @@
     flake = "/home/robert/nixos-config";
   };
 
-  # Udev rules for gaming controllers
-  services.udev.extraRules = ''
-    # Disable DualShock 4 / DualSense touchpad acting as mouse (USB)
-    ATTRS{name}=="Sony Interactive Entertainment DualSense Wireless Controller Touchpad", ENV{LIBINPUT_IGNORE_DEVICE}="1"
-    
-    # Disable DualShock 4 / DualSense touchpad acting as mouse (Bluetooth)
-    ATTRS{name}=="DualSense Wireless Controller Touchpad", ENV{LIBINPUT_IGNORE_DEVICE}="1"
-  '';
-
   programs.localsend = {
     enable = true;
     openFirewall = true;
