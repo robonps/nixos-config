@@ -2,11 +2,11 @@
   home.packages = with pkgs; [
     (prismlauncher.override {
       additionalLibs = [
-        libXtst 
+        libxtst 
         libxkbcommon     
-        libXt  
-        libX11     
-        libXi        
+        libxt  
+        libx11     
+        libxi        
       ];
     })
 
