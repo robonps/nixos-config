@@ -29,8 +29,8 @@ fi
 
 # ---- Existing Logic Below ----
 
-# Make sure swww, matugen, and pywalfox are in home.packages
-swww img "$IMAGE" \
+# Make sure awww, matugen, and pywalfox are in home.packages
+awww img "$IMAGE" \
   --transition-type grow \
   --transition-pos 0.5,0.0 \
   --transition-step 90 \

@@ -126,12 +126,13 @@
   xdg.userDirs = {
     enable = true;
     createDirectories = true;
+    setSessionVariables = true;
   };
 
   home.packages = with pkgs; [
     # GUI Apps
     orca-slicer
-    protonvpn-gui
+    proton-vpn
     onlyoffice-desktopeditors
     mission-center
     celluloid # Video Player

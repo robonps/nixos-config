@@ -1,7 +1,7 @@
 {pkgs, ...}: {
 
   imports = [
-    ./vr-test.nix
+    #./vr-test.nix
   ];
 
   programs.steam = {

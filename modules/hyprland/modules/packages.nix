@@ -5,7 +5,7 @@
 
     font-awesome_6 # Icon font
 
-    swww # The Wallpaper Daemon (supports animations)
+    awww # The Wallpaper Daemon (supports animations)
     matugen # The Color Generator
     imagemagick # Thumbnail generation
 
