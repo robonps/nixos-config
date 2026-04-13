@@ -131,6 +131,7 @@
   services.flatpak.enable = true;
   services.flatpak.packages =[
     "com.stremio.Stremio"
+    "org.jdownloader.JDownloader"
   ];
   services.flatpak.uninstallUnmanaged = true;
   environment.sessionVariables = {
@@ -139,6 +140,9 @@
         "/var/lib/flatpak/exports/share"
     ];
   };
+
+  # Enabled for running executables not designed for nixos
+  programs.nix-ld.enable = true;
 
   # Enable fwupd for firmware updates
   services.fwupd.enable = true;
