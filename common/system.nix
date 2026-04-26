@@ -132,6 +132,7 @@
   services.flatpak.packages =[
     "com.stremio.Stremio"
     "org.jdownloader.JDownloader"
+    "com.orcaslicer.OrcaSlicer"
   ];
   services.flatpak.uninstallUnmanaged = true;
   environment.sessionVariables = {

@@ -131,7 +131,7 @@
 
   home.packages = with pkgs; [
     # GUI Apps
-    orca-slicer
+    #orca-slicer
     proton-vpn
     onlyoffice-desktopeditors
     mission-center
@@ -142,6 +142,8 @@
     protonmail-bridge-gui
     thunderbird
     sqlitebrowser # SQLite GUI
+    lmstudio
+    freecad
 
     # Comms
     vesktop
