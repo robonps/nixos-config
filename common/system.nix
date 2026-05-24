@@ -87,6 +87,15 @@
     alsa.support32Bit = true; # Needed for Steam games
 
     jack.enable = true;
+
+    extraConfig.pipewire."99-custom" = {
+      "context.properties" = {
+        # Allows the system to switch to the file's native rate instead of forcing 48kHz
+        "default.clock.allowed-rates" = [ 44100 48000 88200 96000 176400 192000 352800 384000 ];
+        # Sets the "Safety Bucket" to 32-bit to prevent digital "crunching"
+        "default.audio.format" = "S32LE";
+      };
+    };
   };
 
   hardware.bluetooth = {

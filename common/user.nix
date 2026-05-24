@@ -3,6 +3,7 @@
     ../modules/vscode.nix      # Visual Studio Code
     ../modules/containers/user.nix # Podman container engine
     ../modules/auth/user.nix       # Yubikey support
+    ../modules/beets/user.nix      # Music library management with Beets
   ];
   home.username = "robert";
   home.homeDirectory = "/home/robert";
@@ -144,6 +145,7 @@
     sqlitebrowser # SQLite GUI
     lmstudio
     freecad
+    deezer-desktop
 
     # Comms
     vesktop

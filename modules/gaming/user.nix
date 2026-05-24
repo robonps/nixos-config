@@ -16,7 +16,7 @@
     osu-lazer-bin
 
     heroic # For Epic Games
-    lutris # For GOG and other games
+    #lutris # For GOG and other games
 
     limo # Modding tool for games
   ];
