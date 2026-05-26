@@ -5,4 +5,6 @@
   imports = [
     ./modules
   ];
+
+  wayland.windowManager.hyprland.configType = "hyprlang";
 }
