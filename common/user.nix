@@ -4,6 +4,7 @@
     ../modules/containers/user.nix # Podman container engine
     ../modules/auth/user.nix       # Yubikey support
     ../modules/beets/user.nix      # Music library management with Beets
+    ../modules/neovim/user.nix     # Neovim configuration
   ];
   home.username = "robert";
   home.homeDirectory = "/home/robert";
@@ -160,6 +161,8 @@
     sqlite # SQLite CLI
     dnsutils
     wget
+    btop
+    ollama
 
     # Other Utils
     easyeffects

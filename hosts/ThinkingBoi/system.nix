@@ -10,8 +10,10 @@
     # Include the results of the hardware scan.
     ./hardware.nix
     ../../common/system.nix # Common system config.
-    ../../modules/hyprland/system.nix # Desktop
+    ../../modules/sway-minimal/system.nix # Desktop
   ];
+
+  xdg.portal.enable = true; # Enable XDG portals for better sandboxing and compatibility with Wayland apps
 
   networking.hostName = "ThinkingBoi"; # Define your hostname.
   #networking.wireless.enable = true; # Enables wireless support via wpa_supplicant.
