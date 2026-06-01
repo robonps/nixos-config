@@ -8,6 +8,7 @@
     ripgrep
     fd
     imagemagick
+    gnumake
 
     nerd-fonts.symbols-only
 
