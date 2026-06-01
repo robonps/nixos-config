@@ -5,6 +5,7 @@
     ../modules/auth/user.nix       # Yubikey support
     ../modules/beets/user.nix      # Music library management with Beets
     ../modules/neovim/user.nix     # Neovim configuration
+    ../modules/tmux/user.nix       # Tmux configuration
   ];
   home.username = "robert";
   home.homeDirectory = "/home/robert";
