@@ -8,12 +8,14 @@ return {
       vim.lsp.config("nil_ls", {})
       vim.lsp.config("lua_ls", {})
       vim.lsp.config("bashls", {})
+      vim.lsp.config("dockerls", {})
 
       -- Start them automatically when opening a matching file type
       vim.lsp.enable("pyright")
       vim.lsp.enable("nil_ls")
       vim.lsp.enable("lua_ls")
       vim.lsp.enable("bashls")
+      vim.lsp.enable("dockerls")
 
       -- Your identical global LSP keymaps
       vim.keymap.set('n', '<leader>k', vim.lsp.buf.hover, { desc = 'Hover Documentation' })

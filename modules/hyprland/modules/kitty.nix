@@ -25,6 +25,8 @@
       scrollback_lines = 5000;
 
       mouse_hide_wait = -3.0;
+
+      auto_reload_config = -1; # Stop creating inotifty watches for every goddamn kitty terminnal
     };
     extraConfig = ''
       include ${config.xdg.cacheHome}/matugen/colors-kitty.conf

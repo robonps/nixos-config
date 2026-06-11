@@ -25,11 +25,13 @@
     nil # Nix LSP
     lua-language-server # Lua LSP
     bash-language-server # Bash LSP
+    dockerfile-language-server # Dockerfile LSP
 
     # Formatters & Linters
     nixfmt # Nix Formatter
     stylua # Lua Formatter
     shellcheck # Shell Linter
+    hadolint # Dockerfile Linter
   ];
 
   programs.neovim = {
