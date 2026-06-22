@@ -1,12 +1,13 @@
 {pkgs, ...}: {
-  programs.hyprland.enable = true;
+  programs.hyprland = {
+    enable = true;
+    withUWSM = true;
+  };
 
   services.displayManager.sddm = {
     enable = true;
-    #wayland.enable = true;
+    wayland.enable = true;
   };
-  # Temp for nvidia bug
-  services.xserver.enable = true;
 
   fonts.packages = with pkgs; [
     nerd-fonts.fira-code
