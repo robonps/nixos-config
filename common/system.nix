@@ -142,6 +142,7 @@
     "com.stremio.Stremio"
     "org.jdownloader.JDownloader"
     "com.orcaslicer.OrcaSlicer"
+    "ai.lmstudio.lm-studio"
   ];
   services.flatpak.uninstallUnmanaged = true;
   environment.sessionVariables = {
@@ -171,6 +172,13 @@
     enable = true;
     openFirewall = true;
   };
+
+  services.openssh.enable = true;
+    # Enable the Tailscale service
+  services.tailscale.enable = true;
+
+  # Optionally, open firewall ports for direct peer-to-peer connections
+  networking.firewall.allowedUDPPorts = [ 41641 ];
 
   # Envfs Support
   services.envfs.enable = true;

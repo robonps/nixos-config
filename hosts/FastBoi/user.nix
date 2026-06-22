@@ -8,13 +8,12 @@ in {
   ];
 
   home.sessionVariables = {
-    LIBVA_DRIVER_NAME = "nvidia";
-    XDG_SESSION_TYPE = "wayland";
-    GBM_BACKEND = "nvidia-drm";
-    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+    LIBVA_DRIVER_NAME = "radeonsi";
   };
 
-  home.packages = [toggle-birghtness];
+  home.packages = [
+    toggle-birghtness
+  ];
 
   wayland.windowManager.hyprland.settings = {
     bind = [
@@ -22,16 +21,21 @@ in {
     ];
     # Syntax: "NAME, RESOLUTION, POSITION, SCALE"
     monitor = [
-      "HDMI-A-2, 1920x1080@60, 0x0, 1"
-      "DP-1, 1920x1080@60, 1920x0, 1"
-      "DP-2, 1920x1080@60, 3840x0, 1"
+      "desc:Philips Consumer Electronics Company PHL 241S6Q UHB1709022150, 1920x1080@60, 0x0, 1"
+      "desc:Philips Consumer Electronics Company PHL 241B6Q UHB1820031107, 1920x1080@60, 1920x0, 1"
+      "desc:Philips Consumer Electronics Company PHL 241S6Q UHB1728034524, 1920x1080@60, 3840x0, 1"
     ];
 
     # Bind workspaces 1-3 to specific screens so they don't jump around
     workspace = [
-      "1, monitor:HDMI-A-2"
-      "2, monitor:DP-1"
-      "3, monitor:DP-2"
+      # Workspace 1 -> Left Monitor
+      "1, monitor:desc:Philips Consumer Electronics Company PHL 241S6Q UHB1709022150, default:true"
+      
+      # Workspace 2 -> Middle Monitor
+      "2, monitor:desc:Philips Consumer Electronics Company PHL 241B6Q UHB1820031107, default:true"
+      
+      # Workspace 3 -> Right Monitor
+      "3, monitor:desc:Philips Consumer Electronics Company PHL 241S6Q UHB1728034524, default:true"
     ];
   };
 }

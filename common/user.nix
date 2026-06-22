@@ -145,7 +145,6 @@
     protonmail-bridge-gui
     thunderbird
     sqlitebrowser # SQLite GUI
-    lmstudio
     freecad
     deezer-desktop
 
@@ -164,6 +163,7 @@
     wget
     btop
     ollama
+    tailscale
 
     # Other Utils
     easyeffects
