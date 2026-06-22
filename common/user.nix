@@ -22,8 +22,21 @@
     };
   };
 
+  programs.ssh = {
+    enable = true;
+    enableDefaultConfig = false;
+    settings = {
+      "*" = {
+        IdentityFile = [ "~/.ssh/id_ed25519_sk_rk" ];
+        IdentityAgent = "none"; 
+      };
+    };
+  };
+
+
   programs.librewolf = {
     enable = true;
+    package = pkgs.librewolf-bin;
 
     profiles.default = {
       id = 0;

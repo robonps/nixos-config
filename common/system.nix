@@ -1,4 +1,9 @@
-{pkgs, ...}: {
+{pkgs, ...}: 
+
+let
+  sshKeys = import ../modules/ssh-keys.nix; # Import the list of authorized SSH keys
+in
+{
 
   imports = [
     ../modules/containers/system.nix # Podman container engine
@@ -66,6 +71,7 @@
     description = "Robert";
     extraGroups = ["networkmanager" "wheel" "dialout"];
     packages = with pkgs; [];
+    openssh.authorizedKeys.keys = sshKeys; # Use the imported SSH keys
   };
 
   services.syncthing.openDefaultPorts = true;
@@ -173,7 +179,6 @@
     openFirewall = true;
   };
 
-  services.openssh.enable = true;
     # Enable the Tailscale service
   services.tailscale.enable = true;
 
