@@ -17,7 +17,7 @@ require("config.lazy")
 
 
 -- MANUAL FORMATTING: Press 'Space + f' to format the current file
-vim.keymap.set('n', '<leader>f', function()
+vim.keymap.set('n', '<leader>F', function()
   vim.lsp.buf.format({ async = true })
   print("File formatted.")
 end, { desc = 'Manually Format File' })
