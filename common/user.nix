@@ -16,9 +16,15 @@
 
   programs.git = {
     enable = true;
+    signing = {
+      key = "~/.ssh/id_ed25519_signing.pub";
+      signByDefault = true;
+    };
+
+    settings.gpg.format = "ssh";
     settings.user = {
       name = "Robonps";
-      email = "60711812+robonps@users.noreply.github.com";
+      email = "robonps@noreply.localhost";
     };
   };
 
