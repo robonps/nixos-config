@@ -1,6 +1,8 @@
-# ❄️ NixOS "Glassy" Hyprland Config
+# My NixOS Config
+My nixos config has multiple desktops/modules that are configured for different devices.
 
-A modern, translucent Hyprland configuration for NixOS, featuring dynamic wallpaper-based theming and a "Control Center" dashboard style.
+# "Glassy" Hyprland
+A modern, translucent Hyprland configuration, featuring dynamic wallpaper-based theming and a "Control Center" dashboard style.
 
 ![Screenshot Placeholder](screenshots/desktop.png)
 
