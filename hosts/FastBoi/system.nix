@@ -18,6 +18,7 @@ in
     ../../modules/hyprland/system.nix # Desktop
     ../../modules/gaming/system.nix # Gaming
     ../../modules/ssh-server/system.nix # SSH server configuration
+    ../../modules/vm/system.nix # Virtualization support
   ];
 
   boot.initrd ={
