@@ -7,7 +7,7 @@
     ../modules/neovim/user.nix     # Neovim configuration
     ../modules/tmux/user.nix       # Tmux configuration
 
-    ../../modules/DAW/user.nix     # Bitwig Studio and Decent Sampler for music production
+    ../modules/DAW/user.nix     # Bitwig Studio and Decent Sampler for music production
   ];
   home.username = "robert";
   home.homeDirectory = "/home/robert";
