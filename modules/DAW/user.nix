@@ -7,8 +7,9 @@
   ];
 
   home.file.".vst3" = {
-    source = "${config.home.profileDirectory}/lib/vst3";
-    recursive = true; 
+    source = config.lib.file.mkOutOfStoreSymlink "${config.home.profileDirectory}/lib/vst3";
+    recursive = true;
   };
+
 }
 
