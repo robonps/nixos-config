@@ -69,7 +69,7 @@
       "$mainMod, mouse_up, workspace, m-1"
 
       # Lock Session
-      "$mainMod, I, exec, loginctl lock-session"
+      "$mainMod, escape, exec, loginctl lock-session"
 
       # Restart waybar
       "$mainMod, N, exec, systemctl --user restart waybar"
