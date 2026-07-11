@@ -12,7 +12,7 @@
 
       "$mainMod, C, killactive"
       "$mainMod, M, exit"
-      "$mainMod, V, togglefloating"
+      "$mainMod, Space, togglefloating"
       "$mainMod, P, pseudo" # dwindle
 
       # Move focus with mainMod + arrow keys
