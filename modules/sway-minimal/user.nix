@@ -186,7 +186,7 @@ config = {
 
       # --- KEYBINDINGS ---
       bindsym $mod+q exec $term
-
+      bindsym $mod+a exec librewolf
       bindsym $mod+Escape exec hyprlock
 
       bindsym $mod+v exec pkill -f "[a]pp-id=cliphist-menu" || $term --app-id="cliphist-menu" -e cliphist-menu
@@ -245,7 +245,7 @@ config = {
       bindsym $mod+Ctrl+l move right
 
       bindsym $mod+Shift+c reload
-      bindsym $mod+Shift+e exec swaynag -t warning -m 'Exit Sway?' -B 'Yes' 'swaymsg exit'
+      bindsym $mod+m exec swaynag -t warning -m 'Exit Sway?' -B 'Yes' 'swaymsg exit'
     '';
     };
   };

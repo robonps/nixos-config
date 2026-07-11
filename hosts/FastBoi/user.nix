@@ -5,6 +5,7 @@ in {
     ../../common/user.nix
     ../../modules/hyprland/user.nix
     ../../modules/gaming/user.nix
+    ../../modules/DAW/user.nix     # Bitwig Studio and Decent Sampler for music production
   ];
 
   home.sessionVariables = {
