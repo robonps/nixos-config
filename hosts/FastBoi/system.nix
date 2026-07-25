@@ -22,7 +22,7 @@ in
   ];
 
   boot.initrd ={
-    availableKernelModules = [ "r8169" ];
+    availableKernelModules = [ "r8169" "amdgpu" ];
     network = {
       ssh = {
         enable = true;

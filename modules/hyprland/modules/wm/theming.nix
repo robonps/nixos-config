@@ -20,6 +20,7 @@
   };
 
   home.pointerCursor = {
+    enable = true;
     gtk.enable = true; # Applies to GTK apps (LibreWolf, File Manager)
     x11.enable = true; # Applies to X11/Steam apps
     package = pkgs.volantes-cursors;
