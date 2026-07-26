@@ -8,7 +8,7 @@
     enable = true;
     extraConfig = ''
       # Import the generated colors
-      source = ${config.xdg.cacheHome}/matugen/colors-hyprland.conf
+      source = ${config.xdg.configHome}/hypr/matugen-colors.conf
 
       general {
         # Use the variables defined in the imported file

@@ -179,7 +179,7 @@ in {
 
     [templates.hyprland]
     input_path = "${config.xdg.configHome}/matugen/templates/hyprland.conf"
-    output_path = "${config.xdg.cacheHome}/matugen/colors-hyprland.conf"
+    output_path = "${config.xdg.configHome}/hypr/matugen-colors.conf"
 
     [templates.kitty]
     input_path = "${config.xdg.configHome}/matugen/templates/kitty.conf"
