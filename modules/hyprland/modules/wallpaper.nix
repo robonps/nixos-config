@@ -1,11 +1,13 @@
 {
   pkgs,
+  lib,
   config,
   ...
 }: let
   # We create a script that takes a path to an image as an argument
   theme-switcher = pkgs.writeShellScriptBin "theme-switcher" (builtins.readFile ./scripts/theme-switcher.sh);
   wall-menu = pkgs.writeShellScriptBin "wall-menu" (builtins.readFile ./scripts/wall-menu.sh);
+
 in {
   home.packages = [theme-switcher wall-menu];
 
@@ -123,6 +125,10 @@ in {
   # Discord/Vesktop Template
   xdg.configFile."matugen/templates/midnight-discord.css".source = ./templates/midnight-discord.css;
 
+  xdg.configFile."matugen/templates/gtk3-colors.css".source = ./templates/gtk3-colors.css;
+  xdg.configFile."matugen/templates/gtk4-colors.css".source = ./templates/gtk4-colors.css;
+  xdg.configFile."matugen/templates/kde.colors".source = ./templates/kde.colors;
+
   xdg.configFile."matugen/templates/swaync.css".text = ''
     @define-color shadow {{colors.shadow.default.hex}};
     @define-color background {{colors.background.default.hex}};
@@ -208,5 +214,17 @@ in {
     [templates.wlogout]
     input_path = "${config.xdg.configHome}/matugen/templates/wlogout.css"
     output_path = "${config.xdg.configHome}/wlogout/colors.css"
+
+    [templates.gtk3]
+    input_path = "${config.xdg.configHome}/matugen/templates/gtk3-colors.css"
+    output_path = "${config.xdg.configHome}/gtk-3.0/colors.css"
+
+    [templates.gtk4]
+    input_path = "${config.xdg.configHome}/matugen/templates/gtk4-colors.css"
+    output_path = "${config.xdg.configHome}/gtk-4.0/colors.css"
+
+    [templates.kde]
+    input_path = "${config.xdg.configHome}/matugen/templates/kde.colors"
+    output_path = "${config.xdg.dataHome}/color-schemes/Matugen.colors"
   '';
 }

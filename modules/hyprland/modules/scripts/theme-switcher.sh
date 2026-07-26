@@ -45,6 +45,23 @@ pkill -USR1 kitty || true
 
 pywalfox update 2>/dev/null || true
 
+# Update Qt themes
+plasma-apply-colorscheme BreezeDark >/dev/null 2>&1
+plasma-apply-colorscheme Matugen >/dev/null 2>&1
+
+# Reload GTK4
+current=$(gsettings get org.gnome.desktop.interface color-scheme)
+
+if [ "$current" = "'prefer-dark'" ]; then
+    gsettings set org.gnome.desktop.interface color-scheme prefer-light
+    gsettings set org.gnome.desktop.interface color-scheme prefer-dark
+else
+    gsettings set org.gnome.desktop.interface color-scheme prefer-dark
+    gsettings set org.gnome.desktop.interface color-scheme prefer-light
+fi
+
+
+
 swaync-client -rs
 
 # Notify the user

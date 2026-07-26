@@ -29,21 +29,30 @@
   };
 
   home.packages = with pkgs; [
-    adwaita-qt
-    adwaita-qt6
+    adw-gtk3
+    adwaita-icon-theme
+    papirus-icon-theme
 
-    adwaita-icon-theme 
+    kdePackages.breeze
+    kdePackages.breeze-icons
+    kdePackages.plasma-integration
+    kdePackages.plasma-workspace
+
+    glib
+    gsettings-desktop-schemas
   ];
 
   home.sessionVariables = {
     # Force Hyprland to use the correct cursor
     XCURSOR_THEME = "volantes_cursors";
     XCURSOR_SIZE = "24";
-
   };
+
+  home.sessionVariables.XDG_DATA_DIRS = "${pkgs.gsettings-desktop-schemas}/share/gsettings-schemas/${pkgs.gsettings-desktop-schemas.name}:$XDG_DATA_DIRS";
 
   gtk = {
     enable = true;
+    colorScheme = "dark";
 
     theme = {
       name = "adw-gtk3-dark"; # Unifies GTK3 and GTK4 look
@@ -60,14 +69,26 @@
       package = pkgs.volantes-cursors;
     };
 
-    gtk3.extraConfig = {
-      gtk-application-prefer-dark-theme = 1;
+    gtk3 = {
+      extraConfig = {
+        gtk-application-prefer-dark-theme = 1;
+      };
+
+      extraCss = ''
+        @import url("colors.css");
+      '';
     };
 
-    gtk4.theme = null;
+    gtk4 = {
+      theme = null;
 
-    gtk4.extraConfig = {
-      gtk-application-prefer-dark-theme = 1;
+      extraConfig = {
+        gtk-application-prefer-dark-theme = 1;
+      };
+
+      extraCss = ''
+        @import url("colors.css");
+      '';
     };
   };
 
@@ -76,6 +97,10 @@
   dconf.settings = {
     "org/gnome/desktop/interface" = {
       color-scheme = "prefer-dark";
+      gtk-theme = "adw-gtk3-dark";
+      icon-theme = "Papirus-Dark";
+      cursor-theme = "volantes_cursors";
+      cursor-size = 24;
     };
   };
 
@@ -83,6 +108,33 @@
   qt = {
     enable = true;
 
-    platformTheme.name = "adwaita-dark";
+    platformTheme = {
+      name = "kde";
+      package = [
+        pkgs.kdePackages.plasma-integration
+      ];
+    };
+
+    style = {
+      name = "breeze";
+      package = [
+        pkgs.kdePackages.breeze
+      ];
+    };
+
+    kde.settings.kdeglobals = {
+
+      General = {
+        ColorScheme = "Matugen";
+      };
+
+      KDE = {
+        widgetStyle = "Breeze";
+      };
+
+      Icons = {
+        Theme = "Papirus-Dark";
+      };
+    };
   };
 }
