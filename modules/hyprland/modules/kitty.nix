@@ -27,6 +27,8 @@
       mouse_hide_wait = -3.0;
 
       auto_reload_config = -1; # Stop creating inotifty watches for every goddamn kitty terminnal
+
+      background_opacity = 0.8;
     };
     extraConfig = ''
       include ${config.xdg.cacheHome}/matugen/colors-kitty.conf

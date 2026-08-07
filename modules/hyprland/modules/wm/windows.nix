@@ -14,16 +14,17 @@
     decoration = {
       rounding = 10;
 
-      active_opacity = 0.95;
-      inactive_opacity = 0.90;
+      active_opacity = 1;
+      inactive_opacity = 1;
 
       blur = {
         enabled = true;
-        size = 6;
+        size = 8;
         passes = 3;
         new_optimizations = true;
         ignore_opacity = true;
         xray = false;
+        noise = 0.05;
       };
 
       shadow = {
