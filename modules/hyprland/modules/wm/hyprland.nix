@@ -3,7 +3,7 @@
     enable = true;
 
     # Systemd intergration
-    systemd.enable = true;
+    systemd.enable = false;
   };
 
   xdg.portal = {
