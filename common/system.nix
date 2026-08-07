@@ -147,7 +147,6 @@ in
   services.flatpak.packages =[
     "com.stremio.Stremio"
     "org.jdownloader.JDownloader"
-    "com.orcaslicer.OrcaSlicer"
     "ai.lmstudio.lm-studio"
   ];
   services.flatpak.uninstallUnmanaged = true;

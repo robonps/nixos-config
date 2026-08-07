@@ -22,9 +22,9 @@ in {
     ];
     # Syntax: "NAME, RESOLUTION, POSITION, SCALE"
     monitor = [
-      "desc:Philips Consumer Electronics Company PHL 241S6Q UHB1709022150, 1920x1080@60, 0x36, 1"
-      "desc:ASUSTek COMPUTER INC XG27ACMES W1LMTF197027, 2560x1440@255, 1920x0, 1.25"
-      "desc:Philips Consumer Electronics Company PHL 241S6Q UHB1728034524, 1920x1080@60, 3968x36, 1"
+      "desc:Philips Consumer Electronics Company PHL 241S6Q UHB1709022150, 1920x1080@60, 0x130, 1"
+      "desc:ASUSTek COMPUTER INC XG27ACMES W1LMTF197027, 2560x1440@255, 1920x0, 1"
+      "desc:Philips Consumer Electronics Company PHL 241S6Q UHB1728034524, 1920x1080@60, 4480x130, 1"
     ];
 
     # Bind workspaces 1-3 to specific screens so they don't jump around

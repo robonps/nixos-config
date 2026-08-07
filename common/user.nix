@@ -153,7 +153,7 @@
 
   home.packages = with pkgs; [
     # GUI Apps
-    #orca-slicer
+    orca-slicer
     proton-vpn
     onlyoffice-desktopeditors
     mission-center
