@@ -166,6 +166,7 @@
     sqlitebrowser # SQLite GUI
     freecad
     deezer-desktop
+    obsidian
 
     # Comms
     vesktop
