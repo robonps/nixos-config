@@ -11,7 +11,7 @@ let
     fi
   '';
 
-  # 2. Script to enforce strict floating/tiling rules
+  # Script to enforce strict floating/tiling rules
   swaySmartFloat = pkgs.writeShellScriptBin "sway-smart-float" ''
     APP_ID=$(${pkgs.sway}/bin/swaymsg -t get_tree | ${pkgs.jq}/bin/jq -r '.. | objects | select(.focused==true) | .app_id // empty')
     WS_NAME=$(${pkgs.sway}/bin/swaymsg -t get_workspaces | ${pkgs.jq}/bin/jq -r '.[] | select(.focused==true) | .name // empty')
@@ -31,7 +31,7 @@ let
   '';
 
 
-  # 3. Script to prevent moving the background terminal to other workspaces
+  # Script to prevent moving the background terminal to other workspaces
   swaySmartMove = pkgs.writeShellScriptBin "sway-smart-move" ''
     # Find the app_id of the currently focused window
     APP_ID=$(${pkgs.sway}/bin/swaymsg -t get_tree | ${pkgs.jq}/bin/jq -r '.. | objects | select(.focused==true) | .app_id // empty')
@@ -43,6 +43,15 @@ let
     
     # Otherwise, move the window to the workspace number passed to the script
     ${pkgs.sway}/bin/swaymsg move container to workspace number $1
+  '';
+
+  mainTerminal = pkgs.writeShellScriptBin "main-terminal" ''
+    while true; do
+      ${pkgs.tmux}/bin/tmux new-session -A -s main
+
+      # Avoid a tight loop if tmux ever fails immediately.
+      sleep 0.2
+    done
   '';
 
   cliphistPreview = pkgs.writeShellScriptBin "cliphist-preview" ''
@@ -111,6 +120,7 @@ config = {
       swaySmartKill  # Custom kill script
       swaySmartFloat # Custom float script
       swaySmartMove  # Custom move script
+      mainTerminal   # Custom background terminal script
       cliphistPreview # Custom clipboard preview script
       cliphistMenu    # Custom clipboard menu script
       cliphistTextWatcher # Custom clipboard text watcher
@@ -142,7 +152,7 @@ config = {
 
       # --- AUTOSTART ---
       # Launch the special background terminal
-      exec $term --app-id="foot-bg" -e tmux new-session -A -s main
+      exec $term --app-id="foot-bg" -e main-terminal
 
       exec autotiling-rs
 
@@ -188,6 +198,7 @@ config = {
       bindsym $mod+q exec $term
       bindsym $mod+a exec librewolf
       bindsym $mod+Escape exec hyprlock
+      bindsym $mod+r exec tofi-drun
 
       bindsym $mod+v exec pkill -f "[a]pp-id=cliphist-menu" || $term --app-id="cliphist-menu" -e cliphist-menu
 
