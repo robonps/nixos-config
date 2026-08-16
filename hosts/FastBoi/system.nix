@@ -19,6 +19,7 @@ in
     ../../modules/gaming/system.nix # Gaming
     ../../modules/ssh-server/system.nix # SSH server configuration
     ../../modules/vm/system.nix # Virtualization support
+    #../../modules/sunshine/system.nix # Game streaming
   ];
 
   boot.initrd ={
