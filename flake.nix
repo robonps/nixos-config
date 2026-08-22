@@ -20,6 +20,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    plasma-manager = {
+      url = "github:nix-community/plasma-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
+
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
   };
 
@@ -30,6 +36,7 @@
     nix-vscode-extensions,
     hytale-launcher,
     nix-flatpak,
+    plasma-manager,
     ...
   } @ inputs: {
     nixosConfigurations.FastBoi = nixpkgs.lib.nixosSystem {

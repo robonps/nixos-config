@@ -1,7 +1,7 @@
 {pkgs, ...}: {
   imports = [
     ../../common/user.nix
-    ../../modules/sway-minimal/user.nix
+    ../../modules/kde/user.nix
   ];
 
 

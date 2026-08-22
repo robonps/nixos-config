@@ -10,7 +10,7 @@
     # Include the results of the hardware scan.
     ./hardware.nix
     ../../common/system.nix # Common system config.
-    ../../modules/sway-minimal/system.nix # Desktop
+    ../../modules/kde/system.nix # Desktop
   ];
 
   xdg.portal.enable = true; # Enable XDG portals for better sandboxing and compatibility with Wayland apps
