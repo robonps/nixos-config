@@ -12,6 +12,10 @@
     dedicatedServer.openFirewall = true;
 
     gamescopeSession.enable = true;
+
+    package = pkgs.steam.override {
+      extraArgs = "-pipewire";
+    };
   };
 
   programs.gamemode.enable = true;
