@@ -167,6 +167,7 @@
     freecad
     deezer-desktop
     obsidian
+    brave
 
     # Comms
     vesktop
