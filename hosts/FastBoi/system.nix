@@ -20,6 +20,7 @@ in
     ../../modules/ssh-server/system.nix # SSH server configuration
     ../../modules/vm/system.nix # Virtualization support
     #../../modules/sunshine/system.nix # Game streaming
+    ../../modules/ai/system.nix # AI tools
   ];
 
   boot.initrd ={

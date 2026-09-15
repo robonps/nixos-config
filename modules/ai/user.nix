@@ -1,5 +1,6 @@
 {pkgs, ...}: {
   home.packages = with pkgs; [
-    jan
+    #jan
+    lmstudio
   ];
 }

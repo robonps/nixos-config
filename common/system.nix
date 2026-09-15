@@ -147,7 +147,7 @@ in
   services.flatpak.packages =[
     "com.stremio.Stremio"
     "org.jdownloader.JDownloader"
-    "ai.lmstudio.lm-studio"
+    #"ai.lmstudio.lm-studio"
   ];
   services.flatpak.uninstallUnmanaged = true;
   environment.sessionVariables = {
