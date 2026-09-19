@@ -8,7 +8,7 @@ configuration {
     display-window:             " ";
     drun-display-format:        "{name}";
     hover-select:               false;
-    scroll-method:              1;
+    scroll-method:              0;
     me-select-entry:            "";
     me-accept-entry:            "MousePrimary";
     window-format:              "{w} · {c} · {t}";
