@@ -1,4 +1,9 @@
 { pkgs, inputs, ... }: {
+
+  imports = [
+    ./osu/user.nix
+  ];
+
   home.packages = with pkgs; [
     (prismlauncher.override {
       additionalLibs = [
@@ -11,9 +16,6 @@
     })
 
     inputs.hytale-launcher.packages.${pkgs.stdenv.hostPlatform.system}.default
-
-
-    osu-lazer-bin
 
     heroic # For Epic Games
     #lutris # For GOG and other games

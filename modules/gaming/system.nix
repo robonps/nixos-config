@@ -2,6 +2,7 @@
 
   imports = [
     #./vr-test.nix
+    ./osu/system.nix
   ];
 
   programs.steam = {
