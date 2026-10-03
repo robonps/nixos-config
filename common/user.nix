@@ -151,6 +151,16 @@
     setSessionVariables = true;
   };
 
+  xdg.mimeApps = {
+    enable = true;
+
+    defaultApplications = {
+      "text/html" = "librewolf.desktop";
+      "x-scheme-handler/http" = "librewolf.desktop";
+      "x-scheme-handler/https" = "librewolf.desktop";
+    };
+  };
+
   home.packages = with pkgs; [
     # GUI Apps
     orca-slicer
