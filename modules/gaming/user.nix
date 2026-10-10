@@ -20,6 +20,6 @@
     heroic # For Epic Games
     #lutris # For GOG and other games
 
-    limo # Modding tool for games
+    #limo # Modding tool for games
   ];
 }
