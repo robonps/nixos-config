@@ -125,6 +125,7 @@ struct Battery {
     kind: c_uint,
     present: c_int,
     power_supply: c_int,
+    battery_missing: bool,
     percentage: f64,
     level: c_uint,
     state: c_uint,
@@ -134,6 +135,7 @@ impl Battery {
     unsafe fn read(device: Object) -> Self {
         let mut result = Self::default();
         let mut model: *mut c_char = ptr::null_mut();
+        let mut icon_name: *mut c_char = ptr::null_mut();
         // GObject properties have stable types in UPower: enums are guint,
         // booleans gboolean, percentage double, and model an allocated string.
         unsafe {
@@ -153,18 +155,30 @@ impl Battery {
                 &mut result.state,
                 c"model".as_ptr(),
                 &mut model,
+                c"icon-name".as_ptr(),
+                &mut icon_name,
                 ptr::null::<c_char>(),
             );
             if !model.is_null() {
                 result.model = CStr::from_ptr(model).to_string_lossy().into_owned();
                 g_free(model.cast());
             }
+            if !icon_name.is_null() {
+                result.battery_missing = CStr::from_ptr(icon_name) == c"battery-missing-symbolic";
+                g_free(icon_name.cast());
+            }
         }
         result
     }
 
     fn display(&self) -> Option<(String, String)> {
-        if self.present == 0 || self.power_supply != 0 || matches!(self.kind, 1 | 3) {
+        // Receiver-backed mice remain present with a cached percentage when off.
+        // UPower marks those readings with its missing-battery icon instead.
+        if self.present == 0
+            || self.battery_missing
+            || self.power_supply != 0
+            || matches!(self.kind, 1 | 3)
+        {
             return None;
         }
         // UPower BatteryLevel: UNKNOWN=0, NONE=1, then coarse charge levels.
@@ -454,5 +468,20 @@ mod tests {
             json_string("A\"\\\n\t\u{1}󰍽"),
             "\"A\\\"\\\\\\n\\t\\u0001󰍽\""
         );
+    }
+
+    #[test]
+    fn switched_off_mouse_with_cached_charge_is_hidden() {
+        let offline = Battery {
+            battery_missing: true,
+            state: 0,
+            ..mouse()
+        };
+        assert!(offline.display().is_none());
+        let online = Battery {
+            battery_missing: false,
+            ..offline
+        };
+        assert!(online.display().is_some());
     }
 }
