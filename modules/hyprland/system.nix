@@ -19,6 +19,7 @@
   # Required for file manager to see USB sticks
   services.udisks2.enable = true;
   services.gvfs.enable = true;
+  services.upower.enable = true;
 
   services.gnome.gnome-keyring.enable = true;
   environment.pathsToLink = [ "/share/thumbnailers" ];

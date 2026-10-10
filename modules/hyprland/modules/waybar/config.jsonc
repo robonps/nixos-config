@@ -15,7 +15,8 @@
 
     "clock": {
         "format": "{:%I:%M %p}",
-        "tooltip-format": "{:%A, %B %d, %Y}",
+        "interval": 1,
+        "tooltip-format": "{:%I:%M:%S %p\n%A, %B %d, %Y}",
         "on-click": "wlogout -b 5",
         "on-click-right": "kitty --class floating -e bash -c 'tput civis; fastfetch; read -s -n 1'"
     },
@@ -67,6 +68,7 @@
         "modules": [
             "network",
             "pulseaudio",
+            "custom/device-batteries",
             "backlight",
             "battery",
             "bluetooth",
@@ -95,6 +97,16 @@
         "tooltip-format": "{desc} ({volume}%)"
     },
 
+    "custom/device-batteries": {
+        "format": "{}",
+        "return-type": "json",
+        "exec": "waybar-device-batteries",
+        "restart-interval": 5,
+        "hide-empty-text": true,
+        "escape": true,
+        "tooltip": true
+    },
+
     "backlight": {
         "format": "{icon} {percent}%",
         "format-icons": ["", "", "", "", "", "", "", "", ""],
@@ -114,7 +126,7 @@
         "format": "",
         "format-disabled": "", // Hide when Bluetooth is off
         "format-off": "",
-        "format-connected": " {device_alias}",
+        "format-connected": "󰂱",
         "on-click": "kitty --class floating -e bluetuith",
         "on-click-right": "sh -c 'bluetoothctl show | grep Powered | grep -q yes && bluetoothctl power off || bluetoothctl power on'",
         "tooltip-format": "{device_enumerate}",

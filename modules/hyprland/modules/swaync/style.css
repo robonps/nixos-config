@@ -321,10 +321,11 @@
   background: alpha(var(--cc-bg), var(--cc-bg-alpha));
   color: var(--text-color);
   border-radius: var(--border-radius);
-  border: 1px solid var(--noti-border-color);
+  /* Keep decoration outside the fixed content size to avoid empty scrolling. */
+  border: none;
+  outline: 1px solid var(--noti-border-color);
   
-  min-width: 500px;
-  padding: 12px;
+  padding: 0;
 }
 
 .control-center .control-center-list-placeholder {

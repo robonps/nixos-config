@@ -5,8 +5,10 @@
   "layer": "overlay",
   "control-center-layer": "top",
   "layer-shell": true,
+  "layer-shell-cover-screen": false,
   "cssPriority": "user",
   "control-center-width": 420,
+  "control-center-height": 700,
   "control-center-margin-top": 12,
   "control-center-margin-bottom": 12,
   "control-center-margin-right": 12,
@@ -20,7 +22,7 @@
   "timeout": 10,
   "timeout-low": 5,
   "timeout-critical": 0,
-  "fit-to-screen": true,
+  "fit-to-screen": false,
   "keyboard-shortcuts": true,
   "image-visibility": "when-available",
   "transition-time": 200,
@@ -31,9 +33,7 @@
     "title",
     "notifications",
     "mpris",
-    "volume",
-    "backlight",
-    "buttons-grid"
+    "backlight"
   ],
   "widget-config": {
     "title": {
@@ -45,57 +45,8 @@
       "image-size": 90,
       "image-radius": 12
     },
-    "volume": {
-      "label": "󰕾"
-    },
     "backlight": {
       "label": "󰃟"
-    },
-    "buttons-grid": {
-      "actions": [
-        {
-          "label": "󰝟",
-          "type": "toggle",
-          "command": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
-          "update-command": "wpctl get-volume @DEFAULT_AUDIO_SINK@ | grep -q '\\[MUTED\\]' && echo true || echo false"
-        },
-        {
-          "label": "󰍭",
-          "type": "toggle",
-          "command": "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle",
-          "update-command": "wpctl get-volume @DEFAULT_AUDIO_SOURCE@ | grep -q '\\[MUTED\\]' && echo true || echo false"
-        },
-        {
-          "label": "󰖩",
-          "type": "toggle",
-          "command": "sh -c 'nmcli radio wifi | grep -q enabled && nmcli radio wifi off || nmcli radio wifi on'",
-          "update-command": "sh -c 'nmcli radio wifi | grep -q enabled && echo true || echo false'"
-        },
-        {
-          "label": "󰂯",
-          "type": "toggle",
-          "command": "sh -c 'bluetoothctl show | grep Powered | grep -q yes && bluetoothctl power off || bluetoothctl power on'",
-            "update-command": "sh -c 'bluetoothctl show | grep Powered | grep -q yes && echo true || echo false'"
-        },
-        {
-          "label": "󰤄",
-          "command": "swaync-client -d",
-          "update-command": "swaync-client -D",
-          "type": "toggle"
-        },
-        {
-          "label": "󰀟",
-          "command": "gnome-network-displays"
-        },
-        {
-          "label": "",
-          "command": "hyprlock"
-        },
-        {
-          "label": "",
-          "command": "wlogout"
-        }
-      ]
     }
   }
 }

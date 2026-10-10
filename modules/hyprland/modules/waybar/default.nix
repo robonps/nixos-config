@@ -1,4 +1,7 @@
-{...}: {
+{pkgs, ...}: let
+  device-batteries = pkgs.callPackage ./device-batteries.nix {};
+in {
+  home.packages = [device-batteries];
   programs.waybar.enable = true;
   xdg.configFile = {
     "waybar/config.jsonc".source = ./config.jsonc;

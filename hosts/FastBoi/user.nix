@@ -1,4 +1,4 @@
-{pkgs, ...}: let
+{pkgs, lib, ...}: let
   toggle-birghtness = pkgs.writeShellScriptBin "toggle-brightness" (builtins.readFile ./toggle-brightness.sh);
 in {
   imports = [
@@ -16,6 +16,21 @@ in {
   home.packages = [
     toggle-birghtness
   ];
+
+  xdg.configFile."waybar/config.jsonc".source = lib.mkForce (
+    pkgs.writeText "fastboi-waybar-config.jsonc" (
+      lib.replaceStrings [ ''"pulseaudio",'' ] [ "" ]
+        (builtins.readFile ../../modules/hyprland/modules/waybar/config.jsonc)
+    )
+  );
+
+  # Apply these overrides after the shared bindings generated from settings.
+  wayland.windowManager.hyprland.extraConfig = ''
+    unbind = , XF86AudioMute
+    unbind = , XF86AudioRaiseVolume
+    unbind = , XF86AudioLowerVolume
+    bindl = , XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
+  '';
 
   wayland.windowManager.hyprland.settings = {
     bind = [

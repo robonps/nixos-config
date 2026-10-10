@@ -45,6 +45,8 @@
         "elastic, 0.36, 1.63, 0.65, 1"
 
         "gentle, 0.1, 1.1, 0.1, 1.03"
+
+        "panel, 0.2, 1.35, 0.3, 1"
       ];
 
       animation = [
@@ -52,6 +54,9 @@
         "windowsOut, 1, 6, jelly, popin 80%"
 
         "windowsMove, 1, 4, gentle, slide"
+
+        "layersIn, 1, 3.5, panel, slide"
+        "layersOut, 1, 3, default, slide"
 
         "border, 1, 1, jelly"
         "fade, 1, 4, default"
