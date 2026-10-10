@@ -114,7 +114,7 @@ in
 
   hardware.logitech.wireless.enable = true;
   programs.solaar.enable = true;
-  programs.solaar.userService.enable = true;
+  programs.solaar.userService.enable = false;
 
   # The Lightspeed mouse also advertises keyboard keys, so keyd's wildcard
   # grabs it and loses high-resolution wheel events through its virtual pointer.
