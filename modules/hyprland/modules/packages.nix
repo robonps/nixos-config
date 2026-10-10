@@ -6,6 +6,7 @@
     font-awesome_6 # Icon font
 
     awww # The Wallpaper Daemon (supports animations)
+    quickshell # Animated desktop panels and the wallpaper carousel
     matugen # The Color Generator
     imagemagick # Thumbnail generation
 

@@ -6,7 +6,7 @@
 }: let
   # We create a script that takes a path to an image as an argument
   theme-switcher = pkgs.writeShellScriptBin "theme-switcher" (builtins.readFile ./scripts/theme-switcher.sh);
-  wall-menu = pkgs.writeShellScriptBin "wall-menu" (builtins.readFile ./scripts/wall-menu.sh);
+  wall-menu = pkgs.callPackage ./wallpaper-picker.nix {inherit theme-switcher;};
 
 in {
   home.packages = [theme-switcher wall-menu];
