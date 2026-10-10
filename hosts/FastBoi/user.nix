@@ -1,5 +1,23 @@
 {pkgs, lib, ...}: let
   toggle-birghtness = pkgs.writeShellScriptBin "toggle-brightness" (builtins.readFile ./toggle-brightness.sh);
+  toggle-microphone = pkgs.writeShellApplication {
+    name = "toggle-microphone";
+    runtimeInputs = [pkgs.wireplumber pkgs.libnotify];
+    text = ''
+      wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
+      state=$(wpctl get-volume @DEFAULT_AUDIO_SOURCE@)
+      if [[ "$state" == *"[MUTED]"* ]]; then
+        message="Microphone muted"
+        icon="microphone-sensitivity-muted-symbolic"
+      else
+        message="Microphone unmuted"
+        icon="audio-input-microphone-symbolic"
+      fi
+      notify-send --app-name="Microphone" --icon="$icon" --expire-time=2000 \
+        --hint=string:x-canonical-private-synchronous:microphone-mute \
+        --hint=boolean:transient:true "$message"
+    '';
+  };
 in {
   imports = [
     ../../common/user.nix
@@ -15,6 +33,7 @@ in {
 
   home.packages = [
     toggle-birghtness
+    toggle-microphone
   ];
 
   xdg.configFile."waybar/config.jsonc".source = lib.mkForce (
@@ -29,7 +48,7 @@ in {
     unbind = , XF86AudioMute
     unbind = , XF86AudioRaiseVolume
     unbind = , XF86AudioLowerVolume
-    bindl = , XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
+    bindl = , XF86AudioMute, exec, ${toggle-microphone}/bin/toggle-microphone
   '';
 
   wayland.windowManager.hyprland.settings = {

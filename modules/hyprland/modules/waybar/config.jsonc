@@ -67,8 +67,9 @@
         "orientation": "horizontal",
         "modules": [
             "network",
-            "pulseaudio",
             "custom/device-batteries",
+            "pulseaudio",
+            "pulseaudio#microphone",
             "backlight",
             "battery",
             "bluetooth",
@@ -95,6 +96,17 @@
         },
         "on-click": "pavucontrol",
         "tooltip-format": "{desc} ({volume}%)"
+    },
+
+    "pulseaudio#microphone": {
+        "format": "{format_source}",
+        "format-muted": "{format_source}",
+        "format-source": "",
+        "format-source-muted": "󰍭",
+        "tooltip-format": "Microphone muted\n{source_desc}",
+        "on-click": "pavucontrol",
+        "on-scroll-up": "true",
+        "on-scroll-down": "true"
     },
 
     "custom/device-batteries": {

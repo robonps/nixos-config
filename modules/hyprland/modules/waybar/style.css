@@ -85,6 +85,13 @@ window#waybar {
 }
 
 /* --- STATUS COLORS --- */
+#pulseaudio.microphone.source-muted { color: @error; }
+#pulseaudio.microphone:not(.source-muted) {
+    padding: 0;
+    min-width: 0;
+    margin: 0;
+}
+
 #battery.charging { color: #a6e3a1; }
 #battery.critical:not(.charging) { color: @error; }
 
