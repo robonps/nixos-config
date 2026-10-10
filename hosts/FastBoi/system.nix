@@ -18,7 +18,7 @@ in
     ../../modules/hyprland/system.nix # Desktop
     ../../modules/gaming/system.nix # Gaming
     ../../modules/ssh-server/system.nix # SSH server configuration
-    ../../modules/vm/system.nix # Virtualization support
+    #../../modules/vm/system.nix # Virtualization support
     #../../modules/sunshine/system.nix # Game streaming
     ../../modules/ai/system.nix # AI tools
   ];
@@ -97,7 +97,39 @@ in
     stdenv.cc.cc.lib
   ];
 
+  # for g502 mouse
+  services.ratbagd = {
+    enable = true;
+    # Force NixOS to compile the latest master branch with G502 X support
+    package = pkgs.libratbag.overrideAttrs (oldAttrs: {
+      src = pkgs.fetchFromGitHub {
+        owner = "libratbag";
+        repo = "libratbag";
+        rev = "master";
+        # This fetches the absolute latest code definitions
+        sha256 = "sha256-0uRBbVI5GrXyUUvDlpa2w5djyRWMbl6rzpdOWR2TkPg=";
+      };
+    });
+  };
+
+  hardware.logitech.wireless.enable = true;
+  programs.solaar.enable = true;
+  programs.solaar.userService.enable = true;
+
+  # The Lightspeed mouse also advertises keyboard keys, so keyd's wildcard
+  # grabs it and loses high-resolution wheel events through its virtual pointer.
+  services.keyd.keyboards.default.ids = [ "-046d:4099" ];
+
+  environment.etc."libratbag/logitech-g502-x-plus.device".text = ''
+    [Device]
+    Name=Logitech G502 X Plus
+    DeviceMatch=usb:046d:c095;usb:046d:c547
+    Driver=hidpp20
+  '';
+
   environment.systemPackages = with pkgs; [
+
+    piper
 
     mesa
 
