@@ -4,12 +4,23 @@
   config,
   ...
 }: let
-  # We create a script that takes a path to an image as an argument
-  theme-switcher = pkgs.writeShellScriptBin "theme-switcher" (builtins.readFile ./scripts/theme-switcher.sh);
-  wall-menu = pkgs.callPackage ./wallpaper-picker.nix {inherit theme-switcher;};
+  wallpaper-manager = pkgs.writeShellApplication {
+    name = "wallpaper-manager";
+    runtimeInputs = [pkgs.python3 pkgs.hyprland pkgs.awww pkgs.mpvpaper pkgs.ffmpeg pkgs.imagemagick pkgs.procps];
+    text = ''
+      exec python3 ${./scripts/wallpaper-manager.py} "$@"
+    '';
+  };
+  theme-switcher = pkgs.writeShellApplication {
+    name = "theme-switcher";
+    runtimeInputs = [wallpaper-manager pkgs.coreutils pkgs.util-linux pkgs.jq pkgs.imagemagick pkgs.matugen
+      pkgs.procps pkgs.libnotify pkgs.pywalfox-native pkgs.kdePackages.plasma-workspace pkgs.glib pkgs.swaynotificationcenter];
+    text = builtins.readFile ./scripts/theme-switcher.sh;
+  };
+  wall-menu = pkgs.callPackage ./wallpaper-picker.nix {inherit theme-switcher wallpaper-manager;};
 
 in {
-  home.packages = [theme-switcher wall-menu];
+  home.packages = [theme-switcher wall-menu wallpaper-manager];
 
   # Define the Matugen Templates
   xdg.configFile."matugen/templates/waybar.css".text = ''

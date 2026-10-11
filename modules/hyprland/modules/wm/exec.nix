@@ -4,7 +4,8 @@
       "pkill -9 waybar; sleep 2; systemctl --user restart waybar"
 
       # Wallpaper
-      "awww-daemon &"
+      "wallpaper-manager daemon"
+      "wall-menu --daemon"
 
       # Run file browser in the background to make it load fast
       "nautilus --gapplication-service &"
