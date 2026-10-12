@@ -42,8 +42,12 @@
       "$mainMod, 9, workspace, 9"
       "$mainMod, 0, workspace, 10"
 
+      # Previous/next workspace on the focused monitor (Win + < / > keys)
       "$mainMod, comma, workspace, m-1"
       "$mainMod, period, workspace, m+1"
+
+      # Quickly alternate between the current and previously focused workspace
+      "$mainMod, Tab, workspace, previous"
 
       "$mainMod, T, workspace, emptym"
       "$mainMod SHIFT, T, movetoworkspace, emptym"
@@ -65,8 +69,8 @@
       "$mainMod SHIFT, S, movetoworkspace, special:magic"
 
       # Scroll through existing workspaces with mainMod + scroll
-      "$mainMod, mouse_down, workspace, m+1"
-      "$mainMod, mouse_up, workspace, m-1"
+      #"$mainMod, mouse_down, workspace, m+1"
+      #"$mainMod, mouse_up, workspace, m-1"
 
       # Lock Session
       "$mainMod, escape, exec, loginctl lock-session"
