@@ -46,13 +46,13 @@ in pkgs.writeShellApplication {
     # Most opens only show the already loaded picker. Start it on demand if login
     # preloading has not happened yet, then wait briefly for its IPC registration.
     if ${pkgs.quickshell}/bin/qs ipc --path ${./wallpaper-picker.qml} call picker open \
-        "$WALLPAPER_PICKER_MONITOR" "$preview" >/dev/null 2>&1; then
+        "$WALLPAPER_PICKER_MONITOR" "$preview" "$WALLPAPER_PICKER_APPLY" >/dev/null 2>&1; then
       exit 0
     fi
     ${pkgs.quickshell}/bin/qs --daemonize --no-duplicate --path ${./wallpaper-picker.qml} "$@"
     for _ in {1..30}; do
       if ${pkgs.quickshell}/bin/qs ipc --path ${./wallpaper-picker.qml} call picker open \
-          "$WALLPAPER_PICKER_MONITOR" "$preview" >/dev/null 2>&1; then
+          "$WALLPAPER_PICKER_MONITOR" "$preview" "$WALLPAPER_PICKER_APPLY" >/dev/null 2>&1; then
         exit 0
       fi
       sleep 0.02

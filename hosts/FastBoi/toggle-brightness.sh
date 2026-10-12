@@ -42,6 +42,7 @@ if [ "$first_current" -gt 1 ]; then
     notif_val=1
     icon="weather-clear-night" # Standard icon name for dark
     text="Dimmed ($notif_val%)"
+    rgb_action=--off
 else
     # Currently dimmed: We will restore it
     if [ -f "$save_file_first" ]; then
@@ -51,6 +52,7 @@ else
     fi
     icon="weather-clear"       # Standard icon name for light
     text="Restored ($notif_val%)"
+    rgb_action=--restore
 fi
 
 # 4. NOTIFICATION (Instant Feedback)
@@ -64,6 +66,12 @@ notify-send \
 
 # 5. Apply to all monitors concurrently
 echo "Processing monitors..."
+
+# Fade the motherboard alongside the monitor changes; RGB failure must not
+# prevent monitor brightness from being restored.
+if command -v openrgb-tint &> /dev/null; then
+    (openrgb-tint "$rgb_action" || echo "Could not update motherboard brightness." >&2) &
+fi
 
 for bus in "${bus_array[@]}"; do
     (

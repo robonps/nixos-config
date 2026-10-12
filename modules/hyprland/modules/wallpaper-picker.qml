@@ -33,6 +33,7 @@ ShellRoot {
     property color foreground: "#eee7ef"
     property color accent: "#e3b4db"
     property bool preview: false
+    property string applyCommand: Quickshell.env("WALLPAPER_PICKER_APPLY")
     readonly property int step: 200
     property string monitorName: Quickshell.env("WALLPAPER_PICKER_MONITOR")
     readonly property string targetOutput: screens[targetIndex]?.target ?? "all"
@@ -40,7 +41,9 @@ ShellRoot {
 
     onSelectedChanged: applyError = ""
 
-    function open(monitor, previewMode) {
+    function open(monitor, previewMode, command) {
+        // A resident picker can outlive a rebuild of its theme helper.
+        if (command) applyCommand = command;
         monitorName = monitor || Hyprland.focusedMonitor?.name || Quickshell.screens[0]?.name || "";
         preview = previewMode;
         targetIndex = 0;
@@ -144,7 +147,7 @@ ShellRoot {
             applying = true;
             applyingPath = filtered[index].path;
             applyingLayout = layoutMode;
-            applyProcess.command = [Quickshell.env("WALLPAPER_PICKER_APPLY"), filtered[index].path,
+            applyProcess.command = [root.applyCommand, filtered[index].path,
                                     layoutMode, targetOutput];
             applyProcess.running = true;
         } else root.close();
@@ -232,7 +235,7 @@ ShellRoot {
     // Useful for controlling or inspecting an open picker without simulating keys.
     IpcHandler {
         target: "picker"
-        function open(monitor: string, preview: bool): void { root.open(monitor, preview); }
+        function open(monitor: string, preview: bool, command: string): void { root.open(monitor, preview, command); }
         function select(index: int): void { root.select(index); }
         function search(query: string): void { searchField.text = query; }
         function close(): void { root.close(); }

@@ -4,6 +4,11 @@
   config,
   ...
 }: let
+  openrgb-tint = pkgs.writeShellApplication {
+    name = "openrgb-tint";
+    runtimeInputs = [(pkgs.python3.withPackages (ps: [ps.openrgb-python])) pkgs.jq pkgs.coreutils];
+    text = builtins.readFile ./scripts/openrgb-tint.sh;
+  };
   wallpaper-manager = pkgs.writeShellApplication {
     name = "wallpaper-manager";
     runtimeInputs = [pkgs.python3 pkgs.hyprland pkgs.awww pkgs.mpvpaper pkgs.ffmpeg pkgs.imagemagick pkgs.procps];
@@ -13,14 +18,14 @@
   };
   theme-switcher = pkgs.writeShellApplication {
     name = "theme-switcher";
-    runtimeInputs = [wallpaper-manager pkgs.coreutils pkgs.util-linux pkgs.jq pkgs.imagemagick pkgs.matugen
+    runtimeInputs = [wallpaper-manager openrgb-tint pkgs.coreutils pkgs.util-linux pkgs.jq pkgs.imagemagick pkgs.matugen
       pkgs.procps pkgs.libnotify pkgs.pywalfox-native pkgs.kdePackages.plasma-workspace pkgs.glib pkgs.swaynotificationcenter];
     text = builtins.readFile ./scripts/theme-switcher.sh;
   };
   wall-menu = pkgs.callPackage ./wallpaper-picker.nix {inherit theme-switcher wallpaper-manager;};
 
 in {
-  home.packages = [theme-switcher wall-menu wallpaper-manager];
+  home.packages = [theme-switcher wall-menu wallpaper-manager openrgb-tint];
 
   # Define the Matugen Templates
   xdg.configFile."matugen/templates/waybar.css".text = ''

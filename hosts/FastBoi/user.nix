@@ -36,6 +36,15 @@ in {
     toggle-microphone
   ];
 
+  # Follow Matugen's primary colour with a dim, static motherboard tint.
+  xdg.configFile."openrgb/matugen.json".text = builtins.toJSON {
+    device = "ASRock B850M-X WiFi R2.0";
+    channel_order = "GRB"; # This motherboard swaps red/green in Direct mode.
+    intensity = 18; # Percentage of each RGB channel, independent of mode brightness.
+    saturation = 120; # 100 preserves the palette; 120 adds a little more colour.
+    transition_ms = 800; # Fade duration; 0 applies the colour immediately.
+  };
+
   xdg.configFile."waybar/config.jsonc".source = lib.mkForce (
     pkgs.writeText "fastboi-waybar-config.jsonc" (
       lib.replaceStrings [ ''"pulseaudio",'' ] [ "" ]
@@ -52,6 +61,7 @@ in {
   '';
 
   wayland.windowManager.hyprland.settings = {
+    exec-once = [ "openrgb-tint" ];
     bind = [
       "$mainMod SHIFT, Q, exec, toggle-brightness"
     ];

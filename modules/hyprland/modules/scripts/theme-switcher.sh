@@ -50,4 +50,6 @@ if [[ "$THEME_KEY" != "$PREVIOUS_KEY" ]]; then
   swaync-client -rs || true
 fi
 
+openrgb-tint || echo "Could not apply the motherboard tint; the desktop theme is still active." >&2
+
 notify-send "Wallpaper Changed" "$(basename "$(jq -r '.path' <<< "$RESULT")") · $(jq -r '.layout' <<< "$RESULT")" -i "$IMAGE" || true
