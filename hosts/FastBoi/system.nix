@@ -120,6 +120,13 @@ in
   # grabs it and loses high-resolution wheel events through its virtual pointer.
   services.keyd.keyboards.default.ids = [ "-046d:4099" ];
 
+
+  # RGB Lights
+  services.hardware.openrgb = {
+    enable = true;
+    motherboard = "amd";
+  };
+
   environment.etc."libratbag/logitech-g502-x-plus.device".text = ''
     [Device]
     Name=Logitech G502 X Plus
