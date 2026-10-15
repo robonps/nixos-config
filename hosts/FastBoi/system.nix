@@ -23,7 +23,21 @@ in
     ../../modules/ai/system.nix # AI tools
   ];
 
-  boot.initrd ={
+  boot.plymouth = {
+    enable = true;
+    theme = "bgrt";
+  };
+
+  # Keep the splash visible; Escape shows boot messages.
+  boot.consoleLogLevel = 3;
+  boot.kernelParams = [
+    "quiet"
+    "rd.udev.log_level=3"
+    "rd.systemd.show_status=auto"
+  ];
+
+  boot.initrd = {
+    verbose = false;
     availableKernelModules = [ "r8169" "amdgpu" ];
     network = {
       ssh = {
