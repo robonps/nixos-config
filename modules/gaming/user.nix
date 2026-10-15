@@ -21,5 +21,7 @@
     #lutris # For GOG and other games
 
     #limo # Modding tool for games
+
+    deadlock-mod-manager # For Deadlock
   ];
 }
