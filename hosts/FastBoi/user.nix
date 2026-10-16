@@ -1,4 +1,12 @@
 {pkgs, lib, ...}: let
+  # Use the existing SDK server rather than detecting/initialising hardware a
+  # second time with the GUI's separate ASRock channel-swap settings.
+  openrgb-client = pkgs.writeShellScriptBin "openrgb" ''
+    if [ "$#" -eq 0 ]; then
+      set -- --gui
+    fi
+    exec ${pkgs.openrgb}/bin/openrgb --client 127.0.0.1:6742 --nodetect "$@"
+  '';
   toggle-birghtness = pkgs.writeShellScriptBin "toggle-brightness" (builtins.readFile ./toggle-brightness.sh);
   toggle-microphone = pkgs.writeShellApplication {
     name = "toggle-microphone";
@@ -33,6 +41,7 @@ in {
   };
 
   home.packages = [
+    openrgb-client
     toggle-birghtness
     toggle-microphone
   ];
@@ -40,10 +49,19 @@ in {
   # Follow Matugen's primary colour with a dim, static motherboard tint.
   xdg.configFile."openrgb/matugen.json".text = builtins.toJSON {
     device = "ASRock B850M-X WiFi R2.0";
-    channel_order = "RGB"; # Confirmed by the current Direct-mode colour test.
+    channel_order = "GRB"; # Matches the server's pinned ASRock RGSwap settings.
     intensity = 18; # Percentage of each RGB channel, independent of mode brightness.
     saturation = 120; # 100 preserves the palette; 120 adds a little more colour.
     transition_ms = 800; # Fade duration; 0 applies the colour immediately.
+  };
+
+  xdg.desktopEntries."org.openrgb.OpenRGB" = {
+    name = "OpenRGB";
+    genericName = "RGB lighting control";
+    exec = "${openrgb-client}/bin/openrgb --gui";
+    icon = "OpenRGB";
+    terminal = false;
+    categories = [ "Utility" ];
   };
 
   xdg.configFile."waybar/config.jsonc".source = lib.mkForce (

@@ -141,6 +141,56 @@ in
     motherboard = "amd";
   };
 
+  # The ASRock driver ORs RGSwap with the controller's previous hardware bits.
+  # Explicit true values make its Direct-mode packing independent of what a
+  # previous GUI session or firmware left behind. The tint uses GRB to match.
+  systemd.services.openrgb.preStart = ''
+    ${pkgs.python3}/bin/python3 - <<'PY'
+    import json
+    from pathlib import Path
+
+    path = Path("/var/lib/OpenRGB/OpenRGB.json")
+    settings = json.loads(path.read_text()) if path.exists() else {}
+    settings.setdefault("ASRock Polychrome USB", {})["RGSwap"] = dict.fromkeys([
+        "RGB LED 1 Header", "RGB LED 2 Header",
+        "Addressable Header 1", "Addressable Header 2",
+        "Addressable Header 3/Audio", "PCH", "IO Cover", "PCB",
+    ], True)
+    temporary = path.with_suffix(".json.tmp")
+    temporary.write_text(json.dumps(settings, indent=4) + "\n")
+    temporary.replace(path)
+    PY
+  '';
+
+  # The driver restores RGSwap during detection even when the controller is
+  # already in Direct mode. Re-enter Direct once to clear those hardware bits;
+  # otherwise every colour frame can flash. Keep the pinned software mapping.
+  systemd.services.openrgb.postStart = ''
+    ${pkgs.python3.withPackages (ps: [ps.openrgb-python])}/bin/python3 - <<'PY'
+    import time
+    from openrgb import OpenRGBClient
+
+    for attempt in range(100):
+        try:
+            client = OpenRGBClient(name="Initialise motherboard Direct mode", protocol_version=3)
+            break
+        except OSError:
+            if attempt == 99:
+                raise
+            time.sleep(0.1)
+    try:
+        matches = [device for device in client.devices if device.name == "ASRock B850M-X WiFi R2.0"]
+        if len(matches) == 1:
+            device = matches[0]
+            colours = list(device.colors)
+            device.set_mode("Direct")
+            if colours:
+                device.set_colors(colours)
+    finally:
+        client.disconnect()
+    PY
+  '';
+
   environment.etc."libratbag/logitech-g502-x-plus.device".text = ''
     [Device]
     Name=Logitech G502 X Plus
