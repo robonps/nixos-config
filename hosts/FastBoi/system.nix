@@ -120,7 +120,7 @@ in
       src = pkgs.fetchFromGitHub {
         owner = "libratbag";
         repo = "libratbag";
-        rev = "master";
+        rev = "8235b5bb6032dea15901ab58a8218956f4494d08";
         # This fetches the absolute latest code definitions
         sha256 = "sha256-0uRBbVI5GrXyUUvDlpa2w5djyRWMbl6rzpdOWR2TkPg=";
       };
