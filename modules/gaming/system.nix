@@ -15,7 +15,7 @@
     gamescopeSession.enable = true;
 
     package = pkgs.steam.override {
-      extraArgs = "-pipewire";
+      extraArgs = "-pipewire -silent";
     };
   };
 
