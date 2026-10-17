@@ -3,7 +3,7 @@
 # Function to fetch weather
 get_weather() {
     # Set a timeout so it doesn't hang forever
-    bar_data=$(curl -s --max-time 15 "wttr.in/?format=%C|%t")
+    bar_data=$(curl -s --max-time 15 "wttr.in/Auckland,New_Zealand?format=%C|%t")
 }
 
 # --- RETRY LOGIC ---
@@ -19,7 +19,7 @@ while [ $count -lt $MAX_RETRIES ]; do
     # If valid, fetch tooltip and break the loop
     if [[ "$bar_data" == *"|"* ]]; then
         # Fetch tooltip only if the main data succeeded
-        tooltip_data=$(curl -s --max-time 15 "wttr.in/?0T")
+        tooltip_data=$(curl -s --max-time 15 "wttr.in/Auckland,New_Zealand?0T")
         success=true
         break
     fi

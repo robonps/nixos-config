@@ -35,7 +35,7 @@
         "interval": 3600,
         "signal": 8,
         "on-click-right": "pkill -SIGRTMIN+8 waybar",
-        "on-click": "kitty --class floating --title 'Weather' -o font_size=8 -o remember_window_size=no -o initial_window_width=82c -o initial_window_height=42c -e bash -c 'tput civis; curl wttr.in; read -s -n 1'"
+        "on-click": "kitty --class floating --title 'Weather' -o font_size=8 -o remember_window_size=no -o initial_window_width=82c -o initial_window_height=42c -e bash -c 'tput civis; curl wttr.in/Auckland,New_Zealand; read -s -n 1'"
     },
 
     "custom/notification": {
