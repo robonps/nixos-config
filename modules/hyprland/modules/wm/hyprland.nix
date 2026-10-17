@@ -2,6 +2,10 @@
   wayland.windowManager.hyprland = {
     enable = true;
 
+    settings.workspace = [
+      "1, persistent:true"
+    ];
+
     # Systemd intergration
     systemd.enable = false;
   };
