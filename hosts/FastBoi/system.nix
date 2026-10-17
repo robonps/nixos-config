@@ -21,6 +21,7 @@ in
     #../../modules/vm/system.nix # Virtualization support
     #../../modules/sunshine/system.nix # Game streaming
     ../../modules/ai/system.nix # AI tools
+    ../../modules/jonsbo-display/system.nix # AIO CPU temperature display
   ];
 
   boot.plymouth = {
