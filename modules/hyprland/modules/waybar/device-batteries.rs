@@ -358,11 +358,13 @@ fn main() {
     unsafe {
         let data = (&mut *state as *mut State).cast();
         let main_loop = g_main_loop_new(ptr::null_mut(), 0);
-        // G_BUS_TYPE_SYSTEM=1; watch also handles UPower starting or restarting.
+        // G_BUS_TYPE_SYSTEM=1, G_BUS_NAME_WATCHER_FLAGS_AUTO_START=1.
+        // Activate UPower if nothing else has requested it since login; otherwise
+        // watching alone can leave the indicator empty indefinitely.
         let watch = g_bus_watch_name(
             1,
             c"org.freedesktop.UPower".as_ptr(),
-            0,
+            1,
             Some(appeared),
             Some(vanished),
             data,
