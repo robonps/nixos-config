@@ -149,6 +149,8 @@ ShellRoot {
             applyingLayout = layoutMode;
             applyProcess.command = [root.applyCommand, filtered[index].path,
                                     layoutMode, targetOutput];
+            // The resident picker keeps the apply process alive while hidden.
+            root.close();
             applyProcess.running = true;
         } else root.close();
     }
@@ -226,7 +228,6 @@ ShellRoot {
             if (exitCode === 0) {
                 root.currentPath = root.applyingPath;
                 root.savedLayout = root.applyingLayout;
-                root.close();
             }
             else if (!root.applyError) root.applyError = "Could not apply wallpaper. Try another file.";
         }
