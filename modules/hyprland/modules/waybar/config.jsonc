@@ -9,7 +9,7 @@
     "spacing": 0,
     "reload_style_on_change": true,
 
-    "modules-left": ["clock", "hyprland/workspaces"],
+    "modules-left": ["clock", "ext/workspaces"],
     "modules-center": [],
     "modules-right": ["tray", "custom/weather", "group/system"],
 
@@ -21,8 +21,9 @@
         "on-click-right": "kitty --class floating -e bash -c 'tput civis; fastfetch; read -s -n 1'"
     },
 
-    "hyprland/workspaces": {
-        "disable-scroll": true,
+    // Use the Wayland protocol to avoid legacy Hyprland dispatch commands.
+    "ext/workspaces": {
+        "on-click": "activate",
         "all-outputs": false, 
         "format": "{name}",
     },
@@ -136,8 +137,8 @@
 
     "bluetooth": {
         "format": "",
-        "format-disabled": "", // Hide when Bluetooth is off
-        "format-off": "",
+        "format-disabled": "󰂲",
+        "format-off": "󰂲",
         "format-connected": "󰂱",
         "on-click": "kitty --class floating -e bluetuith",
         "on-click-right": "sh -c 'bluetoothctl show | grep Powered | grep -q yes && bluetoothctl power off || bluetoothctl power on'",
