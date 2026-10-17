@@ -27,6 +27,19 @@
 in {
   home.packages = [theme-switcher wall-menu wallpaper-manager openrgb-tint];
 
+  # Preserve the current palette on the first activation of the Lua config.
+  home.activation.migrateHyprlandColors = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    run ${pkgs.writeShellScript "migrate-hyprland-colors" ''
+      if [ -f "${config.xdg.configHome}/hypr/matugen-colors.conf" ] && \
+         [ ! -e "${config.xdg.configHome}/hypr/matugen-colors.lua" ]; then
+        ${pkgs.gnused}/bin/sed -n -E \
+          's/^[$](active_border|inactive_border) = (rgb\([[:xdigit:]]{6}\))$/hl.config({ general = { col = { \1 = "\2" } } })/p' \
+          "${config.xdg.configHome}/hypr/matugen-colors.conf" \
+          > "${config.xdg.configHome}/hypr/matugen-colors.lua"
+      fi
+    ''}
+  '';
+
   # Define the Matugen Templates
   xdg.configFile."matugen/templates/waybar.css".text = ''
     /* Pre-calculated RGBA strings for GTK compatibility */
@@ -38,9 +51,15 @@ in {
     @define-color secondary {{colors.secondary.default.hex}};
     @define-color error {{colors.error.default.hex}};
   '';
-  xdg.configFile."matugen/templates/hyprland.conf".text = ''
-    $active_border = rgb({{colors.primary.default.hex_stripped}})
-    $inactive_border = rgb({{colors.surface_container_highest.default.hex_stripped}})
+  xdg.configFile."matugen/templates/hyprland.lua".text = ''
+    hl.config({
+        general = {
+            col = {
+                active_border = "rgb({{colors.primary.default.hex_stripped}})",
+                inactive_border = "rgb({{colors.surface_container_highest.default.hex_stripped}})",
+            },
+        },
+    })
   '';
 
   xdg.configFile."matugen/templates/kitty.conf".text = ''
@@ -200,8 +219,9 @@ in {
     output_path = "${config.xdg.cacheHome}/matugen/colors-waybar.css"
 
     [templates.hyprland]
-    input_path = "${config.xdg.configHome}/matugen/templates/hyprland.conf"
-    output_path = "${config.xdg.configHome}/hypr/matugen-colors.conf"
+    input_path = "${config.xdg.configHome}/matugen/templates/hyprland.lua"
+    output_path = "${config.xdg.configHome}/hypr/matugen-colors.lua"
+    post_hook = "${pkgs.hyprland}/bin/hyprctl reload"
 
     [templates.kitty]
     input_path = "${config.xdg.configHome}/matugen/templates/kitty.conf"

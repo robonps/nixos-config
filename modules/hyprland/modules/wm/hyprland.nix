@@ -1,10 +1,16 @@
 {pkgs, ...}: {
+  xdg.configFile."hypr/config" = {
+    source = ./config;
+    recursive = true;
+  };
+
   wayland.windowManager.hyprland = {
     enable = true;
 
-    settings.workspace = [
-      "1, persistent:true"
-    ];
+    # Home Manager sets up Lua's search path and loads this entry point.
+    extraLuaFiles.main = ''
+      require("config")
+    '';
 
     # Systemd intergration
     systemd.enable = false;

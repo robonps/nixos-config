@@ -22,6 +22,8 @@ fi
 
 IMAGE=$(jq -r '.image' <<< "$RESULT")
 THEME_KEY=$(jq -r '.theme_key' <<< "$RESULT")
+# Regenerate the palette when the Hyprland template changes, even for the same wallpaper.
+THEME_KEY="$THEME_KEY:$(cksum < "$CONFIG_DIR/matugen/templates/hyprland.lua")"
 PREVIOUS_KEY=$(cat "$CACHE_DIR/themed" 2>/dev/null || true)
 
 # Repeating/spanning or changing outputs keeps the palette for this source.

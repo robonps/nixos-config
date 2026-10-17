@@ -1,24 +1,7 @@
 {
   pkgs,
-  lib,
-  config,
   ...
 }: {
-  wayland.windowManager.hyprland = {
-    enable = true;
-    extraConfig = ''
-      # Import the generated colors
-      source = ${config.xdg.configHome}/hypr/matugen-colors.conf
-
-      general {
-        # Use the variables defined in the imported file
-        col.active_border = $active_border
-        col.inactive_border = $inactive_border
-        border_size = 2
-      }
-    '';
-  };
-
   home.pointerCursor = {
     enable = true;
     gtk.enable = true; # Applies to GTK apps (LibreWolf, File Manager)
