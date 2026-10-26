@@ -126,6 +126,7 @@ struct Battery {
     present: c_int,
     power_supply: c_int,
     battery_missing: bool,
+    bluetooth: bool,
     percentage: f64,
     level: c_uint,
     state: c_uint,
@@ -136,6 +137,7 @@ impl Battery {
         let mut result = Self::default();
         let mut model: *mut c_char = ptr::null_mut();
         let mut icon_name: *mut c_char = ptr::null_mut();
+        let mut native_path: *mut c_char = ptr::null_mut();
         // GObject properties have stable types in UPower: enums are guint,
         // booleans gboolean, percentage double, and model an allocated string.
         unsafe {
@@ -157,6 +159,8 @@ impl Battery {
                 &mut model,
                 c"icon-name".as_ptr(),
                 &mut icon_name,
+                c"native-path".as_ptr(),
+                &mut native_path,
                 ptr::null::<c_char>(),
             );
             if !model.is_null() {
@@ -167,6 +171,10 @@ impl Battery {
                 result.battery_missing = CStr::from_ptr(icon_name) == c"battery-missing-symbolic";
                 g_free(icon_name.cast());
             }
+            if !native_path.is_null() {
+                result.bluetooth = CStr::from_ptr(native_path).to_bytes().starts_with(b"/org/bluez/");
+                g_free(native_path.cast());
+            }
         }
         result
     }
@@ -174,8 +182,11 @@ impl Battery {
     fn display(&self) -> Option<(String, String)> {
         // Receiver-backed mice remain present with a cached percentage when off.
         // UPower marks those readings with its missing-battery icon instead.
+        // Bluetooth devices can have this icon merely because their charge state
+        // is unknown, even with a valid percentage. UPower removes their device
+        // when the Bluetooth battery interface disappears on disconnect.
         if self.present == 0
-            || self.battery_missing
+            || (self.battery_missing && !self.bluetooth)
             || self.power_supply != 0
             || matches!(self.kind, 1 | 3)
         {
@@ -485,5 +496,25 @@ mod tests {
             ..offline
         };
         assert!(online.display().is_some());
+    }
+
+    #[test]
+    fn bluetooth_headset_with_unknown_state_still_shows_percentage() {
+        let headset = Battery {
+            kind: 17,
+            present: 1,
+            bluetooth: true,
+            battery_missing: true,
+            percentage: 50.0,
+            level: 1,
+            state: 0,
+            model: "WH-1000XM4".into(),
+            ..Battery::default()
+        };
+        assert_eq!(
+            headset.display(),
+            Some(("󰋎 50%".into(), "WH-1000XM4: 50% (unknown)".into()))
+        );
+        assert!(Battery { present: 0, ..headset }.display().is_none());
     }
 }

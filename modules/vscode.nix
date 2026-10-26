@@ -10,6 +10,8 @@
         vscode-extensions.ms-azuretools.vscode-containers
 
         vscode-marketplace.jnoortheen.nix-ide
+        vscode-marketplace.mkhl.direnv
+        vscode-marketplace.ms-toolsai.jupyter
       ];
 
       userSettings = {

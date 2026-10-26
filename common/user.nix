@@ -198,4 +198,10 @@
     # Other Utils
     easyeffects
   ];
+
+  # enable direnv and nix-direnv for automatic environment variable management
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+  };
 }
