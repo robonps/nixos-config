@@ -28,6 +28,12 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("openrgb-tint")
 end)
 
+
+hl.device({
+    name = "logitech-g502-x-plus-1",
+    scroll_factor = 0.5,
+})
+
 -- Pin workspaces to specific screens if needed:
 -- hl.workspace_rule({ workspace = "1", monitor = "desc:Philips Consumer Electronics Company PHL 241S6Q UHB1709022150", default = true })
 -- hl.workspace_rule({ workspace = "2", monitor = "desc:ASUSTek COMPUTER INC XG27ACMES W1LMTF197027", default = true })
