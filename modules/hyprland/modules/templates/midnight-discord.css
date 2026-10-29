@@ -2154,4 +2154,217 @@ body {
   fill: var(--text-0) !important;
 }
 
+/* ===============================================================
+   MIDNIGHT: RESPONSIVE LEFT SIDEBAR
+   At narrow window sizes, slide the server + channel lists over chat.
+   Hover the slim left-side rail (or focus inside) to reveal the drawer.
+   At wider sizes the stock Midnight layout stays untouched.
+   =============================================================== */
 
+@media screen and (max-width: 1000px) {
+    body {
+        --midnight-narrow-rail: 26px;
+        --midnight-sidebar-min-width: 320px;
+        --midnight-sidebar-open-duration: 200ms;
+        --midnight-sidebar-close-duration: 150ms;
+        --midnight-sidebar-close-delay: 80ms;
+    }
+
+    /*
+     * Reserve only the rail in Discord's outer grid. Keeping these tracks
+     * constant lets the drawer animate without reflowing chat every frame.
+     * Preserve the named lines used by Discord's nested subgrids.
+     */
+    #app-mount .base__5e434:has(.sidebar__5e434) {
+        grid-template-columns:
+            [start] var(--midnight-narrow-rail)
+            [guildsEnd] 0px
+            [channelsEnd] minmax(0, 1fr)
+            [end] !important;
+    }
+
+    /* Keep the channel header and other chat layers below the overlay drawer. */
+    #app-mount .page__5e434 {
+        isolation: isolate;
+        z-index: 0;
+    }
+
+    /*
+     * Own the horizontal tracks so width applies; retain the vertical subgrid.
+     * Recreate the named-area boundaries inherited by the original subgrid,
+     * or guildsList/channelsList are placed in extra implicit columns.
+     * Use Discord's saved sidebar width, capped to leave some chat visible.
+     * Animate transform only: https://web.dev/articles/animations-guide
+     */
+    #app-mount .sidebar__5e434 {
+        grid-template-columns:
+            [start guildsList-start] var(--custom-guild-list-width, 66px)
+            [guildsEnd guildsList-end channelsList-start] minmax(0, 1fr)
+            [channelsEnd channelsList-end] !important;
+        width: min(max(var(--midnight-sidebar-min-width), var(--custom-guild-sidebar-width, 340px)), calc(100vw - var(--midnight-narrow-rail))) !important;
+        min-width: 0 !important;
+        max-width: none !important;
+        margin-inline: 0 !important;
+        justify-self: start;
+        position: relative;
+        z-index: 10;
+        box-sizing: border-box;
+        background: var(--background-base-lower);
+        overflow: clip !important;
+        clip-path: inset(0);
+        transform: translateX(calc(var(--midnight-narrow-rail) - 100%));
+        transition: transform var(--midnight-sidebar-close-duration)
+            cubic-bezier(0.4, 0, 1, 1) var(--midnight-sidebar-close-delay) !important;
+    }
+
+    #app-mount .sidebar__5e434 .sidebarList__5e434 {
+        width: auto !important;
+        min-width: 0 !important;
+    }
+
+    /* Fade contents away to leave a clean rail; keep them keyboard-focusable. */
+    #app-mount .sidebar__5e434 > * {
+        opacity: 0 !important;
+        pointer-events: none !important;
+        transition: opacity 100ms ease-in var(--midnight-sidebar-close-delay) !important;
+    }
+
+    /* A small handle makes the collapsed hover target visible. */
+    #app-mount .sidebar__5e434::before {
+        content: '';
+        position: absolute;
+        right: calc((var(--midnight-narrow-rail) - 3px) / 2);
+        top: calc(50% - 16px);
+        width: 3px;
+        height: 32px;
+        border-radius: 3px;
+        background: var(--text-muted);
+        pointer-events: none;
+        opacity: 0.6;
+        transition: opacity 100ms ease-out var(--midnight-sidebar-close-delay);
+    }
+
+    #app-mount .sidebar__5e434:is(:hover, :focus-within) {
+        transform: translateX(0);
+        transition: transform var(--midnight-sidebar-open-duration)
+            cubic-bezier(0, 0, 0.2, 1) !important;
+    }
+
+    #app-mount .sidebar__5e434:is(:hover, :focus-within) > * {
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        transition: opacity 120ms ease-out !important;
+    }
+
+    #app-mount .sidebar__5e434:is(:hover, :focus-within)::before {
+        opacity: 0;
+        transition-delay: 0s;
+    }
+}
+
+@media screen and (max-width: 1000px) and (prefers-reduced-motion: reduce) {
+    #app-mount .base__5e434 .sidebar__5e434,
+    #app-mount .base__5e434 .sidebar__5e434 > *,
+    #app-mount .base__5e434 .sidebar__5e434::before {
+        transition: none !important;
+    }
+}
+
+/* Keep window navigation, channel controls, and search inside narrow windows. */
+@media screen and (max-width: 1000px) {
+    #app-mount .bar_c38106 {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        gap: 8px;
+        min-width: 0;
+        padding-inline: 12px;
+        padding-inline-start: calc(var(--midnight-narrow-rail) + 12px);
+    }
+
+    /* In-flow title cannot overlap the history buttons or window controls. */
+    #app-mount .bar_c38106 .title_c38106 {
+        grid-area: 1 / 2;
+        position: static;
+        min-width: 0;
+        overflow: hidden;
+    }
+
+    #app-mount .bar_c38106 .title_c38106 > * {
+        min-width: 0;
+        max-width: 100%;
+        overflow: hidden;
+    }
+
+    #app-mount .bar_c38106 .title_c38106 [class*="text-"] {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    #app-mount .bar_c38106 :is(.leading_c38106, .trailing_c38106) {
+        gap: 8px;
+    }
+
+    #app-mount .bar_c38106 .leading_c38106 {
+        grid-area: 1 / 1;
+    }
+
+    #app-mount .bar_c38106 .trailing_c38106 {
+        grid-area: 1 / 3;
+    }
+
+    #app-mount .page__5e434 > *,
+    #app-mount .chat_f75fb0,
+    #app-mount .subtitleContainer_f75fb0 {
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    #app-mount .subtitleContainer_f75fb0 .container__9293f {
+        min-width: 0;
+        padding-inline: 12px;
+    }
+
+    #app-mount .subtitleContainer_f75fb0 .upperContainer__9293f {
+        min-width: 0;
+        gap: 8px;
+    }
+
+    #app-mount .subtitleContainer_f75fb0 .titleWrapper__9293f {
+        flex: 0 1 auto;
+        min-width: 0;
+    }
+
+    #app-mount .subtitleContainer_f75fb0 .title__9293f {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    #app-mount .subtitleContainer_f75fb0 .toolbar__9293f {
+        flex: 0 0 auto;
+        gap: 4px;
+        padding-inline-start: 0;
+    }
+
+    #app-mount .subtitleContainer_f75fb0 .iconWrapper__9293f {
+        width: 28px;
+    }
+
+    /* Size the outer slot; its native container query can shrink it to 64px. */
+    #app-mount .subtitleContainer_f75fb0 .toolbar__9293f .search__49676 {
+        flex: 0 0 auto;
+        width: clamp(96px, 18vw, 144px);
+        max-width: none;
+        margin: 0;
+        min-width: 0;
+    }
+
+    #app-mount .subtitleContainer_f75fb0 .toolbar__9293f .search_c322aa,
+    #app-mount .subtitleContainer_f75fb0 .toolbar__9293f .searchBar_c322aa {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+    }
+}
