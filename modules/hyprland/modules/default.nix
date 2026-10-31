@@ -6,14 +6,12 @@
     ./swaync
     ./wlogout
 
-    ./wallpaper.nix
+    ./theming
     ./lock.nix # Hypridle and Hyprlock
     ./packages.nix
     ./screenshot.nix
     ./misc.nix
 
-    ./firefox.nix
-    ./kitty.nix
     #./vscode.nix
   ];
 }

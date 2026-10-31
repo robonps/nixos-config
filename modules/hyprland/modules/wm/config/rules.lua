@@ -53,7 +53,50 @@ hl.on("window.title", function(w)
     end
 end)
 
--- https://wiki.hypr.land/Configuring/Basics/Layer-Rules/
+-- Wallpaper renderers should crossfade over the preceding wallpaper instead of sliding into view.
+hl.layer_rule({
+    name = "wallpaper-renderers",
+    match = { namespace = "^(awww-daemon|mpvpaper|linux-wallpaperengine)$" },
+    animation = "fade",
+})
+
+-- Hyprland draws closing-layer snapshots above live layers. Suppress that snapshot
+-- during unmap so a retired wallpaper cannot flash over its fully loaded replacement.
+local wallpaperNoExitAnimation = hl.layer_rule({
+    name = "wallpaper-no-exit-animation",
+    enabled = false,
+    match = { namespace = "^(awww-daemon|mpvpaper|linux-wallpaperengine)$" },
+    no_anim = true,
+})
+local wallpaperExitGeneration = 0
+hl.on("layer.closed", function(layer)
+    if layer.namespace ~= "awww-daemon" and layer.namespace ~= "mpvpaper"
+        and layer.namespace ~= "linux-wallpaperengine" then
+        return
+    end
+    if not layer.monitor then return end
+    local replacementReady = false
+    for _, other in ipairs(hl.get_layers({ monitor = layer.monitor })) do
+        if other ~= layer and other.mapped
+            and (other.namespace == "mpvpaper" or other.namespace == "linux-wallpaperengine") then
+            replacementReady = true
+            break
+        end
+    end
+    -- Returning to a static image still uses the outgoing renderer's normal fade.
+    if not replacementReady then return end
+    -- This event runs before Hyprland takes the closing snapshot. Apply synchronously,
+    -- then restore normal entry animations on the next event-loop turn.
+    wallpaperNoExitAnimation:set_enabled(true)
+    wallpaperExitGeneration = wallpaperExitGeneration + 1
+    local generation = wallpaperExitGeneration
+    hl.timer(function()
+        if generation == wallpaperExitGeneration then
+            wallpaperNoExitAnimation:set_enabled(false)
+        end
+    end, { timeout = 1, type = "oneshot" })
+end)
+
 hl.layer_rule({
     name = "waybar",
     match = { namespace = "waybar" },

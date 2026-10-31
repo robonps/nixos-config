@@ -20,14 +20,14 @@ if ! RESULT=$(wallpaper-manager apply "$@" 2>"$CACHE_DIR/apply-error"); then
   exit 1
 fi
 
-IMAGE=$(jq -r '.image' <<< "$RESULT")
-THEME_KEY=$(jq -r '.theme_key' <<< "$RESULT")
+IMAGE=$(jq -r '.image // empty' <<< "$RESULT")
+THEME_KEY=$(jq -r '.theme_key // empty' <<< "$RESULT")
 # Regenerate the palette when the Hyprland template changes, even for the same wallpaper.
 THEME_KEY="$THEME_KEY:$(cksum < "$CONFIG_DIR/matugen/templates/hyprland.lua")"
 PREVIOUS_KEY=$(cat "$CACHE_DIR/themed" 2>/dev/null || true)
 
 # Repeating/spanning or changing outputs keeps the palette for this source.
-if [[ "$THEME_KEY" != "$PREVIOUS_KEY" ]]; then
+if [[ -n "$IMAGE" && "$THEME_KEY" != "$PREVIOUS_KEY" ]]; then
   magick "${IMAGE}[0]" -auto-orient -resize 50% -blur 0x15 -resize 200% \
     -brightness-contrast -5x0 "$CONFIG_DIR/rofi/current_wallpaper.jpg"
   if ! matugen image "$IMAGE" --source-color-index 0; then
@@ -54,4 +54,7 @@ fi
 
 openrgb-tint || echo "Could not apply the motherboard tint; the desktop theme is still active." >&2
 
-notify-send "Wallpaper Changed" "$(basename "$(jq -r '.path' <<< "$RESULT")") · $(jq -r '.layout' <<< "$RESULT")" -i "$IMAGE" || true
+ICON_ARGS=()
+if [[ -n "$IMAGE" ]]; then ICON_ARGS=(-i "$IMAGE"); fi
+NAME=$(jq -r '.name // (.path | split("/") | last)' <<< "$RESULT")
+notify-send "Wallpaper Changed" "$NAME · $(jq -r '.layout' <<< "$RESULT")" "${ICON_ARGS[@]}" || true

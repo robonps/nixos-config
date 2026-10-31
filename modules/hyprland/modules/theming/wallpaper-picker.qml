@@ -26,40 +26,78 @@ ShellRoot {
     property string librarySignature: ""
     property bool optionsEdited: false
     property bool browsingEdited: false
+    property var sourceViews: []
+    property string savedView: "all"
+    property bool viewEdited: false
+    property string pendingView: ""
+    property string runtimeError: ""
+    readonly property string activeView: sourceViews.length
+        ? (sourceViews.some(view => view.id === savedView) ? savedView : "all") : "local"
     property var thumbnailSources: ({})
     property var thumbnailRequested: ({})
     property var thumbnailQueue: []
+    property var sourceResolutions: ({})
+    readonly property var selectedResolution: sourceResolutions[filtered[selected]?.path]
     property color background: "#171219"
     property color foreground: "#eee7ef"
     property color accent: "#e3b4db"
     property bool preview: false
-    property string applyCommand: Quickshell.env("WALLPAPER_PICKER_APPLY")
+    property var helperCommands: ({scan: Quickshell.env("WALLPAPER_PICKER_SCAN"),
+        apply: Quickshell.env("WALLPAPER_PICKER_APPLY"),
+        thumbnail: Quickshell.env("WALLPAPER_PICKER_THUMBNAIL"),
+        view: Quickshell.env("WALLPAPER_PICKER_VIEW"),
+        metadata: Quickshell.env("WALLPAPER_PICKER_METADATA")})
+    property bool rescanPending: false
+    property bool outputsRefreshing: false
+    readonly property var screenNames: Quickshell.screens.map(screen => screen.name)
     readonly property int step: 200
     property string monitorName: Quickshell.env("WALLPAPER_PICKER_MONITOR")
     readonly property string targetOutput: screens[targetIndex]?.target ?? "all"
-    readonly property bool canSpan: targetOutput === "all" && screens.length > 2
+    readonly property bool hasMultipleScreens: screens.length > 2
+    readonly property bool canSpan: targetOutput === "all" && hasMultipleScreens
 
-    onSelectedChanged: applyError = ""
+    onSelectedChanged: {
+        applyError = "";
+        Qt.callLater(requestMetadata);
+    }
 
     function open(monitor, previewMode, command) {
-        // A resident picker can outlive a rebuild of its theme helper.
-        if (command) applyCommand = command;
+        // Update every helper together: the resident picker can outlive a rebuild.
+        // A plain command retains compatibility with earlier callers of picker.open.
+        if (command) helperCommands = command.startsWith("{") ? JSON.parse(command)
+            : Object.assign({}, helperCommands, {apply: command});
         monitorName = monitor || Hyprland.focusedMonitor?.name || Quickshell.screens[0]?.name || "";
         preview = previewMode;
         targetIndex = 0;
         layoutMode = canSpan && savedLayout === "span" ? "span" : "repeat";
         optionsEdited = false;
+        viewEdited = false;
         applyError = "";
         searchField.text = "";
-        filtered = files;
-        selected = Math.max(0, files.findIndex(file => file.path === currentPath));
+        filter("", false);
+        selected = Math.max(0, filtered.findIndex(file => file.path === currentPath));
         motion.stop();
         carousel.contentX = selected * step;
         browsingEdited = false;
         isOpen = true;
         Qt.callLater(() => searchField.forceActiveFocus());
         // Show the loaded library immediately; reconcile disk changes asynchronously.
-        if (!scanProcess.running) scanProcess.running = true;
+        requestScan();
+    }
+
+    function requestScan() {
+        outputsRefreshing = true;
+        if (scanProcess.running) rescanPending = true;
+        else scanProcess.running = true;
+    }
+
+    onScreenNamesChanged: {
+        if (!isOpen) return;
+        if (!screenNames.includes(monitorName)) {
+            const focused = Hyprland.focusedMonitor?.name;
+            monitorName = screenNames.includes(focused) ? focused : (screenNames[0] || "");
+        }
+        requestScan();
     }
 
     function close() {
@@ -79,6 +117,32 @@ ShellRoot {
         if (!applying && canSpan) setLayout(layoutMode === "span" ? "repeat" : "span");
     }
 
+    function setView(view) {
+        if (applying || !sourceViews.some(item => item.id === view)) return;
+        viewEdited = true;
+        savedView = view;
+        filter(searchField.text, true);
+        pendingView = view;
+        persistView();
+    }
+
+    function persistView() {
+        if (viewProcess.running || !pendingView) return;
+        viewProcess.command = [helperCommands.view, pendingView];
+        pendingView = "";
+        viewProcess.running = true;
+    }
+
+    function requestMetadata() {
+        const path = filtered[selected]?.path;
+        if (!path || !helperCommands.metadata || metadataProcess.running
+                || sourceResolutions[path] !== undefined) return;
+        // Cache unknown/unreadable dimensions too, so a failed probe is not retried in a loop.
+        sourceResolutions = Object.assign({}, sourceResolutions, {[path]: null});
+        metadataProcess.command = [helperCommands.metadata, path];
+        metadataProcess.running = true;
+    }
+
     function requestThumbnail(file, index) {
         if (file.thumbnailReady !== false || thumbnailRequested[file.path]) return;
         thumbnailRequested[file.path] = true;
@@ -91,12 +155,13 @@ ShellRoot {
         // Decode one source at a time, prioritizing the card closest to selection.
         thumbnailQueue.sort((a, b) => Math.abs(a.index - selected) - Math.abs(b.index - selected));
         const file = thumbnailQueue.shift();
-        thumbnailProcess.command = [Quickshell.env("WALLPAPER_PICKER_THUMBNAIL"), file.path];
+        thumbnailProcess.command = [helperCommands.thumbnail, file.path];
         thumbnailProcess.running = true;
     }
 
     function setTarget(index) {
         if (applying) return;
+        if (!hasMultipleScreens || index < 0 || index >= screens.length) return;
         optionsEdited = true;
         targetIndex = index;
         if (!canSpan) layoutMode = "repeat";
@@ -124,10 +189,12 @@ ShellRoot {
         if (userInput) browsingEdited = true;
         const previous = filtered[selected]?.path;
         motion.stop();
-        filtered = query ? files.filter(file => file.name.toLowerCase().includes(query.toLowerCase())) : files;
+        filtered = files.filter(file => (activeView === "all" || (file.origin ?? "local") === activeView)
+            && (!query || file.name.toLowerCase().includes(query.toLowerCase())));
         selected = Math.max(0, filtered.findIndex(file => file.path === previous));
         applyError = "";
         carousel.contentX = selected * step;
+        Qt.callLater(requestMetadata);
     }
 
     function select(index) {
@@ -140,15 +207,16 @@ ShellRoot {
     }
 
     function apply(index) {
-        if (!filtered.length || applying) return;
+        if (!filtered.length || applying || outputsRefreshing) return;
         selected = index;
         if (!preview) {
             applyError = "";
             applying = true;
             applyingPath = filtered[index].path;
             applyingLayout = layoutMode;
-            applyProcess.command = [root.applyCommand, filtered[index].path,
-                                    layoutMode, targetOutput];
+            applyProcess.command = [root.helperCommands.apply, filtered[index].path,
+                                    hasMultipleScreens ? layoutMode : "repeat",
+                                    hasMultipleScreens ? targetOutput : "all"];
             // The resident picker keeps the apply process alive while hidden.
             root.close();
             applyProcess.running = true;
@@ -161,15 +229,24 @@ ShellRoot {
 
     Process {
         id: scanProcess
-        command: [Quickshell.env("WALLPAPER_PICKER_SCAN")]
+        command: [root.helperCommands.scan]
         running: true
         stdout: StdioCollector {
             onStreamFinished: {
                 try {
                     const data = JSON.parse(text);
-                    const signature = JSON.stringify(data.files);
+                    // Warming the disk metadata cache is not a library change.
+                    const signature = JSON.stringify(data.files.map(file => {
+                        const identity = Object.assign({}, file);
+                        delete identity.resolution;
+                        return identity;
+                    }));
                     const libraryChanged = signature !== root.librarySignature;
                     const initialLoad = !root.ready;
+                    root.sourceViews = data.views ?? [];
+                    if (!root.viewEdited && !viewProcess.running && !root.pendingView)
+                        root.savedView = data.view ?? "all";
+                    root.runtimeError = (data.errors ?? []).join(" · ");
                     if (libraryChanged) {
                         root.librarySignature = signature;
                         // Discard stale in-memory URLs when source files or their
@@ -178,26 +255,73 @@ ShellRoot {
                         root.thumbnailRequested = ({});
                         root.thumbnailQueue = [];
                         root.files = data.files;
-                        root.filter(searchField.text, false);
                     }
+                    const resolutions = {};
+                    for (const file of data.files) {
+                        if (file.resolution !== undefined)
+                            resolutions[file.path] = file.resolution;
+                    }
+                    root.sourceResolutions = resolutions;
+                    root.filter(searchField.text, false);
+                    const previousTarget = root.targetOutput;
                     root.screens = [{label: "All screens", target: "all"}].concat(data.screens ?? []);
+                    const targetIndex = root.screens.findIndex(screen => screen.target === previousTarget);
+                    root.targetIndex = root.hasMultipleScreens && targetIndex >= 0 ? targetIndex : 0;
                     root.currentPath = data.current;
                     root.savedLayout = data.layout === "span" ? "span" : "repeat";
                     if (initialLoad || !root.browsingEdited) {
                         root.selected = Math.max(0, root.filtered.findIndex(file => file.path === data.current));
                         carousel.contentX = root.selected * root.step;
                     }
+                    if (!root.canSpan && root.layoutMode === "span")
+                        root.layoutMode = "repeat";
                     if (!root.optionsEdited)
                         root.layoutMode = root.canSpan ? root.savedLayout : "repeat";
                     root.background = root.parseColor(data.colors, "background", root.background);
                     root.foreground = root.parseColor(data.colors, "foreground", root.foreground);
                     root.accent = root.parseColor(data.colors, "selected", root.accent);
+                    Qt.callLater(root.requestMetadata);
                 } catch (error) {
                     console.error("Could not load wallpapers:", error);
                 }
                 root.ready = true;
             }
         }
+        onExited: {
+            if (root.rescanPending) {
+                root.rescanPending = false;
+                Qt.callLater(() => scanProcess.running = true);
+            } else root.outputsRefreshing = false;
+        }
+    }
+
+    Process {
+        id: viewProcess
+        stderr: StdioCollector {
+            onStreamFinished: if (text.trim()) root.applyError = "Could not save wallpaper view: " + text.trim();
+        }
+        onExited: exitCode => {
+            if (exitCode !== 0 && !root.applyError) root.applyError = "Could not save wallpaper view";
+            Qt.callLater(root.persistView);
+        }
+    }
+
+    Process {
+        id: metadataProcess
+        stdout: StdioCollector {
+            onStreamFinished: {
+                try {
+                    const result = JSON.parse(text);
+                    if (root.files.some(file => file.path === result.path
+                            && (!result.metadataKey || file.metadataKey === result.metadataKey)))
+                        root.sourceResolutions = Object.assign({}, root.sourceResolutions,
+                            {[result.path]: result.resolution ?? null});
+                } catch (error) {
+                    console.error("Could not read wallpaper dimensions:", error);
+                }
+            }
+        }
+        onExited: Qt.callLater(root.requestMetadata)
     }
 
     Process {
@@ -239,6 +363,7 @@ ShellRoot {
         function open(monitor: string, preview: bool, command: string): void { root.open(monitor, preview, command); }
         function select(index: int): void { root.select(index); }
         function search(query: string): void { searchField.text = query; }
+        function view(value: string): void { root.setView(value); }
         function close(): void { root.close(); }
         function setScreen(index: int): void { root.setTarget(index); }
         function layout(mode: string): void {
@@ -249,7 +374,7 @@ ShellRoot {
             let errors = 0;
             for (let i = 0; i < cards.count; ++i) {
                 const card = cards.itemAt(i);
-                if (card && card.nearby) {
+                if (card && card.nearby && card.previewPath) {
                     if (card.imageStatus !== Image.Ready) ++pending;
                     if (card.imageStatus === Image.Error) ++errors;
                 }
@@ -258,8 +383,14 @@ ShellRoot {
                 selected: root.selected, position: carousel.contentX / root.step,
                 animating: motion.running, preview: root.preview,
                 layout: root.layoutMode, target: root.targetOutput, screens: root.screens,
+                monitorControlsVisible: root.hasMultipleScreens, outputsRefreshing: root.outputsRefreshing,
+                view: root.activeView, savedView: root.savedView, views: root.sourceViews,
+                savingView: viewProcess.running || root.pendingView !== "",
                 monitor: panel.screen?.name ?? "",
                 applying: root.applying, error: root.applyError,
+                helpers: root.helperCommands,
+                selectedKind: root.filtered[root.selected]?.kind ?? (root.filtered[root.selected]?.video ? "video" : ""),
+                resolution: root.selectedResolution ?? null,
                 pendingImages: pending, imageErrors: errors});
         }
     }
@@ -268,7 +399,7 @@ ShellRoot {
         id: panel
         visible: root.isOpen && Quickshell.screens.some(screen => screen.name === root.monitorName)
         anchors { bottom: true; left: true; right: true }
-        implicitHeight: 398
+        implicitHeight: 374 + (root.sourceViews.length ? 44 : 0) + (root.hasMultipleScreens ? 44 : 0)
         color: root.background
         exclusionMode: ExclusionMode.Ignore
         screen: Quickshell.screens.find(screen => screen.name === root.monitorName) ?? Quickshell.screens[0]
@@ -384,20 +515,54 @@ ShellRoot {
                 }
                 ActionButton {
                     text: "Shuffle"
-                    enabled: root.filtered.length > 0 && !root.applying
+                    enabled: root.filtered.length > 0 && !root.applying && !root.outputsRefreshing
                     onClicked: root.shuffle()
                 }
                 ActionButton {
                     text: root.applying ? "Applying…" : "Apply"
                     primary: true
-                    enabled: root.filtered.length > 0 && !root.applying
+                    enabled: root.filtered.length > 0 && !root.applying && !root.outputsRefreshing
                     onClicked: root.apply(root.selected)
                 }
                 ActionButton { text: "×"; onClicked: root.close() }
             }
 
-            RowLayout {
+            Rectangle {
+                id: viewControls
+                visible: root.sourceViews.length > 0
                 anchors { top: parent.top; horizontalCenter: parent.horizontalCenter; topMargin: 62 }
+                implicitWidth: viewSegments.implicitWidth + 8
+                implicitHeight: 44
+                radius: 15
+                color: Qt.darker(root.background, 1.35)
+                enabled: !root.applying
+                Row {
+                    id: viewSegments
+                    anchors.centerIn: parent
+                    spacing: 2
+                    Repeater {
+                        model: root.sourceViews
+                        ActionButton {
+                            id: viewSegment
+                            required property var modelData
+                            text: modelData.label
+                            primary: root.activeView === modelData.id
+                            background: Rectangle {
+                                radius: 11
+                                color: viewSegment.primary ? root.accent
+                                    : viewSegment.hovered ? Qt.alpha(root.foreground, 0.1) : "transparent"
+                                border.width: viewSegment.activeFocus ? 1 : 0
+                                border.color: root.accent
+                            }
+                            onClicked: root.setView(modelData.id)
+                        }
+                    }
+                }
+            }
+
+            RowLayout {
+                visible: root.hasMultipleScreens
+                anchors { top: parent.top; horizontalCenter: parent.horizontalCenter; topMargin: root.sourceViews.length ? 106 : 62 }
                 spacing: 8
                 enabled: !root.applying
                 Text { text: "Screens"; color: root.foreground; font.pixelSize: 13 }
@@ -429,7 +594,7 @@ ShellRoot {
 
             Flickable {
                 id: carousel
-                anchors { left: parent.left; right: parent.right; top: parent.top; topMargin: 108 }
+                anchors { left: parent.left; right: parent.right; top: parent.top; topMargin: 64 + (root.sourceViews.length ? 44 : 0) + (root.hasMultipleScreens ? 44 : 0) }
                 height: 230
                 contentWidth: width + Math.max(0, root.filtered.length - 1) * root.step
                 contentHeight: height
@@ -462,6 +627,7 @@ ShellRoot {
                             id: card
                             required property int index
                             required property var modelData
+                            property bool initialized: false
                             width: root.step
                             height: carousel.height
                             readonly property real emphasis: Math.max(0, 1 - Math.abs(index - carousel.contentX / root.step))
@@ -469,8 +635,13 @@ ShellRoot {
                             readonly property int imageStatus: wallpaperImage.status
                             readonly property string previewPath: root.thumbnailSources[modelData.path]
                                 ?? (modelData.thumbnailReady !== false ? modelData.thumbnail : "")
-                            Component.onCompleted: if (nearby) root.requestThumbnail(modelData, index)
-                            onNearbyChanged: if (nearby) root.requestThumbnail(modelData, index)
+                            Component.onCompleted: {
+                                initialized = true;
+                                if (nearby) root.requestThumbnail(modelData, index);
+                            }
+                            onModelDataChanged: if (initialized && nearby)
+                                Qt.callLater(root.requestThumbnail, modelData, index)
+                            onNearbyChanged: if (initialized && nearby) root.requestThumbnail(modelData, index)
 
                             Rectangle {
                                 anchors.centerIn: parent
@@ -498,14 +669,24 @@ ShellRoot {
                                     autoTransform: true
                                     opacity: 0.65 + 0.35 * card.emphasis
                                 }
+                                Text {
+                                    anchors.centerIn: parent
+                                    visible: !card.previewPath
+                                    text: "No preview"
+                                    color: Qt.alpha(root.foreground, 0.55)
+                                    font.pixelSize: 13
+                                }
                                 Rectangle {
-                                    visible: card.modelData.video ?? false
+                                    readonly property string label: (card.modelData.kind
+                                        ?? (card.modelData.video ? "video" : "")).toUpperCase()
+                                    visible: ["SCENE", "VIDEO", "WEB"].includes(label)
                                     anchors { right: parent.right; bottom: parent.bottom; margins: 8 }
-                                    width: 52; height: 22; radius: 7
+                                    width: badgeText.implicitWidth + 18; height: 22; radius: 7
                                     color: root.background
                                     Text {
+                                        id: badgeText
                                         anchors.centerIn: parent
-                                        text: "VIDEO"; color: root.accent; font { pixelSize: 10; bold: true }
+                                        text: parent.label; color: root.accent; font { pixelSize: 10; bold: true }
                                     }
                                 }
                                 MouseArea {
@@ -536,8 +717,8 @@ ShellRoot {
                 }
             }
             Text {
-                anchors { left: parent.left; right: parent.right; bottom: parent.bottom; margins: 24; bottomMargin: 40 }
-                text: root.applyError || (!root.ready ? "Loading wallpapers…" : root.filtered.length
+                anchors { left: parent.left; right: parent.right; bottom: parent.bottom; margins: 24; bottomMargin: 60 }
+                text: root.applyError || root.runtimeError || (!root.ready ? "Loading wallpapers…" : root.filtered.length
                     ? (root.filtered[root.selected]?.name ?? "") + "    ·    " + (root.selected + 1) + " / " + root.filtered.length
                     : "No matching wallpapers")
                 color: root.foreground
@@ -546,8 +727,18 @@ ShellRoot {
                 horizontalAlignment: Text.AlignHCenter
             }
             Text {
+                anchors { left: parent.left; right: parent.right; bottom: parent.bottom; margins: 24; bottomMargin: 40 }
+                visible: root.ready && !root.applyError && !root.runtimeError && root.selectedResolution !== undefined
+                    && root.selectedResolution !== null
+                text: root.selectedResolution ? root.selectedResolution.join(" × ") : ""
+                color: Qt.alpha(root.foreground, 0.6)
+                font.pixelSize: 12
+                horizontalAlignment: Text.AlignHCenter
+            }
+            Text {
                 anchors { bottom: parent.bottom; horizontalCenter: parent.horizontalCenter; bottomMargin: 16 }
-                text: "← → or scroll to browse    ·    ↑ Repeat / Span    ·    ↓ shuffle    ·    Enter or click to apply    ·    Esc to close"
+                text: "← → or scroll to browse    ·    " + (root.hasMultipleScreens ? "↑ Repeat / Span    ·    " : "")
+                    + "↓ shuffle    ·    Enter or click to apply    ·    Esc to close"
                 color: Qt.alpha(root.foreground, 0.55)
                 font.pixelSize: 12
             }

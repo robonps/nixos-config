@@ -40,19 +40,25 @@ in {
     LIBVA_DRIVER_NAME = "radeonsi";
   };
 
+  custom.wallpaper.addons.wallpaperEngine = {
+    enable = true;
+    enableWeb = false;
+  };
+
   home.packages = [
     openrgb-client
     toggle-birghtness
     toggle-microphone
   ];
 
-  # Follow Matugen's primary colour with a dim, static motherboard tint.
+  # Follow Matugen's primary colour with a vibrant, static motherboard tint.
   xdg.configFile."openrgb/matugen.json".text = builtins.toJSON {
     device = "ASRock B850M-X WiFi R2.0";
     channel_order = "GRB"; # Matches the server's pinned ASRock RGSwap settings.
-    intensity = 18; # Percentage of each RGB channel, independent of mode brightness.
-    saturation = 120; # 100 preserves the palette; 120 adds a little more colour.
+    intensity = 28; # Percentage of each RGB channel, independent of mode brightness.
+    saturation = 155; # Boost the pastel palette for richer case lighting.
     transition_ms = 800; # Fade duration; 0 applies the colour immediately.
+    brightness_command = ["${toggle-birghtness}/bin/toggle-brightness" "--status"]; # Read-only mode check at login.
   };
 
   xdg.desktopEntries."org.openrgb.OpenRGB" = {

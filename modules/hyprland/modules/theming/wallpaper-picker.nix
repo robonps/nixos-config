@@ -20,6 +20,20 @@
       exec wallpaper-manager thumbnail "$1"
     '';
   };
+  view = pkgs.writeShellApplication {
+    name = "wallpaper-picker-view";
+    runtimeInputs = [wallpaper-manager];
+    text = ''
+      exec wallpaper-manager view "$1"
+    '';
+  };
+  metadata = pkgs.writeShellApplication {
+    name = "wallpaper-picker-metadata";
+    runtimeInputs = [wallpaper-manager];
+    text = ''
+      exec wallpaper-manager metadata "$1"
+    '';
+  };
 in pkgs.writeShellApplication {
   name = "wall-menu";
   runtimeInputs = [pkgs.quickshell pkgs.hyprland pkgs.jq pkgs.coreutils];
@@ -27,6 +41,12 @@ in pkgs.writeShellApplication {
     export WALLPAPER_PICKER_SCAN="${scan}/bin/wallpaper-picker-scan"
     export WALLPAPER_PICKER_APPLY="${apply}/bin/wallpaper-picker-apply"
     export WALLPAPER_PICKER_THUMBNAIL="${thumbnail}/bin/wallpaper-picker-thumbnail"
+    export WALLPAPER_PICKER_VIEW="${view}/bin/wallpaper-picker-view"
+    export WALLPAPER_PICKER_METADATA="${metadata}/bin/wallpaper-picker-metadata"
+    picker_commands=$(jq -cn --arg scan "$WALLPAPER_PICKER_SCAN" --arg apply "$WALLPAPER_PICKER_APPLY" \
+      --arg thumbnail "$WALLPAPER_PICKER_THUMBNAIL" --arg view "$WALLPAPER_PICKER_VIEW" \
+      --arg metadata "$WALLPAPER_PICKER_METADATA" \
+      '{scan: $scan, apply: $apply, thumbnail: $thumbnail, view: $view, metadata: $metadata}')
     if [[ "''${1:-}" == --daemon ]]; then
       shift
       exec ${pkgs.quickshell}/bin/qs --daemonize --no-duplicate --path ${./wallpaper-picker.qml} "$@"
@@ -46,13 +66,13 @@ in pkgs.writeShellApplication {
     # Most opens only show the already loaded picker. Start it on demand if login
     # preloading has not happened yet, then wait briefly for its IPC registration.
     if ${pkgs.quickshell}/bin/qs ipc --path ${./wallpaper-picker.qml} call picker open \
-        "$WALLPAPER_PICKER_MONITOR" "$preview" "$WALLPAPER_PICKER_APPLY" >/dev/null 2>&1; then
+        "$WALLPAPER_PICKER_MONITOR" "$preview" "$picker_commands" >/dev/null 2>&1; then
       exit 0
     fi
     ${pkgs.quickshell}/bin/qs --daemonize --no-duplicate --path ${./wallpaper-picker.qml} "$@"
     for _ in {1..30}; do
       if ${pkgs.quickshell}/bin/qs ipc --path ${./wallpaper-picker.qml} call picker open \
-          "$WALLPAPER_PICKER_MONITOR" "$preview" "$WALLPAPER_PICKER_APPLY" >/dev/null 2>&1; then
+          "$WALLPAPER_PICKER_MONITOR" "$preview" "$picker_commands" >/dev/null 2>&1; then
         exit 0
       fi
       sleep 0.02

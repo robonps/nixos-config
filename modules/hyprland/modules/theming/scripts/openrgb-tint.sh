@@ -9,15 +9,17 @@ case "$ACTION" in
   *) echo "Usage: openrgb-tint [--off|--restore]" >&2; exit 1 ;;
 esac
 
-# Other hosts have no RGB settings; a first login may have no palette yet.
+# Other hosts have no RGB settings.
 [[ -f "$SETTINGS" ]] || exit 0
-[[ -f "$PALETTE" || "$ACTION" != apply ]] || exit 0
+HAS_PALETTE=false
+[[ ! -f "$PALETTE" ]] || HAS_PALETTE=true
 
 DEVICE=$(jq -er '.device | select(type == "string" and length > 0)' "$SETTINGS")
 INTENSITY=$(jq -er '.intensity | select(type == "number" and . >= 0 and . <= 100 and . == floor)' "$SETTINGS")
 SATURATION=$(jq -er '(.saturation // 100) | select(type == "number" and . >= 0 and . <= 200 and . == floor)' "$SETTINGS")
 TRANSITION_MS=$(jq -er '(.transition_ms // 800) | select(type == "number" and . >= 0 and . <= 5000 and . == floor)' "$SETTINGS")
 CHANNEL_ORDER=$(jq -er '(.channel_order // "RGB") | select(. == "RGB" or . == "RBG" or . == "GRB" or . == "GBR" or . == "BRG" or . == "BGR")' "$SETTINGS")
+BRIGHTNESS_COMMAND=$(jq -ce '(.brightness_command // []) | select(type == "array" and all(.[]; type == "string" and length > 0))' "$SETTINGS")
 # The existing Matugen pywal template maps primary to color2.
 COLOR="#000000"
 if [[ -f "$PALETTE" && "$ACTION" != --off ]]; then
@@ -44,12 +46,14 @@ printf -v TINT '%02X%02X%02X' "${CHANNELS[@]}"
 
 # One SDK connection per fade. Keep Direct mode afterward: switching back to
 # Static would reset the controller and cause another flash on the next change.
-exec timeout 25s python3 - "$DEVICE" "$TINT" "$TRANSITION_MS" "$ACTION" "$CHANNEL_ORDER" <<'PY'
+exec timeout 25s python3 - "$DEVICE" "$TINT" "$TRANSITION_MS" "$ACTION" "$CHANNEL_ORDER" "$BRIGHTNESS_COMMAND" "$HAS_PALETTE" <<'PY'
 import fcntl
+import json
 import math
 import os
 from pathlib import Path
 import sys
+import subprocess
 import time
 
 from openrgb import OpenRGBClient
@@ -57,7 +61,8 @@ from openrgb.utils import RGBColor
 
 
 def apply_tint():
-    name, tint, milliseconds, action, channel_order = sys.argv[1:]
+    name, tint, milliseconds, action, channel_order, brightness_command, has_palette = sys.argv[1:]
+    brightness_command = json.loads(brightness_command)
     channels = dict(zip("RGB", (int(tint[i:i + 2], 16) for i in (0, 2, 4))))
     # Compensate for the controller's Direct-mode wiring before interpolating
     # from the server's existing values, which are already in hardware order.
@@ -68,17 +73,36 @@ def apply_tint():
     # Serialize login and wallpaper updates, including separate SDK clients.
     with (cache / "tint.lock").open("a") as lock:
         fcntl.flock(lock, fcntl.LOCK_EX)
-        # Keep blackout state for this login only. Wallpaper updates still read
-        # the latest palette, but cannot relight the motherboard while dimmed.
+        # Synchronize a new login with the monitor's actual mode before applying
+        # any colour. Explicit toggles remain authoritative for the rest of the login.
         runtime = Path(os.environ.get("XDG_RUNTIME_DIR", f"/tmp/openrgb-tint-{os.getuid()}"))
         runtime.mkdir(mode=0o700, parents=True, exist_ok=True)
         dimmed = runtime / "openrgb-tint.dimmed"
+        checked = runtime / "openrgb-tint.brightness-checked"
         if action == "--off":
             dimmed.touch()
+            checked.touch()
         elif action == "--restore":
             dimmed.unlink(missing_ok=True)
+            checked.touch()
+        elif brightness_command and not checked.exists():
+            result = subprocess.run(brightness_command, check=True, capture_output=True, text=True, timeout=10)
+            mode = result.stdout.strip()
+            if mode == "dimmed":
+                dimmed.touch()
+                # Startup must not fade through bright firmware colours before going dark.
+                duration = 0
+            elif mode == "bright":
+                dimmed.unlink(missing_ok=True)
+            else:
+                raise ValueError("Monitor brightness command did not report dimmed or bright")
+            checked.touch()
         if dimmed.exists():
             target = RGBColor(0, 0, 0)
+        elif action == "apply" and has_palette != "true":
+            # A first login without a palette should not invent a colour; dim mode
+            # still blacks out the LEDs even when no palette has been generated yet.
+            return
         # Protocol 4 queries plugins during startup. A headless OpenRGB server
         # does not answer that request, causing a 10-second SDK timeout.
         # Protocol 3 supports our colour/mode operations without that query.
@@ -117,7 +141,7 @@ def apply_tint():
 
 try:
     apply_tint()
-except (OSError, ValueError, TimeoutError) as error:
+except (OSError, ValueError, TimeoutError, subprocess.SubprocessError) as error:
     print(f"OpenRGB tint failed: {error}", file=sys.stderr)
     sys.exit(1)
 PY

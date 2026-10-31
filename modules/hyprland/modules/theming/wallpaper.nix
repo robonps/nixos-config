@@ -4,6 +4,13 @@
   config,
   ...
 }: let
+  providers = config.custom.wallpaper.providers;
+  providerManifest = pkgs.writeText "wallpaper-providers.json" (builtins.toJSON (map (provider: {
+    inherit (provider) id settings;
+    module = "${provider.module}";
+  }) providers));
+  managerRuntimeInputs = [pkgs.python3 pkgs.hyprland pkgs.awww pkgs.mpvpaper pkgs.ffmpeg pkgs.imagemagick pkgs.procps]
+    ++ lib.concatMap (provider: provider.runtimeInputs) providers;
   openrgb-tint = pkgs.writeShellApplication {
     name = "openrgb-tint";
     runtimeInputs = [(pkgs.python3.withPackages (ps: [ps.openrgb-python])) pkgs.jq pkgs.coreutils];
@@ -11,8 +18,10 @@
   };
   wallpaper-manager = pkgs.writeShellApplication {
     name = "wallpaper-manager";
-    runtimeInputs = [pkgs.python3 pkgs.hyprland pkgs.awww pkgs.mpvpaper pkgs.ffmpeg pkgs.imagemagick pkgs.procps];
+    runtimeInputs = managerRuntimeInputs;
     text = ''
+      export WALLPAPER_PROVIDER_MANIFEST=${providerManifest}
+      export WALLPAPER_MANAGER_BUILD=${builtins.hashString "sha256" (builtins.toJSON (map toString managerRuntimeInputs))}
       exec python3 ${./scripts/wallpaper-manager.py} "$@"
     '';
   };
@@ -25,6 +34,7 @@
   wall-menu = pkgs.callPackage ./wallpaper-picker.nix {inherit theme-switcher wallpaper-manager;};
 
 in {
+  imports = [./wallpaper-addons];
   home.packages = [theme-switcher wall-menu wallpaper-manager openrgb-tint];
 
   # Preserve the current palette on the first activation of the Lua config.

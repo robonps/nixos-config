@@ -1,34 +1,56 @@
 #!/usr/bin/env bash
 
+ACTION=${1:-toggle}
+case "$ACTION" in
+    toggle|--status) ;;
+    *) echo "Usage: toggle-brightness [--status]" >&2; exit 2 ;;
+esac
+
 # Check for dependencies
 if ! command -v ddcutil &> /dev/null; then
     echo "ddcutil could not be found."
     exit 1
 fi
 
-if ! command -v notify-send &> /dev/null; then
+if [[ "$ACTION" == toggle ]] && ! command -v notify-send &> /dev/null; then
     echo "notify-send (libnotify) could not be found."
     exit 1
 fi
-
-# Create a temporary directory to store the saved brightness states
-CACHE_DIR="/tmp/monitor_brightness_state"
-mkdir -p "$CACHE_DIR"
 
 # 1. BUS DETECTION
 buses=$(ddcutil detect | grep "I2C bus:" | grep -oP '/dev/i2c-\K[0-9]+')
 bus_array=($buses)
 
 if [ ${#bus_array[@]} -eq 0 ]; then
-    notify-send "Brightness" "Error: No monitors detected" -u critical
+    if [[ "$ACTION" == --status ]]; then
+        echo "No monitor brightness mode is available yet." >&2
+    else
+        notify-send "Brightness" "Error: No monitors detected" -u critical
+    fi
     exit 1
 fi
 
 # 2. Get state from FIRST monitor for instant notification
 first_bus=${bus_array[0]}
-output=$(ddcutil getvcp 10 --bus "$first_bus")
+read_ok=true
+output=$(ddcutil getvcp 10 --bus "$first_bus") || read_ok=false
 first_current=$(echo "$output" | grep -oP 'current value =\s*\K[0-9]+')
 first_max=$(echo "$output" | grep -oP 'max value =\s*\K[0-9]+')
+
+# A read-only startup query uses exactly the toggle's dim threshold. Never treat
+# an unavailable DDC reading as bright, since that could relight a dimmed PC.
+if [[ "$ACTION" == --status ]]; then
+    if [[ "$read_ok" != true || ! "$first_current" =~ ^[0-9]+$ ]]; then
+        echo "Could not read the monitor brightness mode." >&2
+        exit 1
+    fi
+    if [ "$first_current" -le 1 ]; then echo dimmed; else echo bright; fi
+    exit 0
+fi
+
+# Saved brightness values are only needed when actually toggling the monitors.
+CACHE_DIR="/tmp/monitor_brightness_state"
+mkdir -p "$CACHE_DIR"
 
 # Fallbacks for the first monitor
 [ -z "$first_max" ] && first_max=100
