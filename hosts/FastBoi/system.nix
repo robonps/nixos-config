@@ -38,7 +38,6 @@ in
   ];
 
   boot.initrd = {
-    verbose = false;
     availableKernelModules = [ "r8169" "amdgpu" ];
     network = {
       ssh = {
@@ -54,7 +53,6 @@ in
   };
 
   boot.initrd.systemd = {
-    enable = true;
     users.root.shell = "/usr/bin/systemd-tty-ask-password-agent";
     network = {
       enable = true;
