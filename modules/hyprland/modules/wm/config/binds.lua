@@ -4,6 +4,38 @@ local terminal = "kitty"
 local menu = "rofi -show drun -config launcher"
 local browser = "librewolf"
 local fileManager = "nautilus -w"
+local floatScale = 0.40
+
+local function toggleFloating()
+    local window = hl.get_active_window()
+    if not window or not window.monitor then return end
+
+    local fullscreen = window.fullscreen ~= 0 or window.fullscreen_client ~= 0
+    if window.floating and not fullscreen then
+        hl.dispatch(hl.dsp.window.float({ window = window, action = "disable" }))
+        return
+    end
+
+    local monitor = window.monitor
+    -- mode reports logical dimensions, with monitor rotation and scaling applied.
+    local screen = monitor.mode
+    local width = math.max(1, math.floor(screen.width * floatScale))
+    local height = math.max(1, math.floor(screen.height * floatScale))
+
+    if fullscreen then
+        hl.dispatch(hl.dsp.window.fullscreen_state({
+            window = window, internal = 0, client = 0, action = "set",
+        }))
+    end
+    hl.dispatch(hl.dsp.window.float({ window = window, action = "enable" }))
+    hl.dispatch(hl.dsp.window.resize({ window = window, x = width, y = height }))
+    local size = window.size
+    hl.dispatch(hl.dsp.window.move({
+        window = window,
+        x = math.floor(monitor.x + (screen.width - size.x) / 2),
+        y = math.floor(monitor.y + (screen.height - size.y) / 2),
+    }))
+end
 
 hl.bind(mainMod .. " + Q", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + C", hl.dsp.window.close())
@@ -13,8 +45,8 @@ hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + G", hl.dsp.exec_cmd("wall-menu"))
 hl.bind(mainMod .. " + SHIFT + G", hl.dsp.exec_cmd("theme-switcher ~/Pictures/Wallpapers"))
 
-hl.bind(mainMod .. " + M", hl.dsp.exit())
-hl.bind(mainMod .. " + Space", hl.dsp.window.float({ action = "toggle" }))
+hl.bind(mainMod .. " + equal", hl.dsp.exit())
+hl.bind(mainMod .. " + Space", toggleFloating)
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
 hl.bind(mainMod .. " + O", hl.dsp.layout("togglesplit"), { description = "Toggle split" })
 
