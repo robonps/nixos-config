@@ -148,6 +148,8 @@ in
     "com.stremio.Stremio"
     "org.jdownloader.JDownloader"
     #"ai.lmstudio.lm-studio"
+    "com.usebottles.bottles"
+    "com.github.tchx84.Flatseal"
   ];
   services.flatpak.uninstallUnmanaged = true;
   environment.sessionVariables = {
