@@ -150,6 +150,7 @@ in
     #"ai.lmstudio.lm-studio"
     "com.usebottles.bottles"
     "com.github.tchx84.Flatseal"
+    "app.fluxer.Fluxer"             # Testing for comms
   ];
   services.flatpak.uninstallUnmanaged = true;
   environment.sessionVariables = {
@@ -178,6 +179,14 @@ in
   programs.localsend = {
     enable = true;
     openFirewall = true;
+  };
+
+  # Printing
+  services.printing = {
+    enable = true;
+    browsed.enable = false;
+    browsing = false;
+    openFirewall = false;
   };
 
     # Enable the Tailscale service

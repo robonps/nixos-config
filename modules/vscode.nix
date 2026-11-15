@@ -15,6 +15,10 @@
       ];
 
       userSettings = {
+        "github.copilot.enable" = {
+          "*" = false;
+        };
+
         # Font Settings
         "editor.fontFamily" = "'JetBrainsMono Nerd Font', 'Droid Sans Mono', monospace";
         "editor.fontLigatures" = true;

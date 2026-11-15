@@ -165,7 +165,7 @@
     # GUI Apps
     orca-slicer
     proton-vpn
-    onlyoffice-desktopeditors
+    #onlyoffice-desktopeditors
     mission-center
     celluloid # Video Player
     loupe # Image Viewer
