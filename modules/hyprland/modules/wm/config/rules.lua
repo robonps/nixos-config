@@ -111,6 +111,13 @@ hl.layer_rule({
     animation = "slide bottom",
 })
 
+-- Grim captures immediately after slurp exits; don't capture its closing overlay.
+hl.layer_rule({
+    name = "slurp-no-animation",
+    match = { namespace = "^selection$" },
+    no_anim = true,
+})
+
 hl.layer_rule({
     name = "wallpaper-picker",
     match = { namespace = "wallpaper-picker" },
