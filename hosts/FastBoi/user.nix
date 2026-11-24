@@ -31,9 +31,10 @@ in {
     ../../common/user.nix
     ../../modules/hyprland/user.nix
     ../../modules/gaming/user.nix
-    ../../modules/DAW/user.nix     # Bitwig Studio and Decent Sampler for music production
-    ../../modules/ai/user.nix      # AI tools
-    ../../modules/codex/user.nix   # Codex and executable reverse engineering
+    ../../modules/DAW/user.nix            # Bitwig Studio and Decent Sampler for music production
+    ../../modules/ai/user.nix             # AI tools
+    ../../modules/codex/user.nix          # Codex and executable reverse engineering
+    ../../modules/video-editing/user.nix  # Video editing tools
   ];
 
   home.sessionVariables = {
