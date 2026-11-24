@@ -10,7 +10,7 @@
     # Include the results of the hardware scan.
     ./hardware.nix
     ../../common/system.nix # Common system config.
-    ../../modules/kde/system.nix # Desktop
+    ../../modules/gnome/system.nix # Desktop
   ];
 
   xdg.portal.enable = true; # Enable XDG portals for better sandboxing and compatibility with Wayland apps
@@ -27,6 +27,7 @@
 
   services.tlp = {
     enable = true;
+    pd.enable = true;
     settings = {
       # Set the upper charge threshold for the main internal battery (BAT0)
       STOP_CHARGE_THRESH_BAT0 = 85;
